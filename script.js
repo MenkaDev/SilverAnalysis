@@ -84,7 +84,7 @@ function generatePDF(callback) {
 
         // Load images first
         let coverImage = new Image();
-        coverImage.src = "Page1.png";
+        coverImage.src = "page1.png";
         let logoImage = new Image();
         logoImage.src = "logo.png";
 
