@@ -281,45 +281,39 @@ function generatePDF(callback) {
                 alert("An error occurred while generating the PDF. Please try again.");
             }
         }
-
         function appendUploadedPDFs(doc, callback) {
             let pdfInput = document.getElementById("pdf-upload");
-            if (!pdfInput || pdfInput.files.length === 0) {
-                callback(doc);
-                return;
-            }
-
             let fileIndex = 0;
-
+        
             function processNextFile() {
-                if (fileIndex >= pdfInput.files.length) {
-                    callback(doc);
+                if (!pdfInput || fileIndex >= pdfInput.files.length) {
+                    appendFixedPDF(doc, callback); // ⬅ Append fixed PDF at the end
                     return;
                 }
-
+        
                 let file = pdfInput.files[fileIndex];
                 let reader = new FileReader();
-
+        
                 reader.onload = function (event) {
                     let pdfData = new Uint8Array(event.target.result);
                     pdfjsLib.getDocument({ data: pdfData }).promise.then(pdfDoc => {
                         let totalPages = pdfDoc.numPages;
-
+        
                         function addPage(pageNumber) {
                             if (pageNumber > totalPages) {
                                 fileIndex++;
                                 processNextFile();
                                 return;
                             }
-
+        
                             pdfDoc.getPage(pageNumber).then(page => {
                                 let viewport = page.getViewport({ scale: 1.0 });
                                 let canvas = document.createElement("canvas");
                                 let context = canvas.getContext("2d");
-
+        
                                 canvas.width = viewport.width;
                                 canvas.height = viewport.height;
-
+        
                                 page.render({ canvasContext: context, viewport }).promise.then(() => {
                                     let imgData = canvas.toDataURL("image/png");
                                     doc.addPage();
@@ -328,7 +322,7 @@ function generatePDF(callback) {
                                 });
                             });
                         }
-
+        
                         addPage(1);
                     }).catch(error => {
                         hideLoader();
@@ -336,17 +330,18 @@ function generatePDF(callback) {
                         alert("An error occurred while processing the uploaded PDF. Please try again.");
                     });
                 };
-
+        
                 reader.onerror = function() {
                     hideLoader();
                     alert("Error reading PDF file. Please try again.");
                 };
-
+        
                 reader.readAsArrayBuffer(file);
             }
-
+        
             processNextFile();
         }
+        
 
         function addHeader(doc, img) {
             let logoWidth = 18;
@@ -404,4 +399,45 @@ function viewPDF() {
             hideLoader();
         }
     });
+}
+function appendFixedPDF(doc, callback) {
+    fetch("last.pdf")
+        .then(res => res.arrayBuffer())
+        .then(data => {
+            pdfjsLib.getDocument({ data }).promise.then(pdfDoc => {
+                let totalPages = pdfDoc.numPages;
+
+                function addPage(pageNumber) {
+                    if (pageNumber > totalPages) {
+                        callback(doc);
+                        return;
+                    }
+
+                    pdfDoc.getPage(pageNumber).then(page => {
+                        let viewport = page.getViewport({ scale: 1.0 });
+                        let canvas = document.createElement("canvas");
+                        let context = canvas.getContext("2d");
+
+                        canvas.width = viewport.width;
+                        canvas.height = viewport.height;
+
+                        page.render({ canvasContext: context, viewport }).promise.then(() => {
+                            let imgData = canvas.toDataURL("image/png");
+                            doc.addPage();
+                            doc.addImage(imgData, "JPEG", 10, 10, 190, 280, '', 'FAST');
+                            addPage(pageNumber + 1);
+                        });
+                    });
+                }
+
+                addPage(1);
+            }).catch(error => {
+                console.error("Error loading fixed PDF:", error);
+                callback(doc); // proceed without it
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching fixed PDF:", error);
+            callback(doc); // proceed without it
+        });
 }
