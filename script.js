@@ -1,7 +1,7 @@
 // Initialize sections
 const sections = [
     { title: "Analysis of Strength, Weakness and Behavioural Patterns", topics: ["Strengths", "Weakness", "Behavioural Patterns"] },
-    { title: "Analysis of Luck & Fame, Monetary Aspects, Abroad Settlement", topics: ["Luck & Fame", "Monetary Aspects", "Abroad Settlement"] },
+    { title: "Analysis of Monetary Aspects, Abroad Settlement", topics: ["Monetary Aspects", "Abroad Settlement"] },
     { title: "Analysis of Mental and Physical Health", topics: ["Mental Health", "Physical Health"] },
     { title: "Analysis of Job & Business Opportunities and Government Job Possibilities", topics: ["Job Opportunities", "Business Opportunities", "Possibilities of Govt Job"] }
 ];
