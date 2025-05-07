@@ -272,15 +272,31 @@ function generatePDF(callback) {
                         y = 50;
                     }
                 
+                    // Set font for question
                     doc.setFont("times", "bold");
                     doc.setFontSize(20);
                     doc.setTextColor(255, 212, 35);
-                    doc.text(`Q: ${question}`, marginLeft, y);
-                    y += 10;
+                    
+                    // Split question text and render
+                    let splitQuestion = doc.splitTextToSize(`Q: ${question}`, maxWidth);
+                    splitQuestion.forEach(line => {
+                        if (y + lineHeight > safeMarginBottom) {
+                            addPageNumber(doc, pageNumber++);
+                            doc.addPage();
+                            doc.rect(0, 0, 210, 297, "F");
+                            addHeader(doc, logoImage);
+                            y = 50;
+                        }
+                        doc.text(line, marginLeft, y);
+                        y += lineHeight;
+                    });
                 
+                    // Set font for answer
                     doc.setFont("times", "normal");
                     doc.setFontSize(18);
                     doc.setTextColor(255, 255, 255);
+                
+                    // Split answer text and render
                     let splitAnswer = doc.splitTextToSize(answer, maxWidth);
                     splitAnswer.forEach(line => {
                         if (y + lineHeight > safeMarginBottom) {
@@ -296,9 +312,9 @@ function generatePDF(callback) {
                 
                     y += 10;
                 }
+                
                 addPageNumber(doc, pageNumber++);
-
-
+                
                 // Add Signature Correction page
                 doc.addPage();
                 doc.rect(0, 0, 210, 297, "F"); 

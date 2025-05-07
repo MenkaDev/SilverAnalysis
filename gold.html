@@ -45,9 +45,35 @@
       font-size: 16px;
       cursor: pointer;
     }
+
+    .section {
+      margin: 20px;
+    }
+
+    .status-message {
+      color: green;
+    }
+
+    #signature-preview {
+      max-width: 200px;
+      display: block;
+      margin-top: 10px;
+    }
   </style>
 
   <script>
+    const AUTH_KEY = 'isAuthenticated';
+    const AUTH_TIMESTAMP_KEY = 'authTimestamp';
+    const VALID_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
     async function handlePasswordSubmit(event) {
       event.preventDefault();
       const passwordInput = document.getElementById('password-input');
@@ -58,25 +84,47 @@
         return;
       }
 
-      const encoder = new TextEncoder();
-      const data = encoder.encode(password);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-      const correctHash = "8fe98cb30811c18e5adfa43680172645dead75108ba1cd193b4150a96459b37e"; // SHA-256 hash of "mySecret123"
+      const hashHex = await hashPassword(password);
+      const correctHash = "b0a5b1ddc456d15ee6cb89ac681c9328477c2153b992046d97fcb93a40ab6bbd"; // SHA-256 of "mySecret123"
 
       if (hashHex === correctHash) {
-        document.getElementById("password-form").style.display = "none";
-        document.getElementById("content").style.display = "block";
+        localStorage.setItem(AUTH_KEY, 'true');
+        localStorage.setItem(AUTH_TIMESTAMP_KEY, Date.now().toString());
+        showContent();
       } else {
         alert("Incorrect password. Access Denied!");
       }
     }
 
+    function isAuthenticatedRecently() {
+      const auth = localStorage.getItem(AUTH_KEY);
+      const timestamp = localStorage.getItem(AUTH_TIMESTAMP_KEY);
+      if (auth !== 'true' || !timestamp) return false;
+
+      const timeElapsed = Date.now() - parseInt(timestamp, 10);
+      return timeElapsed < VALID_DURATION;
+    }
+
+    function showContent() {
+      document.getElementById("password-form").style.display = "none";
+      document.getElementById("content").style.display = "block";
+    }
+
+    function logout() {
+      localStorage.removeItem(AUTH_KEY);
+      localStorage.removeItem(AUTH_TIMESTAMP_KEY);
+      window.location.reload();
+    }
+
     function goToPage(page) {
       window.location.href = page;
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (isAuthenticatedRecently()) {
+        showContent();
+      }
+    });
   </script>
 </head>
 <body>
@@ -84,6 +132,7 @@
   <div class="nav-buttons">
     <button onclick="goToPage('silver.html')">Silver Report</button>
     <button onclick="goToPage('gold.html')">Gold Report</button>
+    <button onclick="logout()">Logout</button>
   </div>
 
   <!-- Password Form -->
@@ -95,25 +144,28 @@
     </form>
   </div>
 
-  <div id="loader" class="loader-container">
+  <div id="loader" class="loader-container" style="display: none;">
     <div class="loader"></div>
     <p>Generating PDF, please wait...</p>
   </div>
 
+  <!-- Hidden Content Section -->
   <div id="content">
     <h2>Generate Your Gold Personality Report</h2>
+
     <div class="section">
       <h2>Enter Full Name</h2>
       <input type="text" id="user-name" placeholder="Enter your name...">
     </div>
     
     <div id="sections"></div>
-    <!-- Personalized Questions Section (Editable) -->
+
     <div id="custom-questions-section">
-        <h2>Personalized Questions and Answers</h2>
-        <div id="custom-questions-container"></div>
-        <button id="add-question-btn">➕ Add Question</button>
+      <h2>Personalized Questions and Answers</h2>
+      <div id="custom-questions-container"></div>
+      <button id="add-question-btn">➕ Add Question</button>
     </div>
+
     <div class="section">
       <h2>Signature Correction</h2>
       <input type="file" id="signature-upload" accept="image/png, image/jpeg">
