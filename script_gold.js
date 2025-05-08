@@ -147,8 +147,17 @@ function generatePDF(callback) {
                 addPageNumber(doc, pageNumber);
                 pageNumber++;
 
-                // Add content sections
+                // Add content sections - Modified to only include sections with content
                 sections.forEach((section, index) => {
+                    // Check if any topic in this section has content
+                    let hasSectionContent = section.topics.some(topic => {
+                        let text = document.getElementById(topic.replace(/ /g, '-')).value.trim();
+                        return text.length > 0;
+                    });
+
+                    if (!hasSectionContent) return; // Skip this entire section if no content
+
+                    // Add section title page only if the section has content
                     doc.addPage();
                     doc.rect(0, 0, 210, 297, "F"); 
                     addHeader(doc, logoImage);
@@ -175,12 +184,9 @@ function generatePDF(callback) {
                     doc.rect(0, 0, 210, 297, "F");
                     addHeader(doc, logoImage);
 
-                    let hasContent = false;
-
                     section.topics.forEach(title => {
                         let text = document.getElementById(title.replace(/ /g, '-')).value.trim();
-                        if (text.length === 0) return;
-                        hasContent = true;
+                        if (text.length === 0) return; // Skip empty topics
 
                         if (y + 15 > safeMarginBottom) {
                             addPageNumber(doc, pageNumber);
@@ -220,16 +226,13 @@ function generatePDF(callback) {
                         y += 15;
                     });
 
-                    if (!hasContent) {
-                        y = 50;
-                    }
-
                     addPageNumber(doc, pageNumber);
                     pageNumber++;
                 });
 
                 // Add Personalized Questions Section (Custom) add title one time 
                 // if any question or answer is added
+                let hasCustomQuestions = false;
                 for (let j = 1; j < customQuestionIndex; j++) {
                     let questionElement = document.getElementById(`custom-question-${j}`);
                     let answerElement = document.getElementById(`custom-answer-${j}`);
@@ -238,9 +241,14 @@ function generatePDF(callback) {
                     let questionInput = questionElement ? questionElement.value.trim() : "";
                     let answerInput = answerElement ? answerElement.value.trim() : "";
                     
-                    // Skip iteration if either value is blank or null
-                    if (!questionInput || !answerInput) continue;
+                    // Check if we have at least one valid question/answer pair
+                    if (questionInput && answerInput) {
+                        hasCustomQuestions = true;
+                        break;
+                    }
+                }
 
+                if (hasCustomQuestions) {
                     doc.addPage();
                     doc.rect(0, 0, 210, 297, "F");
                     addHeader(doc, logoImage);
@@ -251,137 +259,145 @@ function generatePDF(callback) {
                     doc.setTextColor(255, 212, 35);
                     doc.text("Personalized Questions and Answers", 20, y);
                     y += 15;
-                    break;
-                }
-                // Loop through custom question blocks
-                for (let i = 1; i < customQuestionIndex; i++) {
-                    let questionInput = document.getElementById(`custom-question-${i}`);
-                    let answerInput = document.getElementById(`custom-answer-${i}`);
-                    if (!questionInput || !answerInput) continue;
                 
-                    let question = questionInput.value.trim();
-                    let answer = answerInput.value.trim();
-                
-                    if (!question && !answer) continue;
-                
-                    if (y + 30 > safeMarginBottom) {
-                        addPageNumber(doc, pageNumber++);
-                        doc.addPage();
-                        doc.rect(0, 0, 210, 297, "F");
-                        addHeader(doc, logoImage);
-                        y = 50;
+                    // Loop through custom question blocks
+                    for (let i = 1; i < customQuestionIndex; i++) {
+                        let questionInput = document.getElementById(`custom-question-${i}`);
+                        let answerInput = document.getElementById(`custom-answer-${i}`);
+                        if (!questionInput || !answerInput) continue;
+                    
+                        let question = questionInput.value.trim();
+                        let answer = answerInput.value.trim();
+                    
+                        if (!question || !answer) continue;
+                    
+                        if (y + 30 > safeMarginBottom) {
+                            addPageNumber(doc, pageNumber++);
+                            doc.addPage();
+                            doc.rect(0, 0, 210, 297, "F");
+                            addHeader(doc, logoImage);
+                            y = 50;
+                        }
+                    
+                        // Set font for question
+                        doc.setFont("times", "bold");
+                        doc.setFontSize(20);
+                        doc.setTextColor(255, 212, 35);
+                        
+                        // Split question text and render
+                        let splitQuestion = doc.splitTextToSize(`Q: ${question}`, maxWidth);
+                        splitQuestion.forEach(line => {
+                            if (y + lineHeight > safeMarginBottom) {
+                                addPageNumber(doc, pageNumber++);
+                                doc.addPage();
+                                doc.rect(0, 0, 210, 297, "F");
+                                addHeader(doc, logoImage);
+                                y = 50;
+                            }
+                            doc.text(line, marginLeft, y);
+                            y += lineHeight;
+                        });
+                    
+                        // Set font for answer
+                        doc.setFont("times", "normal");
+                        doc.setFontSize(18);
+                        doc.setTextColor(255, 255, 255);
+                    
+                        // Split answer text and render
+                        let splitAnswer = doc.splitTextToSize(answer, maxWidth);
+                        splitAnswer.forEach(line => {
+                            if (y + lineHeight > safeMarginBottom) {
+                                addPageNumber(doc, pageNumber++);
+                                doc.addPage();
+                                doc.rect(0, 0, 210, 297, "F");
+                                addHeader(doc, logoImage);
+                                y = 50;
+                            }
+                            doc.text(line, marginLeft, y);
+                            y += lineHeight;
+                        });
+                    
+                        y += 10;
                     }
-                
-                    // Set font for question
-                    doc.setFont("times", "bold");
-                    doc.setFontSize(20);
-                    doc.setTextColor(255, 212, 35);
                     
-                    // Split question text and render
-                    let splitQuestion = doc.splitTextToSize(`Q: ${question}`, maxWidth);
-                    splitQuestion.forEach(line => {
-                        if (y + lineHeight > safeMarginBottom) {
-                            addPageNumber(doc, pageNumber++);
-                            doc.addPage();
-                            doc.rect(0, 0, 210, 297, "F");
-                            addHeader(doc, logoImage);
-                            y = 50;
-                        }
-                        doc.text(line, marginLeft, y);
-                        y += lineHeight;
-                    });
-                
-                    // Set font for answer
-                    doc.setFont("times", "normal");
-                    doc.setFontSize(18);
-                    doc.setTextColor(255, 255, 255);
-                
-                    // Split answer text and render
-                    let splitAnswer = doc.splitTextToSize(answer, maxWidth);
-                    splitAnswer.forEach(line => {
-                        if (y + lineHeight > safeMarginBottom) {
-                            addPageNumber(doc, pageNumber++);
-                            doc.addPage();
-                            doc.rect(0, 0, 210, 297, "F");
-                            addHeader(doc, logoImage);
-                            y = 50;
-                        }
-                        doc.text(line, marginLeft, y);
-                        y += lineHeight;
-                    });
-                
-                    y += 10;
+                    addPageNumber(doc, pageNumber++);
                 }
                 
-                addPageNumber(doc, pageNumber++);
-                
-                // Add Signature Correction page
-                doc.addPage();
-                doc.rect(0, 0, 210, 297, "F"); 
-                addHeader(doc, logoImage);
-
-                doc.setFont("times", "bold");
-                doc.setFontSize(24);
-                doc.setTextColor(255, 212, 35);
-                let sigTitle = "Signature Correction";
-                let sigTextWidth = doc.getTextWidth(sigTitle);
-                doc.text(sigTitle, (210 - sigTextWidth) / 2, 50);
-
-                // Check for signature image
+                // Add Signature Correction page only if there's signature content
                 let signatureInput = document.getElementById("signature-upload");
-                if (signatureInput && signatureInput.files.length > 0) {
-                    let file = signatureInput.files[0];
-                    let reader = new FileReader();
-
-                    reader.onload = function (event) {
-                        let signatureImg = new Image();
-                        signatureImg.src = event.target.result;
-
-                        signatureImg.onload = function () {
-                            doc.addImage(signatureImg, "PNG", 50, 65, 100, 40);
-                            addSignatureHelpSection();
-                        };
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    addSignatureHelpSection();
-                }
-
-                function addSignatureHelpSection() {
-                    let yPos = signatureInput && signatureInput.files.length > 0 ? 140 : 80;
+                let signatureText = document.getElementById("Signature-Correction").value.trim();
+                
+                if (signatureInput.files.length > 0 || signatureText.length > 0) {
+                    doc.addPage();
+                    doc.rect(0, 0, 210, 297, "F"); 
+                    addHeader(doc, logoImage);
 
                     doc.setFont("times", "bold");
-                    doc.setFontSize(22);
+                    doc.setFontSize(24);
                     doc.setTextColor(255, 212, 35);
-                    let helpTitle = "How will this signature help";
-                    let helpTextWidth = doc.getTextWidth(helpTitle);
-                    doc.text(helpTitle, (210 - helpTextWidth) / 2, yPos);
-                    yPos += 10;
+                    let sigTitle = "Signature Correction";
+                    let sigTextWidth = doc.getTextWidth(sigTitle);
+                    doc.text(sigTitle, (210 - sigTextWidth) / 2, 50);
 
-                    let sigText = document.getElementById("Signature-Correction").value.trim();
-                    doc.setFont("times", "normal");
-                    doc.setFontSize(20);
-                    doc.setTextColor(255, 255, 255);
-                    let splitSigText = doc.splitTextToSize(sigText, maxWidth);
+                    // Check for signature image
+                    if (signatureInput.files.length > 0) {
+                        let file = signatureInput.files[0];
+                        let reader = new FileReader();
 
-                    splitSigText.forEach(line => {
-                        if (yPos + lineHeight > safeMarginBottom) {
-                            addPageNumber(doc, pageNumber);
-                            pageNumber++;
-                            doc.addPage();
-                            doc.rect(0, 0, 210, 297, "F");
-                            addHeader(doc, logoImage);
+                        reader.onload = function (event) {
+                            let signatureImg = new Image();
+                            signatureImg.src = event.target.result;
+
+                            signatureImg.onload = function () {
+                                doc.addImage(signatureImg, "PNG", 50, 65, 100, 40);
+                                addSignatureHelpSection();
+                            };
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        addSignatureHelpSection();
+                    }
+
+                    function addSignatureHelpSection() {
+                        let yPos = signatureInput.files.length > 0 ? 140 : 80;
+
+                        if (signatureText.length > 0) {
+                            doc.setFont("times", "bold");
+                            doc.setFontSize(22);
+                            doc.setTextColor(255, 212, 35);
+                            let helpTitle = "How will this signature help";
+                            let helpTextWidth = doc.getTextWidth(helpTitle);
+                            doc.text(helpTitle, (210 - helpTextWidth) / 2, yPos);
+                            yPos += 10;
+
+                            doc.setFont("times", "normal");
                             doc.setFontSize(20);
-                            yPos = 50;
-                        }
-                        doc.text(line, marginLeft, yPos);
-                        yPos += lineHeight;
-                    });
+                            doc.setTextColor(255, 255, 255);
+                            let splitSigText = doc.splitTextToSize(signatureText, maxWidth);
 
-                    addPageNumber(doc, pageNumber);
-                    pageNumber++;
-                    
-                    // Append uploaded PDFs after all content is added
+                            splitSigText.forEach(line => {
+                                if (yPos + lineHeight > safeMarginBottom) {
+                                    addPageNumber(doc, pageNumber);
+                                    pageNumber++;
+                                    doc.addPage();
+                                    doc.rect(0, 0, 210, 297, "F");
+                                    addHeader(doc, logoImage);
+                                    doc.setFontSize(20);
+                                    yPos = 50;
+                                }
+                                doc.text(line, marginLeft, yPos);
+                                yPos += lineHeight;
+                            });
+                        }
+
+                        addPageNumber(doc, pageNumber);
+                        pageNumber++;
+                        
+                        // Append uploaded PDFs after all content is added
+                        appendUploadedPDFs(doc, callback);
+                    }
+                } else {
+                    // No signature content, just append PDFs
                     appendUploadedPDFs(doc, callback);
                 }
             } catch (error) {
