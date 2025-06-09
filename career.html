@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Analysis Report Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="career_style.css">
+    <style>
+        .add-line-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-top: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .add-line-btn:hover {
+            background-color: #45a049;
+        }
+        .hardcoded-input {
+            margin-bottom: 15px;
+        }
+        .hardcoded-input label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">Generating PDF...</div>
+    
+    <div class="main-container">
+        <!-- Form Panel -->
+        <div class="form-panel">
+            <h2>📋 Career Analysis Generator</h2>
+            
+            <!-- Personal Details -->
+            <div class="form-section">
+                <h3>Personal Details</h3>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" value="Rahul Gupta">
+                </div>
+                
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" id="age" value="28">
+                </div>
+                
+                <div class="form-group">
+                    <label>Education</label>
+                    <input type="text" id="education" value="B.Tech (CSE)">
+                </div>
+                
+                <div class="form-group">
+                    <label>Current Role</label>
+                    <input type="text" id="currentRole" value="Senior Software Developer at TCS">
+                </div>
+            </div>
+
+            <!-- Career Matches -->
+            <div class="form-section">
+                <h3>Career Matches</h3>
+                <!-- Career Match 1 -->
+                <div class="career-section">
+                    <h4>🥇 Top Career Match</h4>
+                    <div class="form-group">
+                        <label>Career Title</label>
+                        <input type="text" id="career1Title" value="Technical/Software Development">
+                    </div>
+                    <div class="form-group">
+                        <label>Score (%)</label>
+                        <div class="range-input">
+                            <input type="range" id="career1Score" min="0" max="100" value="89">
+                            <span class="range-value" id="career1ScoreValue">89%</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Key Points (one per line)</label>
+                        <textarea id="career1Points">Strong analytical and logical thinking patterns
+Excellent attention to detail and systematic approach
+High tolerance for complex problem-solving
+Preference for structured, goal-oriented environments</textarea>
+                        <button class="add-line-btn" onclick="addNewLine('career1Points')">+ Add Line</button>
+                    </div>
+                </div>
+                
+                <!-- Career Match 2 -->
+                <div class="career-section">
+                    <h4>🥈 Second Career Match</h4>
+                    <div class="form-group">
+                        <label>Career Title</label>
+                        <input type="text" id="career2Title" value="Finance & Investment Banking">
+                    </div>
+                    <div class="form-group">
+                        <label>Score (%)</label>
+                        <div class="range-input">
+                            <input type="range" id="career2Score" min="0" max="100" value="84">
+                            <span class="range-value" id="career2ScoreValue">84%</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Key Points (one per line)</label>
+                        <textarea id="career2Points">Risk assessment and calculated decision-making
+Strong numerical analysis capabilities
+High pressure tolerance and deadline management
+Detail-oriented approach to financial data</textarea>
+                        <button class="add-line-btn" onclick="addNewLine('career2Points')">+ Add Line</button>
+                    </div>
+                </div>
+                
+                <!-- Career Match 3 -->
+                <div class="career-section">
+                    <h4>🥉 Third Career Match</h4>
+                    <div class="form-group">
+                        <label>Career Title</label>
+                        <input type="text" id="career3Title" value="Legal & Compliance">
+                    </div>
+                    <div class="form-group">
+                        <label>Score (%)</label>
+                        <div class="range-input">
+                            <input type="range" id="career3Score" min="0" max="100" value="78">
+                            <span class="range-value" id="career3ScoreValue">78%</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Key Points (one per line)</label>
+                        <textarea id="career3Points">Methodical approach to complex regulations
+Strong written communication and documentation
+Critical thinking and analytical reasoning
+Preference for structured, rule-based environments</textarea>
+                        <button class="add-line-btn" onclick="addNewLine('career3Points')">+ Add Line</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Primary Recommendation -->
+            <div class="form-section">
+                <h3>Primary Recommendation</h3>
+                <div class="form-group">
+                    <label>Job Title</label>
+                    <input type="text" id="recommendationTitle" value="Senior Software Architect">
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Growth Path (one per line)</label>
+                    <textarea id="growthPath">Technical Lead (2-3 years)
+Principal Engineer (5-7 years)
+CTO/VP Engineering (10+ years)</textarea>
+                    <button class="add-line-btn" onclick="addNewLine('growthPath')">+ Add Line</button>
+                </div>
+            </div>
+
+            <!-- Alternative Paths -->
+            <div class="form-section">
+                <h3>Alternative Paths</h3>
+                <div class="form-group">
+                    <label>Business Viability (%)</label>
+                    <div class="range-input">
+                        <input type="range" id="businessScore" min="0" max="100" value="73">
+                        <span class="range-value" id="businessScoreValue">73%</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Government Job Suitability (%)</label>
+                    <div class="range-input">
+                        <input type="range" id="govtScore" min="0" max="100" value="81">
+                        <span class="range-value" id="govtScoreValue">81%</span>
+                    </div>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Business Strengths (one per line)</label>
+                    <textarea id="businessStrengths">Analytical decision-making
+Risk assessment abilities
+Technical expertise advantage
+Systematic approach to planning</textarea>
+                    <button class="add-line-btn" onclick="addNewLine('businessStrengths')">+ Add Line</button>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Business Challenges (one per line)</label>
+                    <textarea id="businessChallenges">Need to develop sales/marketing skills
+Expand network for partnerships
+Build team leadership confidence</textarea>
+                    <button class="add-line-btn" onclick="addNewLine('businessChallenges')">+ Add Line</button>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Recommended Exams (one per line)</label>
+                    <textarea id="recommendedExams">UPSC (IAS/IES) - 85% fit
+SSC CGL (Grade A) - 88% fit
+Banking (IBPS PO) - 82% fit
+Railway (RRB NTPC) - 79% fit</textarea>
+                    <button class="add-line-btn" onclick="addNewLine('recommendedExams')">+ Add Line</button>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Government Advantages (one per line)</label>
+                    <textarea id="govtAdvantages">Strong analytical abilities for exams
+Systematic study approach
+Pressure handling for competitions
+Detail orientation for accuracy</textarea>
+                    <button class="add-line-btn" onclick="addNewLine('govtAdvantages')">+ Add Line</button>
+                </div>
+            </div>
+
+            <!-- Current Job Analysis -->
+            <div class="form-section">
+                <h3>Current Job Analysis</h3>
+                <div class="form-group">
+                    <label>Role Fit (%)</label>
+                    <div class="range-input">
+                        <input type="range" id="roleFit" min="0" max="100" value="85">
+                        <span class="range-value" id="roleFitValue">85%</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Growth Potential (%)</label>
+                    <div class="range-input">
+                        <input type="range" id="growthPotential" min="0" max="100" value="72">
+                        <span class="range-value" id="growthPotentialValue">72%</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Skill Utilization (%)</label>
+                    <div class="range-input">
+                        <input type="range" id="skillUtil" min="0" max="100" value="78">
+                        <span class="range-value" id="skillUtilValue">78%</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Long-term Satisfaction (%)</label>
+                    <div class="range-input">
+                        <input type="range" id="satisfaction" min="0" max="100" value="68">
+                        <span class="range-value" id="satisfactionValue">68%</span>
+                    </div>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Job Recommendations (one per line)</label>
+                    <textarea id="jobRecommendations">Seek architecture and system design responsibilities
+Consider transition to product-based companies for higher growth
+Focus on cloud technologies and microservices expertise
+Pursue technical leadership roles rather than pure management</textarea>
+                    <button class="add-line-btn" onclick="addNewLine('jobRecommendations')">+ Add Line</button>
+                </div>
+            </div>
+
+            <!-- Personality Strengths -->
+            <div class="form-section">
+                <h3>Personality Strengths</h3>
+                <div class="hardcoded-input">
+                    <label>Strength 1 Title</label>
+                    <input type="text" id="strength1Title" value="🧠 Analytical Thinking">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Strength 1 Description</label>
+                    <textarea id="strength1Desc">Exceptional ability to break down complex problems into manageable components and find logical solutions.</textarea>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Strength 2 Title</label>
+                    <input type="text" id="strength2Title" value="🎯 Detail Orientation">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Strength 2 Description</label>
+                    <textarea id="strength2Desc">Natural tendency to notice patterns, inconsistencies, and maintain high accuracy in work output.</textarea>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Strength 3 Title</label>
+                    <input type="text" id="strength3Title" value="⚡ Pressure Management">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Strength 3 Description</label>
+                    <textarea id="strength3Desc">Strong resilience under stress with ability to maintain performance quality during tight deadlines.</textarea>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Strength 4 Title</label>
+                    <input type="text" id="strength4Title" value="📚 Continuous Learning">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Strength 4 Description</label>
+                    <textarea id="strength4Desc">Inherent curiosity and drive to acquire new skills and adapt to changing technologies and methodologies.</textarea>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Strength 5 Title</label>
+                    <input type="text" id="strength5Title" value="🔄 Systematic Approach">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Strength 5 Description</label>
+                    <textarea id="strength5Desc">Preference for organized, methodical work processes that ensure consistency and reliability.</textarea>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Strength 6 Title</label>
+                    <input type="text" id="strength6Title" value="⚖️ Decision Making">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Strength 6 Description</label>
+                    <textarea id="strength6Desc">Balanced approach to decision-making, weighing risks and benefits before committing to actions.</textarea>
+                </div>
+            </div>
+
+            <!-- Areas of Improvement -->
+            <div class="form-section">
+                <h3>Areas of Improvement</h3>
+                <div class="hardcoded-input">
+                    <label>Improvement 1 Title</label>
+                    <input type="text" id="improvement1Title" value="🗣️ Public Speaking & Presentation Skills">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Improvement 1 Description</label>
+                    <textarea id="improvement1Desc">Develop confidence in verbal communication and presentation delivery to enhance leadership potential and stakeholder engagement.</textarea>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Improvement 2 Title</label>
+                    <input type="text" id="improvement2Title" value="🤝 Team Leadership & Delegation">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Improvement 2 Description</label>
+                    <textarea id="improvement2Desc">Build skills in motivating teams, delegating effectively, and managing diverse personality types for senior role progression.</textarea>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Improvement 3 Title</label>
+                    <input type="text" id="improvement3Title" value="🌐 Networking & Relationship Building">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Improvement 3 Description</label>
+                    <textarea id="improvement3Desc">Expand professional network and develop stronger interpersonal relationships for career advancement opportunities.</textarea>
+                </div>
+                
+                <div class="hardcoded-input">
+                    <label>Improvement 4 Title</label>
+                    <input type="text" id="improvement4Title" value="🎨 Creative Problem Solving">
+                </div>
+                <div class="hardcoded-input">
+                    <label>Improvement 4 Description</label>
+                    <textarea id="improvement4Desc">Balance analytical approach with creative thinking to develop innovative solutions and enhance adaptability.</textarea>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="updatePreview()">🔄 Update Preview</button>
+            <button class="btn" onclick="downloadPDF()">📄 Download PDF</button>
+        </div>
+        
+        <!-- Preview Panel -->
+        <div class="preview-panel">
+            <div class="report-container" id="reportContainer">
+                <!-- Header -->
+                <div class="header">
+                    <h1>Career Analysis Report</h1>
+                    <p>Explormee Career Assessment</p>
+                </div>
+                
+                <!-- Candidate Information -->
+                <div class="candidate-info">
+                    <h2>Personal Details</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="icon">👤</div>
+                            <div>
+                                <strong>Name:</strong> <span id="previewName">Rahul Gupta</span><br>
+                                <strong>Age:</strong> <span id="previewAge">28</span> Years
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="icon">🎓</div>
+                            <div>
+                                <strong>Education:</strong> <span id="previewEducation">B.Tech (CSE)</span><br>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="icon">📍</div>
+                            <div>
+                                <strong>Analysis Date:</strong> June 2025
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Top 3 Career Matches -->
+                <div class="section">
+                    <h2><div class="section-icon">🎯</div>Top 3 Career Matches</h2>
+                    <div class="career-matches">
+                        <div class="career-card">
+                            <div class="career-rank">#1</div>
+                            <div class="career-title" id="previewCareer1Title">Technical/Software Development</div>
+                            <div class="confidence-score">
+                                <span><strong>Confidence Score:</strong></span>
+                                <div class="score-bar">
+                                    <div class="score-fill" id="career1ScoreBar" style="width: 89%"></div>
+                                </div>
+                                <span><strong id="previewCareer1Score">89%</strong></span>
+                            </div>
+                            <ul class="bullet-list" id="previewCareer1Points">
+                                <li>Strong analytical and logical thinking patterns</li>
+                                <li>Excellent attention to detail and systematic approach</li>
+                                <li>High tolerance for complex problem-solving</li>
+                                <li>Preference for structured, goal-oriented environments</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="career-card">
+                            <div class="career-rank">#2</div>
+                            <div class="career-title" id="previewCareer2Title">Finance & Investment Banking</div>
+                            <div class="confidence-score">
+                                <span><strong>Confidence Score:</strong></span>
+                                <div class="score-bar">
+                                    <div class="score-fill" id="career2ScoreBar" style="width: 84%"></div>
+                                </div>
+                                <span><strong id="previewCareer2Score">84%</strong></span>
+                            </div>
+                            <ul class="bullet-list" id="previewCareer2Points">
+                                <li>Risk assessment and calculated decision-making</li>
+                                <li>Strong numerical analysis capabilities</li>
+                                <li>High pressure tolerance and deadline management</li>
+                                <li>Detail-oriented approach to financial data</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="career-card">
+                            <div class="career-rank">#3</div>
+                            <div class="career-title" id="previewCareer3Title">Legal & Compliance</div>
+                            <div class="confidence-score">
+                                <span><strong>Confidence Score:</strong></span>
+                                <div class="score-bar">
+                                    <div class="score-fill" id="career3ScoreBar" style="width: 78%"></div>
+                                </div>
+                                <span><strong id="previewCareer3Score">78%</strong></span>
+                            </div>
+                            <ul class="bullet-list" id="previewCareer3Points">
+                                <li>Methodical approach to complex regulations</li>
+                                <li>Strong written communication and documentation</li>
+                                <li>Critical thinking and analytical reasoning</li>
+                                <li>Preference for structured, rule-based environments</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Personality Strengths -->
+                <div class="section">
+                    <h2><div class="section-icon">💪</div>Key Personality Strengths</h2>
+                    <div class="traits-grid">
+                        <div class="trait-card">
+                            <h4 id="previewStrength1Title">🧠 Analytical Thinking</h4>
+                            <p id="previewStrength1Desc">Exceptional ability to break down complex problems into manageable components and find logical solutions.</p>
+                        </div>
+                        <div class="trait-card">
+                            <h4 id="previewStrength2Title">🎯 Detail Orientation</h4>
+                            <p id="previewStrength2Desc">Natural tendency to notice patterns, inconsistencies, and maintain high accuracy in work output.</p>
+                        </div>
+                        <div class="trait-card">
+                            <h4 id="previewStrength3Title">⚡ Pressure Management</h4>
+                            <p id="previewStrength3Desc">Strong resilience under stress with ability to maintain performance quality during tight deadlines.</p>
+                        </div>
+                        <div class="trait-card">
+                            <h4 id="previewStrength4Title">📚 Continuous Learning</h4>
+                            <p id="previewStrength4Desc">Inherent curiosity and drive to acquire new skills and adapt to changing technologies and methodologies.</p>
+                        </div>
+                        <div class="trait-card">
+                            <h4 id="previewStrength5Title">🔄 Systematic Approach</h4>
+                            <p id="previewStrength5Desc">Preference for organized, methodical work processes that ensure consistency and reliability.</p>
+                        </div>
+                        <div class="trait-card">
+                            <h4 id="previewStrength6Title">⚖️ Decision Making</h4>
+                            <p id="previewStrength6Desc">Balanced approach to decision-making, weighing risks and benefits before committing to actions.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Areas of Improvement -->
+                <div class="section">
+                    <h2><div class="section-icon">📈</div>Areas of Improvement</h2>
+                    <div class="improvement-list">
+                        <div class="improvement-item">
+                            <div class="improvement-icon" id="previewImprovement1Icon">🗣️</div>
+                            <div>
+                                <h4 id="previewImprovement1Title">Public Speaking & Presentation Skills</h4>
+                                <p id="previewImprovement1Desc">Develop confidence in verbal communication and presentation delivery to enhance leadership potential and stakeholder engagement.</p>
+                            </div>
+                        </div>
+                        <div class="improvement-item">
+                            <div class="improvement-icon" id="previewImprovement2Icon">🤝</div>
+                            <div>
+                                <h4 id="previewImprovement2Title">Team Leadership & Delegation</h4>
+                                <p id="previewImprovement2Desc">Build skills in motivating teams, delegating effectively, and managing diverse personality types for senior role progression.</p>
+                            </div>
+                        </div>
+                        <div class="improvement-item">
+                            <div class="improvement-icon" id="previewImprovement3Icon">🌐</div>
+                            <div>
+                                <h4 id="previewImprovement3Title">Networking & Relationship Building</h4>
+                                <p id="previewImprovement3Desc">Expand professional network and develop stronger interpersonal relationships for career advancement opportunities.</p>
+                            </div>
+                        </div>
+                        <div class="improvement-item">
+                            <div class="improvement-icon" id="previewImprovement4Icon">🎨</div>
+                            <div>
+                                <h4 id="previewImprovement4Title">Creative Problem Solving</h4>
+                                <p id="previewImprovement4Desc">Balance analytical approach with creative thinking to develop innovative solutions and enhance adaptability.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Career Recommendation -->
+                <div class="section">
+                    <h2><div class="section-icon">⭐</div>Primary Career Recommendation</h2>
+                    <div class="recommendation-card">
+                        <div class="recommendation-title" id="previewRecommendationTitle">Senior Software Architect</div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: left;">
+                            <div>
+                                <h4 style="color: #065f46; margin-bottom: 8px;">🚀 Growth Path</h4>
+                                <ul class="bullet-list" style="margin: 0;" id="previewGrowthPath">
+                                    <li>Technical Lead (2-3 years)</li>
+                                    <li>Principal Engineer (5-7 years)</li>
+                                    <li>CTO/VP Engineering (10+ years)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Current Job Analysis -->
+                <div class="section">
+                    <h2><div class="section-icon">💼</div>Current Job Compatibility Analysis</h2>
+                    <div class="current-job-analysis">
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;"><strong>Current Role:</strong> <span id="previewCurrentRole">Senior Software Developer at TCS</span></p>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <div class="analysis-score" id="previewRoleFit">85%</div>
+                                <div>Role Fit</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-score" id="previewGrowthPotential">72%</div>
+                                <div>Growth Potential</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-score" id="previewSkillUtil">78%</div>
+                                <div>Skill Utilization</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-score" id="previewSatisfaction">68%</div>
+                                <div>Long-term Satisfaction</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <h4>💡 Recommendations:</h4>
+                            <ul class="bullet-list" id="previewJobRecommendations">
+                                <li>Seek architecture and system design responsibilities</li>
+                                <li>Consider transition to product-based companies for higher growth</li>
+                                <li>Focus on cloud technologies and microservices expertise</li>
+                                <li>Pursue technical leadership roles rather than pure management</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Business & Government Viability -->
+                <div class="section">
+                    <h2><div class="section-icon">🏢</div>Alternative Career Paths</h2>
+                    <div class="viability-cards">
+                        <div class="viability-card business-card">
+                            <div class="viability-score" id="previewBusinessScore">73%</div>
+                            <div class="viability-title">Business/Entrepreneurship Viability</div>
+                            <div style="text-align: left;">
+                                <h4>✅ Strengths:</h4>
+                                <ul class="bullet-list" style="margin-bottom: 15px;" id="previewBusinessStrengths">
+                                    <li>Analytical decision-making</li>
+                                    <li>Risk assessment abilities</li>
+                                    <li>Technical expertise advantage</li>
+                                    <li>Systematic approach to planning</li>
+                                </ul>
+                                <h4>⚠️ Challenges:</h4>
+                                <ul class="bullet-list" id="previewBusinessChallenges">
+                                    <li>Need to develop sales/marketing skills</li>
+                                    <li>Expand network for partnerships</li>
+                                    <li>Build team leadership confidence</li>
+                                </ul>
+                            </div>
+                            <p style="margin-top: 15px; font-weight: 600; color: #d97706;">💡 Best Fit: Tech consultancy or SaaS products</p>
+                        </div>
+                        
+                        <div class="viability-card govt-card">
+                            <div class="viability-score" id="previewGovtScore">81%</div>
+                            <div class="viability-title">Government Job Suitability</div>
+                            <div style="text-align: left;">
+                                <h4>🎯 Recommended Exams:</h4>
+                                <ul class="bullet-list" style="margin-bottom: 15px;" id="previewRecommendedExams">
+                                    <li>UPSC (IAS/IES) - 85% fit</li>
+                                    <li>SSC CGL (Grade A) - 88% fit</li>
+                                    <li>Banking (IBPS PO) - 82% fit</li>
+                                    <li>Railway (RRB NTPC) - 79% fit</li>
+                                </ul>
+                                <h4>💪 Key Advantages:</h4>
+                                <ul class="bullet-list" id="previewGovtAdvantages">
+                                    <li>Strong analytical abilities for exams</li>
+                                    <li>Systematic study approach</li>
+                                    <li>Pressure handling for competitions</li>
+                                    <li>Detail orientation for accuracy</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize range inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const ranges = document.querySelectorAll('input[type="range"]');
+            ranges.forEach(range => {
+                const valueSpan = document.getElementById(range.id + 'Value');
+                if (valueSpan) {
+                    range.addEventListener('input', function() {
+                        valueSpan.textContent = this.value + '%';
+                    });
+                }
+            });
+            
+            // Initial update
+            updatePreview();
+        });
+        
+        function addNewLine(textareaId) {
+            const textarea = document.getElementById(textareaId);
+            textarea.value += '\n';
+            textarea.focus();
+        }
+        
+        function updatePreview() {
+            // Update basic info
+            document.getElementById('previewName').textContent = document.getElementById('fullName').value;
+            document.getElementById('previewAge').textContent = document.getElementById('age').value;
+            document.getElementById('previewEducation').textContent = document.getElementById('education').value;
+            document.getElementById('previewCurrentRole').textContent = document.getElementById('currentRole').value;
+            
+            // Update career matches
+            updateCareerMatch(1);
+            updateCareerMatch(2);
+            updateCareerMatch(3);
+            
+            // Update recommendation
+            document.getElementById('previewRecommendationTitle').textContent = document.getElementById('recommendationTitle').value;
+            
+            // Update growth path
+            updateListFromTextarea('growthPath', 'previewGrowthPath');
+            
+            // Update viability scores
+            document.getElementById('previewBusinessScore').textContent = document.getElementById('businessScore').value + '%';
+            document.getElementById('previewGovtScore').textContent = document.getElementById('govtScore').value + '%';
+            
+            // Update business strengths and challenges
+            updateListFromTextarea('businessStrengths', 'previewBusinessStrengths');
+            updateListFromTextarea('businessChallenges', 'previewBusinessChallenges');
+            updateListFromTextarea('recommendedExams', 'previewRecommendedExams');
+            updateListFromTextarea('govtAdvantages', 'previewGovtAdvantages');
+            
+            // Update current job analysis
+            document.getElementById('previewRoleFit').textContent = document.getElementById('roleFit').value + '%';
+            document.getElementById('previewGrowthPotential').textContent = document.getElementById('growthPotential').value + '%';
+            document.getElementById('previewSkillUtil').textContent = document.getElementById('skillUtil').value + '%';
+            document.getElementById('previewSatisfaction').textContent = document.getElementById('satisfaction').value + '%';
+            
+            // Update job recommendations
+            updateListFromTextarea('jobRecommendations', 'previewJobRecommendations');
+            
+            // Update personality strengths
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`previewStrength${i}Title`).textContent = 
+                    document.getElementById(`strength${i}Title`).value;
+                document.getElementById(`previewStrength${i}Desc`).textContent = 
+                    document.getElementById(`strength${i}Desc`).value;
+            }
+            
+            // Update areas of improvement
+            for (let i = 1; i <= 4; i++) {
+                const icon = document.getElementById(`improvement${i}Title`).value.substring(0, 2);
+                document.getElementById(`previewImprovement${i}Icon`).textContent = icon;
+                document.getElementById(`previewImprovement${i}Title`).textContent = 
+                    document.getElementById(`improvement${i}Title`).value.substring(2).trim();
+                document.getElementById(`previewImprovement${i}Desc`).textContent = 
+                    document.getElementById(`improvement${i}Desc`).value;
+            }
+        }
+        
+        function updateCareerMatch(num) {
+            const title = document.getElementById('career' + num + 'Title').value;
+            const score = document.getElementById('career' + num + 'Score').value;
+            const points = document.getElementById('career' + num + 'Points').value;
+            
+            document.getElementById('previewCareer' + num + 'Title').textContent = title;
+            document.getElementById('previewCareer' + num + 'Score').textContent = score + '%';
+            document.getElementById('career' + num + 'ScoreBar').style.width = score + '%';
+            
+            // Update points list
+            updateListFromTextarea('career' + num + 'Points', 'previewCareer' + num + 'Points');
+        }
+        
+        function updateListFromTextarea(textareaId, listId) {
+            const textarea = document.getElementById(textareaId);
+            const list = document.getElementById(listId);
+            const points = textarea.value.split('\n');
+            
+            list.innerHTML = '';
+            points.forEach(point => {
+                if (point.trim()) {
+                    const li = document.createElement('li');
+                    li.textContent = point.trim();
+                    list.appendChild(li);
+                }
+            });
+        }
+        
+        async function downloadPDF() {
+            const button = event.target;
+            const loading = document.getElementById('loading');
+            
+            try {
+                // Disable button and show loading
+                button.disabled = true;
+                button.textContent = 'Generating...';
+                loading.style.display = 'block';
+                
+                // Get the report container
+                const element = document.getElementById('reportContainer');
+                
+                // Configure html2canvas options
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    width: element.scrollWidth,
+                    height: element.scrollHeight
+                });
+                
+                // Create PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                // Add first page
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                // Add additional pages if needed
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                // Download the PDF
+                const candidateName = document.getElementById('fullName').value || 'Candidate';
+                pdf.save(`Career_Analysis_Report_${candidateName.replace(/\s+/g, '_')}.pdf`);
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF. Please try again.');
+            } finally {
+                // Re-enable button and hide loading
+                button.disabled = false;
+                button.textContent = '📄 Download PDF';
+                loading.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
