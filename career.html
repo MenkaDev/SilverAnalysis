@@ -190,9 +190,13 @@ Expand network for partnerships
 Build team leadership confidence</textarea>
                     <button class="add-line-btn" onclick="addNewLine('businessChallenges')">+ Add Line</button>
                 </div>
+                <div class="form-group">
+                    <label>Best Fit (Business)</label>
+                    <input type="text" id="bestFit" value="Tech consultancy or SaaS products">
+                </div>
                 
                 <div class="hardcoded-input">
-                    <label>Recommended Exams (one per line)</label>
+                    <label>Recommended Points (one per line)</label>
                     <textarea id="recommendedExams">UPSC (IAS/IES) - 85% fit
 SSC CGL (Grade A) - 88% fit
 Banking (IBPS PO) - 82% fit
@@ -220,7 +224,7 @@ Detail orientation for accuracy</textarea>
                         <span class="range-value" id="roleFitValue">85%</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Growth Potential (%)</label>
                     <div class="range-input">
                         <input type="range" id="growthPotential" min="0" max="100" value="72">
@@ -240,7 +244,7 @@ Detail orientation for accuracy</textarea>
                         <input type="range" id="satisfaction" min="0" max="100" value="68">
                         <span class="range-value" id="satisfactionValue">68%</span>
                     </div>
-                </div>
+                </div> -->
                 
                 <div class="hardcoded-input">
                     <label>Job Recommendations (one per line)</label>
@@ -255,99 +259,15 @@ Pursue technical leadership roles rather than pure management</textarea>
             <!-- Personality Strengths -->
             <div class="form-section">
                 <h3>Personality Strengths</h3>
-                <div class="hardcoded-input">
-                    <label>Strength 1 Title</label>
-                    <input type="text" id="strength1Title" value="🧠 Analytical Thinking">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Strength 1 Description</label>
-                    <textarea id="strength1Desc">Exceptional ability to break down complex problems into manageable components and find logical solutions.</textarea>
-                </div>
-                
-                <div class="hardcoded-input">
-                    <label>Strength 2 Title</label>
-                    <input type="text" id="strength2Title" value="🎯 Detail Orientation">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Strength 2 Description</label>
-                    <textarea id="strength2Desc">Natural tendency to notice patterns, inconsistencies, and maintain high accuracy in work output.</textarea>
-                </div>
-                
-                <div class="hardcoded-input">
-                    <label>Strength 3 Title</label>
-                    <input type="text" id="strength3Title" value="⚡ Pressure Management">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Strength 3 Description</label>
-                    <textarea id="strength3Desc">Strong resilience under stress with ability to maintain performance quality during tight deadlines.</textarea>
-                </div>
-                
-                <div class="hardcoded-input">
-                    <label>Strength 4 Title</label>
-                    <input type="text" id="strength4Title" value="📚 Continuous Learning">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Strength 4 Description</label>
-                    <textarea id="strength4Desc">Inherent curiosity and drive to acquire new skills and adapt to changing technologies and methodologies.</textarea>
-                </div>
-                
-                <div class="hardcoded-input">
-                    <label>Strength 5 Title</label>
-                    <input type="text" id="strength5Title" value="🔄 Systematic Approach">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Strength 5 Description</label>
-                    <textarea id="strength5Desc">Preference for organized, methodical work processes that ensure consistency and reliability.</textarea>
-                </div>
-                
-                <div class="hardcoded-input">
-                    <label>Strength 6 Title</label>
-                    <input type="text" id="strength6Title" value="⚖️ Decision Making">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Strength 6 Description</label>
-                    <textarea id="strength6Desc">Balanced approach to decision-making, weighing risks and benefits before committing to actions.</textarea>
-                </div>
+                <div id="strengthsContainer"></div>
+                <button class="add-line-btn" type="button" onclick="addStrength()">+ Add Strength</button>
             </div>
 
             <!-- Areas of Improvement -->
             <div class="form-section">
                 <h3>Areas of Improvement</h3>
-                <div class="hardcoded-input">
-                    <label>Improvement 1 Title</label>
-                    <input type="text" id="improvement1Title" value="🗣️ Public Speaking & Presentation Skills">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Improvement 1 Description</label>
-                    <textarea id="improvement1Desc">Develop confidence in verbal communication and presentation delivery to enhance leadership potential and stakeholder engagement.</textarea>
-                </div>
-                
-                <div class="hardcoded-input">
-                    <label>Improvement 2 Title</label>
-                    <input type="text" id="improvement2Title" value="🤝 Team Leadership & Delegation">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Improvement 2 Description</label>
-                    <textarea id="improvement2Desc">Build skills in motivating teams, delegating effectively, and managing diverse personality types for senior role progression.</textarea>
-                </div>
-                
-                <div class="hardcoded-input">
-                    <label>Improvement 3 Title</label>
-                    <input type="text" id="improvement3Title" value="🌐 Networking & Relationship Building">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Improvement 3 Description</label>
-                    <textarea id="improvement3Desc">Expand professional network and develop stronger interpersonal relationships for career advancement opportunities.</textarea>
-                </div>
-                
-                <div class="hardcoded-input">
-                    <label>Improvement 4 Title</label>
-                    <input type="text" id="improvement4Title" value="🎨 Creative Problem Solving">
-                </div>
-                <div class="hardcoded-input">
-                    <label>Improvement 4 Description</label>
-                    <textarea id="improvement4Desc">Balance analytical approach with creative thinking to develop innovative solutions and enhance adaptability.</textarea>
-                </div>
+                <div id="improvementsContainer"></div>
+                <button class="add-line-btn" type="button" onclick="addImprovement()">+ Add Improvement</button>
             </div>
             
             <button class="btn" onclick="updatePreview()">🔄 Update Preview</button>
@@ -452,67 +372,13 @@ Pursue technical leadership roles rather than pure management</textarea>
                 <!-- Key Personality Strengths -->
                 <div class="section">
                     <h2><div class="section-icon">💪</div>Key Personality Strengths</h2>
-                    <div class="traits-grid">
-                        <div class="trait-card">
-                            <h4 id="previewStrength1Title">🧠 Analytical Thinking</h4>
-                            <p id="previewStrength1Desc">Exceptional ability to break down complex problems into manageable components and find logical solutions.</p>
-                        </div>
-                        <div class="trait-card">
-                            <h4 id="previewStrength2Title">🎯 Detail Orientation</h4>
-                            <p id="previewStrength2Desc">Natural tendency to notice patterns, inconsistencies, and maintain high accuracy in work output.</p>
-                        </div>
-                        <div class="trait-card">
-                            <h4 id="previewStrength3Title">⚡ Pressure Management</h4>
-                            <p id="previewStrength3Desc">Strong resilience under stress with ability to maintain performance quality during tight deadlines.</p>
-                        </div>
-                        <div class="trait-card">
-                            <h4 id="previewStrength4Title">📚 Continuous Learning</h4>
-                            <p id="previewStrength4Desc">Inherent curiosity and drive to acquire new skills and adapt to changing technologies and methodologies.</p>
-                        </div>
-                        <div class="trait-card">
-                            <h4 id="previewStrength5Title">🔄 Systematic Approach</h4>
-                            <p id="previewStrength5Desc">Preference for organized, methodical work processes that ensure consistency and reliability.</p>
-                        </div>
-                        <div class="trait-card">
-                            <h4 id="previewStrength6Title">⚖️ Decision Making</h4>
-                            <p id="previewStrength6Desc">Balanced approach to decision-making, weighing risks and benefits before committing to actions.</p>
-                        </div>
-                    </div>
+                    <div class="traits-grid" id="previewStrengths"></div>
                 </div>
-                
+
                 <!-- Areas of Improvement -->
                 <div class="section">
                     <h2><div class="section-icon">📈</div>Areas of Improvement</h2>
-                    <div class="improvement-list">
-                        <div class="improvement-item">
-                            <div class="improvement-icon" id="previewImprovement1Icon">🗣️</div>
-                            <div>
-                                <h4 id="previewImprovement1Title">Public Speaking & Presentation Skills</h4>
-                                <p id="previewImprovement1Desc">Develop confidence in verbal communication and presentation delivery to enhance leadership potential and stakeholder engagement.</p>
-                            </div>
-                        </div>
-                        <div class="improvement-item">
-                            <div class="improvement-icon" id="previewImprovement2Icon">🤝</div>
-                            <div>
-                                <h4 id="previewImprovement2Title">Team Leadership & Delegation</h4>
-                                <p id="previewImprovement2Desc">Build skills in motivating teams, delegating effectively, and managing diverse personality types for senior role progression.</p>
-                            </div>
-                        </div>
-                        <div class="improvement-item">
-                            <div class="improvement-icon" id="previewImprovement3Icon">🌐</div>
-                            <div>
-                                <h4 id="previewImprovement3Title">Networking & Relationship Building</h4>
-                                <p id="previewImprovement3Desc">Expand professional network and develop stronger interpersonal relationships for career advancement opportunities.</p>
-                            </div>
-                        </div>
-                        <div class="improvement-item">
-                            <div class="improvement-icon" id="previewImprovement4Icon">🎨</div>
-                            <div>
-                                <h4 id="previewImprovement4Title">Creative Problem Solving</h4>
-                                <p id="previewImprovement4Desc">Balance analytical approach with creative thinking to develop innovative solutions and enhance adaptability.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="improvement-list" id="previewImprovements"></div>
                 </div>
                 
                 <!-- Career Recommendation -->
@@ -534,7 +400,7 @@ Pursue technical leadership roles rather than pure management</textarea>
                 </div>
                 
                 <!-- Current Job Analysis -->
-                <div class="section" hidden>
+                <div class="section" >
                     <h2><div class="section-icon">💼</div>Current Job Compatibility Analysis</h2>
                     <div class="current-job-analysis">
                         <p style="font-size: 1.1rem; margin-bottom: 15px;"><strong>Current Role:</strong> <span id="previewCurrentRole">Senior Software Developer at TCS</span></p>
@@ -543,7 +409,7 @@ Pursue technical leadership roles rather than pure management</textarea>
                                 <div class="analysis-score" id="previewRoleFit">85%</div>
                                 <div>Role Fit</div>
                             </div>
-                            <div class="analysis-item">
+                            <!-- <div class="analysis-item">
                                 <div class="analysis-score" id="previewGrowthPotential">72%</div>
                                 <div>Growth Potential</div>
                             </div>
@@ -554,7 +420,7 @@ Pursue technical leadership roles rather than pure management</textarea>
                             <div class="analysis-item">
                                 <div class="analysis-score" id="previewSatisfaction">68%</div>
                                 <div>Long-term Satisfaction</div>
-                            </div>
+                            </div> -->
                         </div>
                         <div style="margin-top: 20px;">
                             <h4>💡 Recommendations:</h4>
@@ -590,14 +456,17 @@ Pursue technical leadership roles rather than pure management</textarea>
                                     <li>Build team leadership confidence</li>
                                 </ul>
                             </div>
-                            <p style="margin-top: 15px; font-weight: 600; color: #d97706;">💡 Best Fit: Tech consultancy or SaaS products</p>
+                            <!-- <p style="margin-top: 15px; font-weight: 600; color: #d97706;">💡 Best Fit: Tech consultancy or SaaS products</p> -->
+                            <p style="margin-top: 15px; font-weight: 600; color: #d97706;">
+                                💡 Best Fit: <span id="previewBestFit">Tech consultancy or SaaS products</span>
+                            </p>
                         </div>
                         
                         <div class="viability-card govt-card">
                             <div class="viability-score" id="previewGovtScore">81%</div>
                             <div class="viability-title">Government Job Suitability</div>
                             <div style="text-align: left;">
-                                <h4>🎯 Recommended Exams:</h4>
+                                <h4>🎯 Recommended Points:</h4>
                                 <ul class="bullet-list" style="margin-bottom: 15px;" id="previewRecommendedExams">
                                     <li>UPSC (IAS/IES) - 85% fit</li>
                                     <li>SSC CGL (Grade A) - 88% fit</li>
@@ -634,6 +503,9 @@ Pursue technical leadership roles rather than pure management</textarea>
             
             // Initial update
             updatePreview();
+            // Call these on page load
+            renderStrengths();
+            renderImprovements();
         });
         
         function addNewLine(textareaId) {
@@ -641,13 +513,85 @@ Pursue technical leadership roles rather than pure management</textarea>
             textarea.value += '\n';
             textarea.focus();
         }
-        
+        // ...existing code...
+
+let strengths = [
+    { title: "🧠 Analytical Thinking", desc: "Exceptional ability to break down complex problems into manageable components and find logical solutions." },
+    { title: "🎯 Detail Orientation", desc: "Natural tendency to notice patterns, inconsistencies, and maintain high accuracy in work output." },
+    { title: "⚡ Pressure Management", desc: "Strong resilience under stress with ability to maintain performance quality during tight deadlines." },
+    { title: "📚 Continuous Learning", desc: "Inherent curiosity and drive to acquire new skills and adapt to changing technologies and methodologies." },
+    { title: "🔄 Systematic Approach", desc: "Preference for organized, methodical work processes that ensure consistency and reliability." },
+    { title: "⚖️ Decision Making", desc: "Balanced approach to decision-making, weighing risks and benefits before committing to actions." }
+];
+
+let improvements = [
+    { title: "🗣️ Public Speaking & Presentation Skills", desc: "Develop confidence in verbal communication and presentation delivery to enhance leadership potential and stakeholder engagement." },
+    { title: "🤝 Team Leadership & Delegation", desc: "Build skills in motivating teams, delegating effectively, and managing diverse personality types for senior role progression." },
+    { title: "🌐 Networking & Relationship Building", desc: "Expand professional network and develop stronger interpersonal relationships for career advancement opportunities." },
+    { title: "🎨 Creative Problem Solving", desc: "Balance analytical approach with creative thinking to develop innovative solutions and enhance adaptability." }
+];
+
+function renderStrengths() {
+    const container = document.getElementById('strengthsContainer');
+    container.innerHTML = '';
+    strengths.forEach((s, i) => {
+        container.innerHTML += `
+            <div class="hardcoded-input" style="margin-bottom:8px;">
+                <label>Title</label>
+                <input type="text" value="${s.title}" onchange="strengths[${i}].title=this.value;updatePreview()">
+                <label>Description</label>
+                <textarea onchange="strengths[${i}].desc=this.value;updatePreview()">${s.desc}</textarea>
+                <button class="add-line-btn" type="button" onclick="removeStrength(${i})">Remove</button>
+            </div>
+        `;
+    });
+}
+
+function renderImprovements() {
+    const container = document.getElementById('improvementsContainer');
+    container.innerHTML = '';
+    improvements.forEach((s, i) => {
+        container.innerHTML += `
+            <div class="hardcoded-input" style="margin-bottom:8px;">
+                <label>Title</label>
+                <input type="text" value="${s.title}" onchange="improvements[${i}].title=this.value;updatePreview()">
+                <label>Description</label>
+                <textarea onchange="improvements[${i}].desc=this.value;updatePreview()">${s.desc}</textarea>
+                <button class="add-line-btn" type="button" onclick="removeImprovement(${i})">Remove</button>
+            </div>
+        `;
+    });
+}
+
+function addStrength() {
+    strengths.push({ title: "", desc: "" });
+    renderStrengths();
+    updatePreview();
+}
+function removeStrength(i) {
+    strengths.splice(i, 1);
+    renderStrengths();
+    updatePreview();
+}
+function addImprovement() {
+    improvements.push({ title: "", desc: "" });
+    renderImprovements();
+    updatePreview();
+}
+function removeImprovement(i) {
+    improvements.splice(i, 1);
+    renderImprovements();
+    updatePreview();
+}
+
+
         function updatePreview() {
             // Update basic info
             document.getElementById('previewName').textContent = document.getElementById('fullName').value;
             document.getElementById('previewAge').textContent = document.getElementById('age').value;
             document.getElementById('previewEducation').textContent = document.getElementById('education').value;
             document.getElementById('previewCurrentRole').textContent = document.getElementById('currentRole').value;
+            
             
             // Update career matches
             updateCareerMatch(1);
@@ -662,6 +606,7 @@ Pursue technical leadership roles rather than pure management</textarea>
             
             // Update viability scores
             document.getElementById('previewBusinessScore').textContent = document.getElementById('businessScore').value + '%';
+            document.getElementById('previewBestFit').textContent = document.getElementById('bestFit').value;
             document.getElementById('previewGovtScore').textContent = document.getElementById('govtScore').value + '%';
             
             // Update business strengths and challenges
@@ -672,30 +617,58 @@ Pursue technical leadership roles rather than pure management</textarea>
             
             // Update current job analysis
             document.getElementById('previewRoleFit').textContent = document.getElementById('roleFit').value + '%';
-            document.getElementById('previewGrowthPotential').textContent = document.getElementById('growthPotential').value + '%';
-            document.getElementById('previewSkillUtil').textContent = document.getElementById('skillUtil').value + '%';
-            document.getElementById('previewSatisfaction').textContent = document.getElementById('satisfaction').value + '%';
+            // document.getElementById('previewGrowthPotential').textContent = document.getElementById('growthPotential').value + '%';
+            // document.getElementById('previewSkillUtil').textContent = document.getElementById('skillUtil').value + '%';
+            // document.getElementById('previewSatisfaction').textContent = document.getElementById('satisfaction').value + '%';
             
             // Update job recommendations
             updateListFromTextarea('jobRecommendations', 'previewJobRecommendations');
             
-            // Update personality strengths
-            for (let i = 1; i <= 6; i++) {
-                document.getElementById(`previewStrength${i}Title`).textContent = 
-                    document.getElementById(`strength${i}Title`).value;
-                document.getElementById(`previewStrength${i}Desc`).textContent = 
-                    document.getElementById(`strength${i}Desc`).value;
-            }
+            // // Update personality strengths
+            // for (let i = 1; i <= 6; i++) {
+            //     document.getElementById(`previewStrength${i}Title`).textContent = 
+            //         document.getElementById(`strength${i}Title`).value;
+            //     document.getElementById(`previewStrength${i}Desc`).textContent = 
+            //         document.getElementById(`strength${i}Desc`).value;
+            // }
             
-            // Update areas of improvement
-            for (let i = 1; i <= 4; i++) {
-                const icon = document.getElementById(`improvement${i}Title`).value.substring(0, 2);
-                document.getElementById(`previewImprovement${i}Icon`).textContent = icon;
-                document.getElementById(`previewImprovement${i}Title`).textContent = 
-                    document.getElementById(`improvement${i}Title`).value.substring(2).trim();
-                document.getElementById(`previewImprovement${i}Desc`).textContent = 
-                    document.getElementById(`improvement${i}Desc`).value;
-            }
+            // // Update areas of improvement
+            // for (let i = 1; i <= 4; i++) {
+            //     const icon = document.getElementById(`improvement${i}Title`).value.substring(0, 2);
+            //     document.getElementById(`previewImprovement${i}Icon`).textContent = icon;
+            //     document.getElementById(`previewImprovement${i}Title`).textContent = 
+            //         document.getElementById(`improvement${i}Title`).value.substring(2).trim();
+            //     document.getElementById(`previewImprovement${i}Desc`).textContent = 
+            //         document.getElementById(`improvement${i}Desc`).value;
+            // }
+             // Update personality strengths
+    const previewStrengths = document.getElementById('previewStrengths');
+    previewStrengths.innerHTML = '';
+    strengths.forEach(s => {
+        previewStrengths.innerHTML += `
+            <div class="trait-card">
+                <h4>${s.title}</h4>
+                <p>${s.desc}</p>
+            </div>
+        `;
+    });
+
+    // Update areas of improvement
+    const previewImprovements = document.getElementById('previewImprovements');
+    previewImprovements.innerHTML = '';
+    improvements.forEach(s => {
+        const icon = s.title.substring(0, 2);
+        const title = s.title.substring(2).trim();
+        previewImprovements.innerHTML += `
+            <div class="improvement-item">
+                <div class="improvement-icon">${icon}</div>
+                <div>
+                    <h4>${title}</h4>
+                    <p>${s.desc}</p>
+                </div>
+            </div>
+        `;
+    });
         }
         
         function updateCareerMatch(num) {
