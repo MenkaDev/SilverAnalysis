@@ -65,79 +65,120 @@
 
             <!-- Career Matches -->
             <div class="form-section">
-                <h3>Career Matches</h3>
-                <!-- Career Match 1 -->
-                <div class="career-section">
-                    <h4>🥇 Top Career Match</h4>
-                    <div class="form-group">
-                        <label>Career Title</label>
-                        <input type="text" id="career1Title" value="Technical/Software Development">
-                    </div>
-                    <div class="form-group">
-                        <label>Score (%)</label>
-                        <div class="range-input">
-                            <input type="range" id="career1Score" min="0" max="100" value="89">
-                            <span class="range-value" id="career1ScoreValue">89%</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Key Points (one per line)</label>
-                        <textarea id="career1Points">Strong analytical and logical thinking patterns
-Excellent attention to detail and systematic approach
-High tolerance for complex problem-solving
-Preference for structured, goal-oriented environments</textarea>
-                        <button class="add-line-btn" onclick="addNewLine('career1Points')">+ Add Line</button>
+            <h3>Career Matches</h3>
+                    
+            <!-- Career Match 1 -->
+            <div class="career-section">
+                <h4>🥇 Top Career Match</h4>
+                <div class="form-group">
+                    <label>Career Title</label>
+                    <select id="career1Title">
+                        <option value="Domain">Domain</option>
+                        <option value="Technical">Technical</option>
+                        <option value="Medical">Medical</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Defense">Defense</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Creative">Creative</option>
+                        <option value="Teaching">Teaching</option>
+                        <option value="Legal & Governance">Legal & Governance</option>
+                        <option value="Social Services & Community Work">Social Services & Community Work</option>
+                        <option value="Agriculture & Natural Resources">Agriculture & Natural Resources</option>
+                        <option value="Logistics and Operations">Logistics and Operations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Score (%)</label>
+                    <div class="range-input">
+                        <input type="range" id="career1Score" min="0" max="100" value="89">
+                        <span class="range-value" id="career1ScoreValue">89%</span>
                     </div>
                 </div>
-                
-                <!-- Career Match 2 -->
-                <div class="career-section">
-                    <h4>🥈 Second Career Match</h4>
-                    <div class="form-group">
-                        <label>Career Title</label>
-                        <input type="text" id="career2Title" value="Finance & Investment Banking">
-                    </div>
-                    <div class="form-group">
-                        <label>Score (%)</label>
-                        <div class="range-input">
-                            <input type="range" id="career2Score" min="0" max="100" value="84">
-                            <span class="range-value" id="career2ScoreValue">84%</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Key Points (one per line)</label>
-                        <textarea id="career2Points">Risk assessment and calculated decision-making
-Strong numerical analysis capabilities
-High pressure tolerance and deadline management
-Detail-oriented approach to financial data</textarea>
-                        <button class="add-line-btn" onclick="addNewLine('career2Points')">+ Add Line</button>
-                    </div>
-                </div>
-                
-                <!-- Career Match 3 -->
-                <div class="career-section">
-                    <h4>🥉 Third Career Match</h4>
-                    <div class="form-group">
-                        <label>Career Title</label>
-                        <input type="text" id="career3Title" value="Legal & Compliance">
-                    </div>
-                    <div class="form-group">
-                        <label>Score (%)</label>
-                        <div class="range-input">
-                            <input type="range" id="career3Score" min="0" max="100" value="78">
-                            <span class="range-value" id="career3ScoreValue">78%</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Key Points (one per line)</label>
-                        <textarea id="career3Points">Methodical approach to complex regulations
-Strong written communication and documentation
-Critical thinking and analytical reasoning
-Preference for structured, rule-based environments</textarea>
-                        <button class="add-line-btn" onclick="addNewLine('career3Points')">+ Add Line</button>
-                    </div>
+                <div class="form-group">
+                    <label>Key Points (one per line)</label>
+                    <textarea id="career1Points">Strong analytical and logical thinking patterns
+            Excellent attention to detail and systematic approach
+            High tolerance for complex problem-solving
+            Preference for structured, goal-oriented environments</textarea>
+                    <button class="add-line-btn" onclick="addNewLine('career1Points')">+ Add Line</button>
                 </div>
             </div>
+            
+            <!-- Career Match 2 -->
+            <div class="career-section">
+                <h4>🥈 Second Career Match</h4>
+                <div class="form-group">
+                    <label>Career Title</label>
+                    <select id="career2Title">
+                        <option value="Domain">Domain</option>
+                        <option value="Technical">Technical</option>
+                        <option value="Medical">Medical</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Defense">Defense</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Creative">Creative</option>
+                        <option value="Teaching">Teaching</option>
+                        <option value="Legal & Governance">Legal & Governance</option>
+                        <option value="Social Services & Community Work">Social Services & Community Work</option>
+                        <option value="Agriculture & Natural Resources">Agriculture & Natural Resources</option>
+                        <option value="Logistics and Operations">Logistics and Operations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Score (%)</label>
+                    <div class="range-input">
+                        <input type="range" id="career2Score" min="0" max="100" value="84">
+                        <span class="range-value" id="career2ScoreValue">84%</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Key Points (one per line)</label>
+                    <textarea id="career2Points">Risk assessment and calculated decision-making
+            Strong numerical analysis capabilities
+            High pressure tolerance and deadline management
+            Detail-oriented approach to financial data</textarea>
+                    <button class="add-line-btn" onclick="addNewLine('career2Points')">+ Add Line</button>
+                </div>
+            </div>
+            
+            <!-- Career Match 3 -->
+            <div class="career-section">
+                <h4>🥉 Third Career Match</h4>
+                <div class="form-group">
+                    <label>Career Title</label>
+                    <select id="career3Title">
+                        <option value="Domain">Domain</option>
+                        <option value="Technical">Technical</option>
+                        <option value="Medical">Medical</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Defense">Defense</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Creative">Creative</option>
+                        <option value="Teaching">Teaching</option>
+                        <option value="Legal & Governance">Legal & Governance</option>
+                        <option value="Social Services & Community Work">Social Services & Community Work</option>
+                        <option value="Agriculture & Natural Resources">Agriculture & Natural Resources</option>
+                        <option value="Logistics and Operations">Logistics and Operations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Score (%)</label>
+                    <div class="range-input">
+                        <input type="range" id="career3Score" min="0" max="100" value="78">
+                        <span class="range-value" id="career3ScoreValue">78%</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Key Points (one per line)</label>
+                    <textarea id="career3Points">Methodical approach to complex regulations
+            Strong written communication and documentation
+            Critical thinking and analytical reasoning
+            Preference for structured, rule-based environments</textarea>
+                    <button class="add-line-btn" onclick="addNewLine('career3Points')">+ Add Line</button>
+                </div>
+            </div>
+            </div>
+
             
 
             <!-- Primary Recommendation -->
