@@ -349,9 +349,23 @@ function generatePDF(callback) {
                             signatureImg.src = event.target.result;
 
                             signatureImg.onload = function () {
-                                doc.addImage(signatureImg, "PNG", 50, 65, 100, 40);
-                                addSignatureHelpSection();
-                            };
+                            const maxWidth = 100;
+                            const maxHeight = 40;
+
+                            let width = signatureImg.width;
+                            let height = signatureImg.height;
+
+                            // Calculate the scaling ratio to fit within the box without distortion
+                            const widthRatio = maxWidth / width;
+                            const heightRatio = maxHeight / height;
+                            const ratio = Math.min(widthRatio, heightRatio);
+
+                            width = width * ratio;
+                            height = height * ratio;
+
+                            doc.addImage(signatureImg, "PNG", 50, 65, width, height);
+                            addSignatureHelpSection();
+                        };
                         };
                         reader.readAsDataURL(file);
                     } else {
