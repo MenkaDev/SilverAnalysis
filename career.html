@@ -314,7 +314,7 @@ Pursue technical leadership roles rather than pure management</textarea>
             </div>
             
             <button class="btn" onclick="updatePreview()">🔄 Update Preview</button>
-            <button class="btn" onclick="downloadPDF()">📄 Download PDF</button>
+            <button class="btn" onclick="updatePreview();downloadPDF()">📄 Download PDF</button>
         </div>
         
         <!-- Preview Panel -->
@@ -360,7 +360,11 @@ Pursue technical leadership roles rather than pure management</textarea>
                 </div>
                 <!-- Top 3 Career Matches -->
                 <div class="section">
-                    <h2><div class="section-icon">🎯</div>Top 3 Career Matches</h2>
+                    <h2><div class="section-icon">🎯</div>Top 3 Domain Matches (Based on core personality traits)</h2>
+                    <!-- Note -->
+                    <p style="font-style: italic; font-size: medium; color: #555; margin-bottom: 20px; margin-top: 8px;">
+                        <b>The given top 3 domain suggestions provided below are based purely on your core personality traits extracted from your signature and handwriting. Your educational background and current work experience have not been taken into account. Please view these options as potential paths worth exploring.</b>
+                    </p>
                     <div class="career-matches">
                         <div class="career-card">
                             <div class="career-rank">#1</div>
@@ -416,17 +420,20 @@ Pursue technical leadership roles rather than pure management</textarea>
                             </ul>
                         </div>
                     </div>
-                    <!-- Note -->
-                    <p style="font-style: italic; font-size: small; color: #555; margin-bottom: 20px; margin-top: 8px;">
-                        <b>Note: </b>The top 3 career suggestions provided above are based purely on your core personality traits. Your educational background and current work experience have not been taken into account. Please view these options as potential paths worth exploring.
-                    </p>
+                    
                 </div>
 
                
                 
                 <!-- Career Recommendation -->
                 <div class="section">
-                    <h2><div class="section-icon">⭐</div>Primary Career Recommendation</h2>
+                    <h2><div class="section-icon">⭐</div>Recommended Career by Explormee</h2>
+                    <p style="font-style: italic; font-size: medium; color: #555; margin-bottom: 20px; margin-top: 8px;">
+                        <b>
+                           <span id="name2"></span>, Based on your education, current life situation, and unique personality traits, we suggest the following career direction that aligns well with your strengths and potential.
+                        </b>
+                    </p>
+
                     <div class="recommendation-card">
                         <div class="recommendation-title" id="previewRecommendationTitle">Senior Software Architect</div>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: left;">
@@ -443,12 +450,12 @@ Pursue technical leadership roles rather than pure management</textarea>
                 </div>
                 
                 <!-- Current Job Analysis -->
-                <div class="section" >
+                <div class="section" id="currentJobSection" >
                     <h2><div class="section-icon">💼</div>Current Job Compatibility Analysis</h2>
                     <div class="current-job-analysis">
                         <p style="font-size: 1.1rem; margin-bottom: 15px;"><strong>Current Role:</strong> <span id="previewCurrentRole">Senior Software Developer at TCS</span></p>
                         <div class="analysis-grid">
-                            <div class="analysis-item">
+                            <div id="current-job-analysis-fit"  class="analysis-item">
                                 <div class="analysis-score" id="previewRoleFit">85%</div>
                                 <div>Role Fit</div>
                             </div>
@@ -467,6 +474,9 @@ Pursue technical leadership roles rather than pure management</textarea>
                         </div>
                         <div style="margin-top: 20px;">
                             <h4>💡 Recommendations:</h4>
+                            <p id="recommendationtext" style="display: hidden; font-size: 1.1rem; margin-bottom: 15px;" hidden>
+                                <span id="name3"></span>, since you're currently not pursuing any job, we encourage you to explore the career domains suggested above. These options have been recommended based on your personality traits and background, and they align well with your natural strengths. Each of these fields offers strong potential for growth, along with long-term stability and meaningful opportunities - especially if you're willing to invest time in learning and upskilling.
+                            </p>    
                             <ul class="bullet-list" id="previewJobRecommendations">
                                 <li>Seek architecture and system design responsibilities</li>
                                 <li>Consider transition to product-based companies for higher growth</li>
@@ -635,6 +645,8 @@ function removeImprovement(i) {
         function updatePreview() {
             // Update basic info
             document.getElementById('previewName').textContent = document.getElementById('fullName').value;
+            document.getElementById('name2').textContent = document.getElementById('fullName').value;
+            document.getElementById('name3').textContent = document.getElementById('fullName').value;
             document.getElementById('previewAge').textContent = document.getElementById('age').value;
             document.getElementById('previewEducation').textContent = document.getElementById('education').value;
             document.getElementById('previewCurrentRole').textContent = document.getElementById('currentRole').value;
@@ -663,6 +675,24 @@ function removeImprovement(i) {
             updateListFromTextarea('govtAdvantages', 'previewGovtAdvantages');
             
             // Update current job analysis
+            if (document.getElementById('roleFit').value === '' || 
+                isNaN(document.getElementById('roleFit').value) || 
+                document.getElementById('roleFit').value < 0 ||
+                 document.getElementById('roleFit').value > 100 ||
+                  document.getElementById('roleFit').value === null || 
+                  document.getElementById('roleFit').value === undefined || 
+                  document.getElementById('roleFit').value === 0 ||
+                   document.getElementById('roleFit').value === '0') 
+            {
+               document.getElementById('current-job-analysis-fit').hidden = true;
+               document.getElementById('previewJobRecommendations').hidden = true;
+               document.getElementById('recommendationtext').style.display = 'block';
+            }
+            else {
+                document.getElementById('current-job-analysis-fit').hidden = false;
+                document.getElementById('previewJobRecommendations').hidden = false;
+                document.getElementById('recommendationtext').style.display = 'none';
+            }
             document.getElementById('previewRoleFit').textContent = document.getElementById('roleFit').value + '%';
             // document.getElementById('previewGrowthPotential').textContent = document.getElementById('growthPotential').value + '%';
             // document.getElementById('previewSkillUtil').textContent = document.getElementById('skillUtil').value + '%';
