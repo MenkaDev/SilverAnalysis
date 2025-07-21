@@ -345,8 +345,8 @@ Pursue technical leadership roles rather than pure management</textarea>
                         </div>
                         <div class="info-item">
                             <div class="icon">📍</div>
-                            <div>
-                                <strong>Analysis Date:</strong> June 2025
+                            <div id="analysis-date">
+                                <strong>Analysis Date:</strong> <span id="current-month-year"></span>
                             </div>
                         </div>
                     </div>
@@ -643,6 +643,13 @@ function removeImprovement(i) {
 
 
         function updatePreview() {
+              const date = new Date();
+              const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+              ];
+              const currentMonthYear = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+              document.getElementById("current-month-year").textContent = currentMonthYear;
             // Update basic info
             document.getElementById('previewName').textContent = document.getElementById('fullName').value;
             document.getElementById('name2').textContent = document.getElementById('fullName').value;
