@@ -312,7 +312,12 @@ Pursue technical leadership roles rather than pure management</textarea>
                 <div id="improvementsContainer"></div>
                 <button class="add-line-btn" type="button" onclick="addImprovement()">+ Add Improvement</button>
             </div>
-            
+            <!-- Areas of Personalized Question -->
+            <div class="form-section">
+                <h3>Personalized Questions</h3>
+                <div id="personalizedqContainer"></div>
+                <button class="add-line-btn" type="button" onclick="addPersonalizedq()">+ Add Questions</button>
+            </div>
             <button class="btn" onclick="updatePreview()">🔄 Update Preview</button>
             <button class="btn" onclick="updatePreview();downloadPDF()">📄 Download PDF</button>
         </div>
@@ -541,6 +546,11 @@ Pursue technical leadership roles rather than pure management</textarea>
                         </div>
                     </div>
                 </div>
+                 <!-- Personalized question -->
+                <div class="section" id='personalized-question-section' hidden>
+                    <h2><div class="section-icon">📈</div>Personalized Questions</h2>
+                    <div class="Personalizedq-list" id="previewPersonalizedq"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -563,6 +573,7 @@ Pursue technical leadership roles rather than pure management</textarea>
             // Call these on page load
             renderStrengths();
             renderImprovements();
+            renderPersonalizedq();
         });
         
         function addNewLine(textareaId) {
@@ -587,7 +598,7 @@ let improvements = [
     { title: "🌐 Networking & Relationship Building", desc: "Expand professional network and develop stronger interpersonal relationships for career advancement opportunities." },
     { title: "🎨 Creative Problem Solving", desc: "Balance analytical approach with creative thinking to develop innovative solutions and enhance adaptability." }
 ];
-
+let personalizedq = [];
 function renderStrengths() {
     const container = document.getElementById('strengthsContainer');
     container.innerHTML = '';
@@ -619,6 +630,21 @@ function renderImprovements() {
         `;
     });
 }
+function renderPersonalizedq() {
+    const container = document.getElementById('personalizedqContainer');
+    container.innerHTML = '';
+    personalizedq.forEach((s, i) => {
+        container.innerHTML += `
+            <div class="hardcoded-input" style="margin-bottom:8px;">
+                <label>Question</label>
+                <input type="text" value="${s.title}" onchange="personalizedq[${i}].title=this.value;updatePreview()">
+                <label>Expert Answer</label>
+                <textarea onchange="personalizedq[${i}].desc=this.value;updatePreview()">${s.desc}</textarea>
+                <button class="add-line-btn" type="button" onclick="removePersonalizedq(${i})">Remove</button>
+            </div>
+        `;
+    });
+}
 
 function addStrength() {
     strengths.push({ title: "", desc: "" });
@@ -635,9 +661,19 @@ function addImprovement() {
     renderImprovements();
     updatePreview();
 }
+function addPersonalizedq() {
+    personalizedq.push({ title: "", desc: "" });
+    renderPersonalizedq();
+    updatePreview();
+}
 function removeImprovement(i) {
     improvements.splice(i, 1);
     renderImprovements();
+    updatePreview();
+}
+function removePersonalizedq(i) {
+    personalizedq.splice(i, 1);
+    renderPersonalizedq();
     updatePreview();
 }
 
@@ -753,6 +789,24 @@ function removeImprovement(i) {
             </div>
         `;
     });
+
+    // personalized questions
+    const previewPersonalizedq = document.getElementById('previewPersonalizedq');
+    const personalizedQuestionSection = document.getElementById('personalized-question-section');   
+    personalizedQuestionSection.hidden = personalizedq.length === 0;
+    previewPersonalizedq.innerHTML = '';
+    personalizedq.forEach((s, index) => {
+    const icon = `Q${index + 1} `;  // This will create Q1, Q2, Q3, etc.
+    const title = s.title.trim();
+    previewPersonalizedq.innerHTML += `
+        <div class="Personalizedq-item">
+            <div class="Personalizedq-icon">${icon}</div>
+            <div>
+                <h4>${title}</h4>
+                <p>${s.desc}</p>
+            </div>
+        </div>
+    `;});
         }
         
         function updateCareerMatch(num) {
