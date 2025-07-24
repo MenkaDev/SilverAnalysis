@@ -336,6 +336,11 @@ body {
     gap: 15px;
 }
 
+.Personalizedq-list{
+    display: grid;
+    gap: 15px;
+}
+
 .improvement-item {
     background: #fef3c7;
     padding: 20px;
@@ -344,6 +349,29 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 12px;
+}
+.Personalizedq-item {
+    background: #f0fdf4;  /* Very light mint */
+    border-left: 4px solid #86efac;  /* Medium mint */
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.Personalizedq-icon {
+    width: 24px;
+    height: 24px;
+    background: #19e464; /* Matching the border color from your chosen scheme */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 2px;
 }
 
 .improvement-icon {
