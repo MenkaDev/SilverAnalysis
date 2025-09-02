@@ -55,9 +55,22 @@
       
       </div>
 
-      <!-- Section 2 -->
+           <!-- Section 2 options -->
+           <div class="form-section">
+            <h3 class="small">Section 2 -Graphological  Mistakes in Handwriting</h3>
+            <label>Upload Current Handwriting (Section 7)</label>
+            <input id="uploadMainHandwriting" type="file" accept="image/*" />
+            <div id="mainPreviewHandwriting" class="muted" style="margin-top:8px">No image</div>
+    
+            <div class="muted">Graphological Mistakes in your Handwriting</div>
+            <label style="margin-top:8px">Graphological Mistakes in your Handwriting</label>
+            <textarea id="handwritingMistakes">Given the analysis of your current signature's limitations, we recommend implementing the new signature gradually over 6 months...</textarea>
+          </div>
+          <hr style="margin:14px 0" />
+
+      <!-- Section 3 -->
       <div class="form-section">
-        <h3 class="small">Section 2 - Personality</h3>
+        <h3 class="small">Section 3 - Personality</h3>
       
         <label>Strengths</label>
         <div id="strengths_list">
@@ -84,9 +97,9 @@
       <hr style="margin:14px 0" />
       
 
-      <!-- Section 3 -->
+      <!-- Section 4 -->
       <div class="form-section">
-        <h3 class="small">Section 3 - Corrected Signature</h3>
+        <h3 class="small">Section 4 - Corrected Signature</h3>
         <label>Upload up to 3 images (Corrected signature / variations)</label>
         <input id="uploadThree" type="file" accept="image/*" multiple />
         <div id="threePreview" class="muted" style="margin-top:8px">No images</div>
@@ -108,29 +121,15 @@
       <hr style="margin:14px 0" />
       
 
-      <!-- Section 4 -->
+      <!-- Section 5 -->
       <div class="form-section">
-        <h3 class="small">Section 4 - Benefits / Paragraphs</h3>
+        <h3 class="small">Section 5 - Benefits / Paragraphs</h3>
         
         <label>Overall Solution for Meera Khan</label>
         <textarea id="overallBenefit">Upward flowing signature builds positive self-image and increases confidence in all life areas.</textarea>
 
       </div>
       <hr style="margin:14px 0" />
-      
-
-           <!-- Section 5 options -->
-           <div class="form-section">
-            <h3 class="small">Section 5 -Graphological  Mistakes in Handwriting</h3>
-            <label>Upload Current Handwriting (Section 7)</label>
-            <input id="uploadMainHandwriting" type="file" accept="image/*" />
-            <div id="mainPreviewHandwriting" class="muted" style="margin-top:8px">No image</div>
-    
-            <div class="muted">Graphological Mistakes in your Handwriting</div>
-            <label style="margin-top:8px">Graphological Mistakes in your Handwriting</label>
-            <textarea id="handwritingMistakes">Given the analysis of your current signature's limitations, we recommend implementing the new signature gradually over 6 months...</textarea>
-          </div>
-          <hr style="margin:14px 0" />
       
 
            <!-- Section 6 options -->
@@ -152,7 +151,7 @@
          
       <!-- Section 7 -->
       <div class="form-section">
-        <h3 class="small">Section 5 - How to Practice new Signature</h3>
+        <h3 class="small">Section 7 - How to Practice new Signature</h3>
         
         <label>Affirmation</label>
         <textarea id="phase3">I am attracting abundance in my life.</textarea>
@@ -163,7 +162,7 @@
 
       <!-- Section 8 -->
       <div class="form-section">
-        <h3 class="small">Section 6 - Legal & Expert Recommendation</h3>
+        <h3 class="small">Section 8 - Legal & Expert Recommendation</h3>
         <div class="muted">Fixed heading: "Understanding Legal Signature Changes" will be shown.</div>
         <label style="margin-top:8px">Expert Recommendation</label>
         <textarea id="expertRec">Given the analysis of your current signature's limitations, we recommend implementing the new signature gradually over 6 months...</textarea>
@@ -234,9 +233,28 @@
         
         </div>
 
-        <!-- Section 2 -->
+           <!-- Section 2 -->
+
+       
+       <div class="section">
+        <h2 class="section-title">2. GRAPHOLOGICAL MISTAKES IN HANDWRITING</h2>
+
+        <h3>Current Handwriting Analysis</h3>
+        <div id="r_handwritingBox" class="signature-box current-signature">
+          <img id="r_handwriting_img" class="report-img" src="" alt="Current Signature" style="display:none;" />
+          <div id="r_handwriting_placeholder">No handwriting uploaded</div>
+        </div>
+        <div style="background: #d1ecf1; padding: 20px; border-radius: 10px; border-left: 5px solid #F4D03F; margin-top: 30px;">
+            <h4 style="color: #1a1a1a;"> Graphological Mistakes in <span id ="r_hand_mistake_name">Meera</span> Handwriting</h4>
+            <p id="r_handwritingMistakes" style="color: #1a1a1a;"> Given the analysis of your current signature's limitations, we recommend implementing the new signature gradually over 6 months. Start with personal documents, then move to professional ones, and finally update official records. This ensures consistency and builds confidence.</p>
+          </div>
+
+       
+      </div>
+
+        <!-- Section 3 -->
         <div class="section">
-          <h2 class="section-title">2. PERSONALITY ANALYSIS</h2>
+          <h2 class="section-title">3. PERSONALITY ANALYSIS</h2>
 
         <div class="personality-grid">
             <div class="personality-card">
@@ -253,9 +271,9 @@
           <p><strong>Overall Personality Assessment of <span id = "r_overall_name" >Meera Khan</span>:</strong> <span id="r_overall"> You possesses significant untapped potential that is currently being hindered by subconscious negative patterns reflected in her signature. With proper correction techniques, these limitations can be transformed into strengths.</span></p>
         </div>
 
-        <!-- Section 3 -->
+        <!-- Section 4 -->
         <div class="section">
-          <h2 class="section-title">3. CORRECTED SIGNATURE</h2>
+          <h2 class="section-title">4. CORRECTED SIGNATURE</h2>
 
           <h3>Recommended New Signature</h3>
           <div id="r_corrected_box" class="signature-box corrected-signature">
@@ -267,9 +285,9 @@
           </ul>
         </div>
 
-        <!-- Section 4 -->
+        <!-- Section 5 -->
         <div class="section">
-          <h2 class="section-title">4. BENEFITS OF CORRECTED SIGNATURE IN YOUR LIFE</h2>
+          <h2 class="section-title">5. BENEFITS OF CORRECTED SIGNATURE IN YOUR LIFE</h2>
 
           <div class="benefits-grid">
           
@@ -280,29 +298,6 @@
             </div>
           </div>
         </div>
-
-
-
-        <!-- paste two new sections here  -->
-
-           <!-- Section 5 -->
-
-       
-       <div class="section">
-        <h2 class="section-title">5. GRAPHOLOGICAL MISTAKES IN HANDWRITING</h2>
-
-        <h3>Current Handwriting Analysis</h3>
-        <div id="r_handwritingBox" class="signature-box current-signature">
-          <img id="r_handwriting_img" class="report-img" src="" alt="Current Signature" style="display:none;" />
-          <div id="r_handwriting_placeholder">No handwriting uploaded</div>
-        </div>
-        <div style="background: #d1ecf1; padding: 20px; border-radius: 10px; border-left: 5px solid #F4D03F; margin-top: 30px;">
-            <h4 style="color: #1a1a1a;"> Graphological Mistakes in <span id ="r_hand_mistake_name">Meera</span> Handwriting</h4>
-            <p id="r_handwritingMistakes" style="color: #1a1a1a;"> Given the analysis of your current signature's limitations, we recommend implementing the new signature gradually over 6 months. Start with personal documents, then move to professional ones, and finally update official records. This ensures consistency and builds confidence.</p>
-          </div>
-
-       
-      </div>
 
       <!-- section 6  -->
 
@@ -322,8 +317,6 @@
     
        
       </div>
-
-        <!-- till here  -->
 
 
         <!-- Section 7 -->
