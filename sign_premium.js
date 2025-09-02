@@ -634,7 +634,7 @@ async function domToPdfBlob() {
   });
 
   // ---------------- 2. Mistakes in Handwriting ----------------
-  addSection('2. MISTAKES IN HANDWRITING');
+  addSection('2. GRAPHOLOGICAL MISTAKES IN HANDWRITING');
   yPosition += 12;
   addImageBox('r_handwriting_img', 180, [255, 245, 245], [222, 0, 0], "No current handwriting uploaded");
 
