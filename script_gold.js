@@ -326,7 +326,7 @@ function generatePDF(callback) {
                 // Add Signature Correction page only if there's signature content
                 let signatureInput = document.getElementById("signature-upload");
                 let signatureText = document.getElementById("Signature-Correction").value.trim();
-                
+                let sigTitle = document.getElementById("sign-section-heading").textContent.trim();
                 if (signatureInput.files.length > 0 || signatureText.length > 0) {
                     doc.addPage();
                     doc.rect(0, 0, 210, 297, "F"); 
@@ -335,7 +335,7 @@ function generatePDF(callback) {
                     doc.setFont("times", "bold");
                     doc.setFontSize(24);
                     doc.setTextColor(255, 212, 35);
-                    let sigTitle = "Signature Correction";
+                    // let sigTitle = "Signature Correction";
                     let sigTextWidth = doc.getTextWidth(sigTitle);
                     doc.text(sigTitle, (210 - sigTextWidth) / 2, 50);
 
