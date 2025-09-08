@@ -379,7 +379,7 @@ function generatePDF(callback) {
                             doc.setFont("times", "bold");
                             doc.setFontSize(22);
                             doc.setTextColor(255, 212, 35);
-                            let helpTitle = "How will this signature help";
+                            let helpTitle = "Important Points to Note:";
                             let helpTextWidth = doc.getTextWidth(helpTitle);
                             doc.text(helpTitle, (210 - helpTextWidth) / 2, yPos);
                             yPos += 10;
