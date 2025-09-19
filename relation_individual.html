@@ -37,12 +37,12 @@
 
       <!-- Image uploads -->
       <div class="form-section">
-        <h3 class="small">Handwriting Samples</h3>
+        <h3 class="small">Handwriting Analysis</h3>
         <label>Upload Signature</label>
         <input id="uploadSignature" type="file" accept="image/*" />
         <div id="signaturePreview" class="muted" style="margin-top:8px">No signature uploaded</div>
 
-        <label style="margin-top:10px">Upload Handwriting Sample</label>
+        <label style="margin-top:10px">Upload Handwriting Analysis</label>
         <input id="uploadHandwriting" type="file" accept="image/*" />
         <div id="handwritingPreview" class="muted" style="margin-top:8px">No handwriting uploaded</div>
       </div>
@@ -309,7 +309,6 @@
       <!-- Controls -->
       <div class="controls-row">
         <button id="applyBtn" class="btn btn-primary">Apply to Preview</button>
-        <button id="previewPdf" class="btn btn-ghost">Preview PDF</button>
         <button id="downloadHtml" class="btn btn-primary">Export as HTML</button>
         <button id="resetBtn" class="btn btn-ghost">Reset</button>
       </div>
@@ -350,9 +349,9 @@
           </div>
         </div>
 
-        <!-- Section 1: Handwriting Samples -->
+        <!-- Section 1: Handwriting  -->
         <div class="section">
-          <h2 class="section-title">1. Handwriting Analysis Samples</h2>
+          <h2 class="section-title">1. Handwriting Analysis</h2>
           
           <h3>Signature Analysis</h3>
           <div id="r_signatureBox" class="image-box">
@@ -360,10 +359,10 @@
             <div id="r_signature_placeholder">No signature uploaded</div>
           </div>
 
-          <h3>Handwriting Sample</h3>
+          <h3>Handwriting Analysis</h3>
           <div id="r_handwritingBox" class="image-box">
             <img id="r_handwriting_img" class="report-img" src="" alt="Handwriting" style="display:none;" />
-            <div id="r_handwriting_placeholder">No handwriting sample uploaded</div>
+            <div id="r_handwriting_placeholder">No handwriting uploaded</div>
           </div>
         </div>
 
@@ -540,32 +539,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3️⃣ Build full HTML with styles AND a print button
     const htmlContent = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Relationship Analysis Snapshot</title>
-<style>
-${styles}
-/* style for the print button */
-#printBtn {
-  display:inline-block;
-  padding:10px 15px;
-  margin:10px 0;
-  background:teal;
-  color:#fff;
-  border:none;
-  cursor:pointer;
-  font-size:16px;
-}
-</style>
-</head>
-<body>
-
-${clone.outerHTML}
-</body>
-</html>`;
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Relationship Analysis Snapshot</title>
+        <style>
+        ${styles}
+        /* style for the print button */
+        #printBtn {
+          display:inline-block;
+          padding:10px 15px;
+          margin:10px 0;
+          background:teal;
+          color:#fff;
+          border:none;
+          cursor:pointer;
+          font-size:16px;
+        }
+        </style>
+        </head>
+        <body>
+        
+        ${clone.outerHTML}
+        </body>
+        </html>`;
 
     // 4️⃣ Download
     const blob = new Blob([htmlContent], { type: "text/html" });
