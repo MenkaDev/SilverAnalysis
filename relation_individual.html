@@ -571,8 +571,9 @@ ${clone.outerHTML}
     const blob = new Blob([htmlContent], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
+    const filename = document.getElementById("r_name").textContent.trim().replace(/\s+/g, '_').toLowerCase() || "relationship_analysis";
     a.href = url;
-    a.download = "relationship-analysis.html";
+    a.download = `${filename}.html`;   // no extra quotes, correct interpolation
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
