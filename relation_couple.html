@@ -32,12 +32,12 @@
         </div>
 
         <div class="form-section">
-          <h4>Handwriting Samples</h4>
+          <h4>Handwriting Analysis</h4>
           <label>Upload Signature</label>
           <input id="person1Signature" type="file" accept="image/*" />
           <div id="person1SignaturePreview" class="muted">No signature uploaded</div>
 
-          <label style="margin-top:10px">Upload Handwriting Sample</label>
+          <label style="margin-top:10px">Upload Handwriting</label>
           <input id="person1Handwriting" type="file" accept="image/*" />
           <div id="person1HandwritingPreview" class="muted">No handwriting uploaded</div>
         </div>
@@ -207,12 +207,12 @@
         </div>
 
         <div class="form-section">
-          <h4>Handwriting Samples</h4>
+          <h4>Handwriting Analysis</h4>
           <label>Upload Signature</label>
           <input id="person2Signature" type="file" accept="image/*" />
           <div id="person2SignaturePreview" class="muted">No signature uploaded</div>
 
-          <label style="margin-top:10px">Upload Handwriting Sample</label>
+          <label style="margin-top:10px">Upload Handwriting</label>
           <input id="person2Handwriting" type="file" accept="image/*" />
           <div id="person2HandwritingPreview" class="muted">No handwriting uploaded</div>
         </div>
@@ -393,7 +393,7 @@
       <!-- Controls -->
       <div class="controls-row">
         <button id="applyBtn" class="btn btn-primary">Apply to Preview</button>
-        <button id="downloadPdf" class="btn btn-primary">Download PDF</button>
+        <button id="downloadHtml" class="btn btn-primary">Export as HTML</button>
         <button id="resetBtn" class="btn btn-ghost">Reset</button>
       </div>
     </div>
@@ -432,10 +432,10 @@
                 <div id="r_person1_signature_placeholder">No signature uploaded</div>
               </div>
 
-              <h4>Handwriting Sample</h4>
+              <h4>Handwriting Analysis</h4>
               <div id="r_person1_handwritingBox" class="image-box">
                 <img id="r_person1_handwriting_img" class="report-img" src="" alt="Handwriting" style="display:none;" />
-                <div id="r_person1_handwriting_placeholder">No handwriting sample uploaded</div>
+                <div id="r_person1_handwriting_placeholder">No handwriting uploaded</div>
               </div>
             </div>
 
@@ -459,10 +459,10 @@
                 <div id="r_person2_signature_placeholder">No signature uploaded</div>
               </div>
 
-              <h4>Handwriting Sample</h4>
+              <h4>Handwriting Analysis</h4>
               <div id="r_person2_handwritingBox" class="image-box">
                 <img id="r_person2_handwriting_img" class="report-img" src="" alt="Handwriting" style="display:none;" />
-                <div id="r_person2_handwriting_placeholder">No handwriting sample uploaded</div>
+                <div id="r_person2_handwriting_placeholder">No handwriting uploaded</div>
               </div>
             </div>
           </div>
@@ -662,8 +662,96 @@
   </div>
 
   <script src="relation_couple.js"></script>
-
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("downloadHtml").addEventListener("click", async () => {
+        const previewArea = document.querySelector(".preview-area");
+      
+        // 1️⃣ Grab all CSS from current page
+        const styles = Array.from(document.styleSheets)
+          .map(ss => {
+            try {
+              return Array.from(ss.cssRules).map(rule => rule.cssText).join('');
+            } catch {
+              return '';
+            }
+          })
+          .join('');
+        
+        // 2️⃣ Clone preview and compress images to base64 JPEG
+        const clone = previewArea.cloneNode(true);
+        const images = clone.querySelectorAll("img");
+        for (const img of images) {
+          try {
+            const dataUrl = await toCompressedDataURL(img.src, 0.7); // 70% quality
+            img.src = dataUrl;
+          } catch (e) {
+            console.warn("Could not inline image", img.src, e);
+          }
+        }
+      
+        // 3️⃣ Build full HTML with styles AND a print button
+        const htmlContent = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Relationship Analysis Snapshot</title>
+            <style>
+            ${styles}
+            /* style for the print button */
+            #printBtn {
+              display:inline-block;
+              padding:10px 15px;
+              margin:10px 0;
+              background:teal;
+              color:#fff;
+              border:none;
+              cursor:pointer;
+              font-size:16px;
+            }
+            </style>
+            </head>
+            <body>
+            
+            ${clone.outerHTML}
+            </body>
+            </html>`;
+          
+        // 4️⃣ Download
+        const blob = new Blob([htmlContent], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        const filename = document.getElementById("r_person1_name").textContent.trim().replace(/\s+/g, '_').toLowerCase() || "relationship_analysis";
+        a.href = url;
+        a.download = `${filename}.html`;   // no extra quotes, correct interpolation
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
     
-  
+      // Convert an image URL to a compressed JPEG base64 string
+      async function toCompressedDataURL(url, quality = 0.7) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = function () {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            // JPEG at given quality
+            const dataUrl = canvas.toDataURL("image/jpeg", quality);
+            resolve(dataUrl);
+          };
+          img.onerror = reject;
+          img.src = url;
+        });
+      }
+    });
+  </script>
 </body>
 </html>
