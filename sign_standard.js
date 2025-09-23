@@ -174,8 +174,8 @@ const setReportHandwritingCorrectionImage = createReportImageSetter('r_handwriti
 
 // Setup all single image uploads
 createSingleImageUpload('uploadMain', 'mainPreview', setReportMainImage);
-createSingleImageUpload('uploadMainHandwriting', 'mainPreviewHandwriting', setReportHandwritingImage);
-createSingleImageUpload('uploadCorrectHandwriting', 'PreviewCorrectHandwriting', setReportHandwritingCorrectionImage);
+// createSingleImageUpload('uploadMainHandwriting', 'mainPreviewHandwriting', setReportHandwritingImage);
+// createSingleImageUpload('uploadCorrectHandwriting', 'PreviewCorrectHandwriting', setReportHandwritingCorrectionImage);
 
 // Setup multiple image upload
 createMultipleImageUpload('uploadThree', 'threePreview', 'r_corrected_imgs', 3);
@@ -315,8 +315,8 @@ function setClientName(spanId, name, possessive = false) {
     // Additional fields
     document.getElementById('r_overallbenefit').textContent = document.getElementById('overallBenefit').value;
     document.getElementById('r_affirmation').textContent = document.getElementById('phase3').value;
-    document.getElementById('r_handwritingMistakes').textContent = document.getElementById('handwritingMistakes').value;
-    document.getElementById('r_handwritingCorrections').textContent = document.getElementById('handwritingCorrections').value;
+    // document.getElementById('r_handwritingMistakes').textContent = document.getElementById('handwritingMistakes').value;
+    // document.getElementById('r_handwritingCorrections').textContent = document.getElementById('handwritingCorrections').value;
     document.getElementById('r_expert_rec').textContent = document.getElementById('expertRec').value;
 }
 
