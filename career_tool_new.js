@@ -67,6 +67,7 @@ function updateCareerRecommendations() {
     updatePreview();
 }
 
+
 function displayCareerDomains() {
     const container = document.getElementById('career-domains-container');
     
@@ -81,21 +82,39 @@ function displayCareerDomains() {
         html += `
             <div class="career-domain ${isRecommended ? 'recommended' : ''}>
                 <div class="career-domain-header">
-                    <span class="career-domain-title">${index + 1}. ${career.name}</span>
-                    <span class="match-percentage">${career.score.toFixed(1)}%</span>
-                    ${isRecommended ? '<span class="recommended-badge">RECOMMENDED</span>' : ''}
+                    <span class="career-domain-title">${index + 1}.</span>
+                </div>
+                <div class="form-group">
+                    <label>Career Domain Name</label>
+                    <input type="text" id="career-name-${index}" value="${career.name}" placeholder="Enter career domain name" onchange="updateCareerName(${index}, this.value)">
+                </div>
+                <div class="form-group">
+                    <label>Match Percentage</label>
+                    <input type="number" id="career-score-${index}" value="${career.score.toFixed(1)}" min="0" max="100" step="0.1" placeholder="Enter percentage" onchange="updateCareerScore(${index}, this.value)">
                 </div>
                 <div class="form-group">
                     <label>Niche Domains</label>
                     <input type="text" id="niche-${career.domain}" placeholder="Enter niche domains (comma separated)" onchange="updatePreview()">
                 </div>
             </div>
-            
-
         `;
     });
     
     container.innerHTML = html;
+}
+
+function updateCareerName(index, newName) {
+    if (careerDomains[index]) {
+        careerDomains[index].name = newName;
+        updatePreview();
+    }
+}
+
+function updateCareerScore(index, newScore) {
+    if (careerDomains[index]) {
+        careerDomains[index].score = parseFloat(newScore) || 0;
+        updatePreview();
+    }
 }
 
 function selectRecommended(domain) {
@@ -120,10 +139,10 @@ function updatePreview() {
     
     // Update client name in footer
     const clientName = document.getElementById('userName').value || 'our client';
-    //document.getElementById('r_client_name').textContent = clientName;
+    // document.getElementById('r_client_name').textContent = clientName;
     document.getElementsByName('r_client_name').forEach(el => {
-  el.textContent = clientName;
-});
+        el.textContent = clientName;
+      })
 
     // Update personality traits
     updateKeywordTags('strengths', 'r_strengths_tags');
