@@ -130,59 +130,76 @@ incompatibleList.innerHTML = incompatible.map(item => `<li>${item}</li>`).join('
 
 
  function applyToPreview() {
-   // Update basic info
-   document.getElementById('r_name').textContent = document.getElementById('userName').value;
-   document.getElementById('r_age').textContent = document.getElementById('userAge').value;
-   document.getElementById('r_date').textContent = document.getElementById('reportDate').value;
-   document.getElementById('r_id').textContent = document.getElementById('reportId').value;
-   
-   // Update names in multiple places
-   document.getElementById('r_compat_name').textContent = document.getElementById('userName').value;
-   document.getElementById('r_footer_name').textContent = document.getElementById('userName').value;
-
-   // Update images
-   const signatureFile = document.getElementById('uploadSignature').files[0];
-   const handwritingFile = document.getElementById('uploadHandwriting').files[0];
-   
-   if (signatureFile) {
-     const reader = new FileReader();
-     reader.onload = function(e) {
-       document.getElementById('r_signature_img').src = e.target.result;
-       document.getElementById('r_signature_img').style.display = 'block';
-       document.getElementById('r_signature_placeholder').style.display = 'none';
-     };
-     reader.readAsDataURL(signatureFile);
-   }
-
-   if (handwritingFile) {
-     const reader = new FileReader();
-     reader.onload = function(e) {
-       document.getElementById('r_handwriting_img').src = e.target.result;
-       document.getElementById('r_handwriting_img').style.display = 'block';
-       document.getElementById('r_handwriting_placeholder').style.display = 'none';
-     };
-     reader.readAsDataURL(handwritingFile);
-   }
-
-   // Update trait analyses
-   updateTraitAnalyses();
-   updateCompatibility();
+  // Update basic info
+  document.getElementById('r_name').textContent = document.getElementById('userName').value;
+  document.getElementById('r_age').textContent = document.getElementById('userAge').value;
+  document.getElementById('r_date').textContent = document.getElementById('reportDate').value;
+  document.getElementById('r_id').textContent = document.getElementById('reportId').value;
   
+  // Update names in multiple places
+  document.getElementById('r_compat_name').textContent = document.getElementById('userName').value;
+  document.getElementById('r_footer_name').textContent = document.getElementById('userName').value;
 
-    // update the textAnalysis
- document.getElementById('r_emotional_text').textContent=document.getElementById('emotional_text').value
- document.getElementById('r_communication_text').textContent=document.getElementById('communication_text').value
- document.getElementById('r_conflict_text').textContent=document.getElementById('conflict_text').value
- document.getElementById('r_intimacy_text').textContent=document.getElementById('intimacy_text').value
- document.getElementById('r_family_text').textContent=document.getElementById('family_text').value
- document.getElementById('r_financial_text').textContent=document.getElementById('financial_text').value
+  // Update images
+  const signatureFile = document.getElementById('uploadSignature').files[0];
+  const handwritingFile = document.getElementById('uploadHandwriting').files[0];
+  
+  if (signatureFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('r_signature_img').src = e.target.result;
+      document.getElementById('r_signature_img').style.display = 'block';
+      document.getElementById('r_signature_placeholder').style.display = 'none';
+    };
+    reader.readAsDataURL(signatureFile);
+  }
 
+  if (handwritingFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('r_handwriting_img').src = e.target.result;
+      document.getElementById('r_handwriting_img').style.display = 'block';
+      document.getElementById('r_handwriting_placeholder').style.display = 'none';
+    };
+    reader.readAsDataURL(handwritingFile);
+  }
 
-   // Update assessment texts
-   document.getElementById('r_strengths').textContent = document.getElementById('relationshipStrengths').value;
-   document.getElementById('r_growth').textContent = document.getElementById('areasForGrowth').value;
-   document.getElementById('r_compatibility').textContent = document.getElementById('compatibilitySummary').value;
- }
+  // Update trait analyses
+  updateTraitAnalyses();
+  updateCompatibility();
+
+  // ✅ Helper function to format textarea input as bullet points
+  const formatAsBullets = (text) => {
+    if (!text.trim()) return '<div class="empty-state">No information provided</div>';
+    const lines = text.split(/\n+/).map(line => line.trim()).filter(line => line);
+    if (lines.length > 1) {
+      return `<ul>${lines.map(line => `<li>${line}</li>`).join('')}</ul>`;
+    }
+    return `<p>${lines[0]}</p>`;
+  };
+
+  // ✅ Automatically apply to all textarea–preview pairs
+  const mappings = [
+    ['emotional_text', 'r_emotional_text'],
+    ['communication_text', 'r_communication_text'],
+    ['conflict_text', 'r_conflict_text'],
+    ['intimacy_text', 'r_intimacy_text'],
+    ['family_text', 'r_family_text'],
+    ['financial_text', 'r_financial_text'],
+    ['relationshipStrengths', 'r_strengths'],
+    ['areasForGrowth', 'r_growth'],
+    ['compatibilitySummary', 'r_compatibility']
+  ];
+
+  mappings.forEach(([inputId, previewId]) => {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    if (input && preview) {
+      preview.innerHTML = formatAsBullets(input.value);
+    }
+  });
+}
+
 
 
 
