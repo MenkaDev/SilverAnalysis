@@ -162,29 +162,41 @@ function updatePreview() {
 function updateKeywordTags(inputId, previewId) {
     const input = document.getElementById(inputId).value;
     const preview = document.getElementById(previewId);
-    
+
     if (!input.trim()) {
         const label = inputId === 'strengths' ? 'strengths' : 'development areas';
         preview.innerHTML = `<div class="empty-state">No ${label} provided</div>`;
         return;
     }
 
-    const keywords = input.split(',').map(k => k.trim()).filter(k => k);
+    // Support both comma and newline separation
+    const keywords = input.split(/[\n,]+/).map(k => k.trim()).filter(k => k);
     const html = keywords.map(keyword => `<span class="keyword-tag">${keyword}</span>`).join('');
     preview.innerHTML = html;
 }
 
+
 function updateAnalysisSection(inputId, previewId) {
     const input = document.getElementById(inputId).value;
     const preview = document.getElementById(previewId);
-    
+
     if (!input.trim()) {
-        preview.textContent = 'No analysis provided. Please complete the assessment form for detailed insights.';
+        preview.innerHTML = '<div class="empty-state">No analysis provided. Please complete the assessment form for detailed insights.</div>';
         return;
     }
 
-    preview.textContent = input;
+    // Split lines by Enter key
+    const lines = input.split(/\n+/).map(line => line.trim()).filter(line => line);
+
+    // If multiline, show as bullet points; otherwise, plain text
+    if (lines.length > 1) {
+        const html = `<ul>${lines.map(line => `<li>${line}</li>`).join('')}</ul>`;
+        preview.innerHTML = html;
+    } else {
+        preview.innerHTML = `<p>${lines[0]}</p>`;
+    }
 }
+
 
 function updateCareerRecommendationsPreview() {
     const preview = document.getElementById('r_career_recommendations');

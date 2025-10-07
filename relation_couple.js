@@ -264,11 +264,39 @@ function applyToPreview() {
 
   updateTraitAnalyses();
 
-  // Update assessment texts
-  document.getElementById('r_strengths').textContent = document.getElementById('relationshipStrengths').value;
-  document.getElementById('r_challenges').textContent = document.getElementById('relationshipChallenges').value;
-  document.getElementById('r_recommendations').textContent = document.getElementById('relationshipRecommendations').value;
+  // ---- UNIVERSAL BULLET POINT LOGIC ----
+  const formatAsBullets = (text) => {
+    if (!text.trim()) return '<div class="empty-state">No information provided</div>';
+    const lines = text.split(/\n+/).map(line => line.trim()).filter(line => line);
+    if (lines.length > 1) {
+      return `<ul>${lines.map(line => `<li>${line}</li>`).join('')}</ul>`;
+    }
+    return `<p>${lines[0]}</p>`;
+  };
+
+  // Automatically apply bullet formatting to ALL analysis sections
+  const mappings = [
+    ['relationshipStrengths', 'r_strengths'],
+    ['relationshipChallenges', 'r_challenges'],
+    ['relationshipRecommendations', 'r_recommendations'],
+    ['communicationCompatibility', 'r_communication_compatibility'],
+    ['emotionalCompatibility', 'r_emotional_compatibility'],
+    ['intellectualCompatibility', 'r_intellectual_compatibility'],
+    ['lifestyleCompatibility', 'r_lifestyle_compatibility'],
+    ['conflictResolution', 'r_conflict_resolution'],
+    ['overallCompatibility', 'r_overall_compatibility'],
+  ];
+
+  mappings.forEach(([inputId, previewId]) => {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    if (input && preview) {
+      preview.innerHTML = formatAsBullets(input.value);
+    }
+  });
 }
+
+
 
 // Reset form to default values
 function resetForm() {
