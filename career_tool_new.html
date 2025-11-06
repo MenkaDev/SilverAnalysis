@@ -312,7 +312,7 @@
             </div>
 
             <!-- Additional Analysis Sections -->
-            <div class="section">
+            <!-- <div class="section">
                 <div class="section-title">Current Job Analysis</div>
                 <div class="form-group">
                     <label for="currentJobTitle">Current Job Title</label>
@@ -320,7 +320,20 @@
                     <label for="currentJob">Current Job Compatibility</label>
                     <input type="text" id="currentJob" placeholder="Enter current job title">
                 </div>
-            </div>
+            </div> -->
+
+            <div class="section"> 
+    <div class="section-title">Current Job Analysis</div>
+    <div class="form-group">
+        <label for="currentJobTitle">Current Job Title</label>
+        <input type="text" id="currentJobTitle" placeholder="Enter current job title">
+
+        <label for="currentJob">Current Job Compatibility</label>
+        <textarea id="currentJob" placeholder="Enter job compatibility (comma separated or one per line)"></textarea>
+    </div>
+</div>
+
+
 
             <div class="section">
                 <div class="section-title">Government Job Suitability</div>
@@ -448,7 +461,7 @@
                     </div>
                 </div>
 
-                <!-- Section 4: Specialized Analysis -->
+                <!-- Section 4: Specialized Analysis
                 <div class="report-section">
                     <h2 class="report-section-title">4. Specialized Career Analysis</h2>
 
@@ -481,7 +494,61 @@
                         
                         <p id="r_business_analysis">No analysis provided. Please complete the assessment form for detailed insights.</p>
                     </div>
-                </div>
+                </div> -->
+
+                <!-- Section 4: Specialized Career Analysis -->
+<div class="report-section">
+    <h2 class="report-section-title">4. Specialized Career Analysis</h2>
+
+    <!-- Current Job Compatibility -->
+    <div class="analysis-card">
+        <h4>Current Job Compatibility</h4>
+        <div class="detail_label_title">
+            <span>Currently Pursuing:</span>
+            <span id="r_current_job_title">Not provided</span>
+        </div>
+        <p id="r_current_job_compatibility">
+            No analysis provided. Please complete the assessment form for detailed insights.
+        </p>
+    </div>
+
+    <!-- Government Job Suitability -->
+    <div class="analysis-card">
+        <h4>Government Job Suitability</h4>
+        <div class="detail_label_title">
+            <span>Government Job Suitability Level: </span>
+            <span id="r_gov_job_suitability_level">Not provided</span>
+        </div>
+        <p id="r_gov_job_analysis">
+            No analysis provided. Please complete the assessment form for detailed insights.
+        </p>
+    </div>
+
+    <!-- Business & Entrepreneurship Potential -->
+    <div class="analysis-card">
+        <h4>Business & Entrepreneurship Potential</h4>
+        <div class="detail_label_title">
+            <span>Business Viability Level: </span>
+            <span id="r_business_suitability_level">Not provided</span>
+        </div>
+        <p id="r_business_analysis">
+            No analysis provided. Please complete the assessment form for detailed insights.
+        </p>
+    </div>
+
+    <!-- Specialized Career Options -->
+    <div class="analysis-card">
+        <h4>Specialized Career Options</h4>
+        <div class="form-group">
+            <label>Enter specialized careers (comma separated or one per line):</label>
+            <textarea id="specializedCareerInput" placeholder="e.g., Data Scientist, AI Engineer, UI/UX Designer"></textarea>
+        </div>
+        <div id="r_specialized_career" class="specialized-career-preview">
+            <div class="empty-state">No specialized careers entered</div>
+        </div>
+    </div>
+</div>
+
 
                 <!-- Section 5: Professional Recommendations -->
                 <div class="report-section">

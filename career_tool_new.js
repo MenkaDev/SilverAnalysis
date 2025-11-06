@@ -157,6 +157,7 @@ function updatePreview() {
     updateAnalysisSection('govJobSuitability', 'r_gov_job_analysis');
     updateAnalysisSection('businessPossibility', 'r_business_analysis');
     updateAnalysisSection('overallRecommendation', 'r_overall_recommendation');
+    updateSpecializedCareerPreview();
 }
 
 function updateKeywordTags(inputId, previewId) {
@@ -185,17 +186,17 @@ function updateAnalysisSection(inputId, previewId) {
         return;
     }
 
-    // Split lines by Enter key
-    const lines = input.split(/\n+/).map(line => line.trim()).filter(line => line);
+    // Split by commas or new lines, remove extra spaces
+    const lines = input
+        .split(/\s*,\s*|\n+/) // split by comma OR newline
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
 
-    // If multiline, show as bullet points; otherwise, plain text
-    if (lines.length > 1) {
-        const html = `<ul>${lines.map(line => `<li>${line}</li>`).join('')}</ul>`;
-        preview.innerHTML = html;
-    } else {
-        preview.innerHTML = `<p>${lines[0]}</p>`;
-    }
+    // Always show bullet points (even if one line)
+    const html = `<ul>${lines.map(line => `<li>${line}</li>`).join('')}</ul>`;
+    preview.innerHTML = html;
 }
+
 
 
 function updateCareerRecommendationsPreview() {
@@ -206,25 +207,62 @@ function updateCareerRecommendationsPreview() {
         return;
     }
 
-    let html = '';
+    let html = '<ul class="career-list">';
     careerDomains.forEach((career, index) => {
         const nicheInput = document.getElementById(`niche-${career.domain}`);
-        const niches = nicheInput ? nicheInput.value : '';
+        let niches = nicheInput ? nicheInput.value.trim() : '';
         const isRecommended = recommendedDomain === career.domain;
-        
+
+        // ✅ Split by comma and make bullet list items
+        let bulletList = "";
+        if (niches) {
+            bulletList = niches
+                .split(',')
+                .map(item => item.trim())
+                .filter(item => item.length > 0)
+                .map(item => `<li>${item}</li>`)  // 👈 only li, no manual bullet
+                .join('');
+        }
+
         html += `
-            <div class="career-item ${isRecommended ? 'recommended' : ''}">
-                <div class="career-info">
-                    <h4>${index + 1}. ${career.name} ${isRecommended ? '<span class="recommended-star">★</span>' : ''}</h4>
-                    ${niches ? `<div class="career-niches">Specializations: ${niches}</div>` : ''}
-                </div>
-                <div class="career-score">${career.score.toFixed(1)}%</div>
-            </div>
+            <li class="career-item ${isRecommended ? 'recommended' : ''}">
+                <strong>${index + 1}. ${career.name}</strong>
+                ${isRecommended ? '<span class="recommended-star">★</span>' : ''}
+                ${bulletList ? `<div class="career-niches"><em>Specializations:</em><ul class="bullet-list">${bulletList}</ul></div>` : ''}
+                <div class="career-score"><b>Match:</b> ${career.score.toFixed(1)}%</div>
+            </li>
         `;
     });
+    html += '</ul>';
 
     preview.innerHTML = html;
 }
+
+function updateSpecializedCareerPreview() {
+    const input = document.getElementById('specializedCareerInput').value;
+    const preview = document.getElementById('r_specialized_career');
+
+    if (!input.trim()) {
+        preview.innerHTML = '<div class="empty-state">No specialized careers entered</div>';
+        return;
+    }
+
+    // Split by comma OR newline, remove extra spaces, filter empty
+    const items = input
+        .split(/\s*,\s*|\n+/)   // split by comma (with optional spaces) or Enter
+        .map(item => item.trim())
+        .filter(item => item.length > 0);
+
+    // Convert to bullet points
+    const html = `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+    preview.innerHTML = html;
+}
+
+// Real-time update
+document.getElementById('specializedCareerInput').addEventListener('input', updateSpecializedCareerPreview);
+
+
+
 
 function handleImageUpload(inputId, imgId, placeholderId) {
     const input = document.getElementById(inputId);
