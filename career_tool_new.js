@@ -157,7 +157,7 @@ function updatePreview() {
     updateAnalysisSection('govJobSuitability', 'r_gov_job_analysis');
     updateAnalysisSection('businessPossibility', 'r_business_analysis');
     updateAnalysisSection('overallRecommendation', 'r_overall_recommendation');
-    updateSpecializedCareerPreview();
+   
 }
 
 function updateKeywordTags(inputId, previewId) {
@@ -188,7 +188,7 @@ function updateAnalysisSection(inputId, previewId) {
 
     // Split by commas or new lines, remove extra spaces
     const lines = input
-        .split(/\s*,\s*|\n+/) // split by comma OR newline
+        .split(/\r?\n+/) // split by comma OR newline
         .map(line => line.trim())
         .filter(line => line.length > 0);
 
@@ -217,7 +217,7 @@ function updateCareerRecommendationsPreview() {
         let bulletList = "";
         if (niches) {
             bulletList = niches
-                .split(',')
+                .split('\n')
                 .map(item => item.trim())
                 .filter(item => item.length > 0)
                 .map(item => `<li>${item}</li>`)  // 👈 only li, no manual bullet
@@ -238,28 +238,80 @@ function updateCareerRecommendationsPreview() {
     preview.innerHTML = html;
 }
 
-function updateSpecializedCareerPreview() {
-    const input = document.getElementById('specializedCareerInput').value;
-    const preview = document.getElementById('r_specialized_career');
 
-    if (!input.trim()) {
-        preview.innerHTML = '<div class="empty-state">No specialized careers entered</div>';
+function updateCareerRecommendationsPreview() {
+    const preview = document.getElementById('r_career_recommendations');
+    
+    if (careerDomains.length === 0) {
+        preview.innerHTML = '<div class="empty-state">Complete the handwriting analysis quiz to see personalized career recommendations</div>';
         return;
     }
 
-    // Split by comma OR newline, remove extra spaces, filter empty
-    const items = input
-        .split(/\s*,\s*|\n+/)   // split by comma (with optional spaces) or Enter
-        .map(item => item.trim())
-        .filter(item => item.length > 0);
+    let html = '<ul class="career-list">';
+    careerDomains.forEach((career, index) => {
+        const nicheInput = document.getElementById(`niche-${career.domain}`);
+        let niches = nicheInput ? nicheInput.value.trim() : '';
+        const isRecommended = recommendedDomain === career.domain;
 
-    // Convert to bullet points
-    const html = `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+        console.log(`Raw input for ${career.domain}:`, niches); // Debug log
+
+        // ✅ Split by newline and make bullet list items
+        let bulletList = "";
+        if (niches) {
+            const nicheArray = niches.split('\n')
+                .map(item => item.trim())
+                .filter(item => item.length > 0);
+            
+            console.log(`Split result for ${career.domain}:`, nicheArray); // Debug log
+            
+            if (nicheArray.length > 0) {
+                bulletList = nicheArray.map(item => `<li>${item}</li>`).join('');
+            }
+        }
+
+        html += `
+            <li class="career-item ${isRecommended ? 'recommended' : ''}">
+                <strong>${index + 1}. ${career.name}</strong>
+                ${isRecommended ? '<span class="recommended-star">★</span>' : ''}
+                ${bulletList ? `<div class="career-niches"><em>Specializations:</em><ul class="bullet-list">${bulletList}</ul></div>` : ''}
+                <div class="career-score"><b>Match:</b> ${career.score.toFixed(1)}%</div>
+            </li>
+        `;
+    });
+    html += '</ul>';
+
     preview.innerHTML = html;
 }
 
+
+
 // Real-time update
-document.getElementById('specializedCareerInput').addEventListener('input', updateSpecializedCareerPreview);
+// document.getElementById('specializedCareerInput').addEventListener('input', updateSpecializedCareerPreview);
+
+
+
+// function updateSpecializedCareerPreview() {
+//     const input = document.getElementById('specializedCareerInput').value;
+//     const preview = document.getElementById('r_specialized_career');
+
+//     if (!input.trim()) {
+//         preview.innerHTML = '<div class="empty-state">No specialized careers entered</div>';
+//         return;
+//     }
+
+//     // Split by comma OR newline, remove extra spaces, filter empty
+//     const items = input
+//         .split(/\s*,\s*|\n+/)   // split by comma (with optional spaces) or Enter
+//         .map(item => item.trim())
+//         .filter(item => item.length > 0);
+
+//     // Convert to bullet points
+//     const html = `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+//     preview.innerHTML = html;
+// }
+
+// // Real-time update
+// document.getElementById('specializedCareerInput').addEventListener('input', updateSpecializedCareerPreview);
 
 
 
