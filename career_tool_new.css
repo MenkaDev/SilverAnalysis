@@ -528,6 +528,38 @@ margin-bottom: 15px;
     color: #000;
 }
 
+.career-niches {
+    margin-top: 8px;
+    margin-left: 15px;
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* keep normal list bullets */
+.bullet-list {
+    list-style-type: disc;   /* default filled circle */
+    padding-left: 20px;
+    margin-top: 4px;
+}
+
+/* remove any extra pseudo bullets */
+.bullet-list li::before {
+    content: none;
+}
+
+.bullet-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 4px;
+}
+
+.bullet-list li {
+    line-height: 1.5;
+}
+
+
+
 /* Responsive design */
 @media (max-width: 768px) {
     .container {
