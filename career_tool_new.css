@@ -558,7 +558,103 @@ margin-bottom: 15px;
     line-height: 1.5;
 }
 
+ /* ===== UPDATED: Career Recommendations Preview Styles ===== */
+.career-recommendations-container {
+    margin-bottom: 30px;
+}
 
+.career-item {
+    display: block;
+    padding: 20px;
+    margin-bottom: 15px;
+    background: white;
+    border-radius: 8px;
+    border: 2px solid #eee;
+    transition: all 0.3s;
+}
+
+.career-item.recommended {
+    border-color: #fcc300;
+    background: #fffef0;
+    box-shadow: 0 2px 8px rgba(252, 195, 0, 0.2);
+}
+
+.career-main-content {
+    margin-bottom: 10px;
+}
+
+.career-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.career-name {
+    flex: 1;
+    font-size: 1.1em;
+    color: #111;
+    margin-right: 10px;
+}
+
+.career-score {
+    background: linear-gradient(135deg, #fcc300, #e6af00);
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.career-niches-section {
+    margin: 10px 0;
+    padding-left: 10px;
+}
+
+.niches-label {
+    font-style: italic;
+    color: #666;
+    font-size: 0.9em;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.bullet-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 4px;
+}
+
+.bullet-list li {
+    line-height: 1.5;
+    margin-bottom: 3px;
+}
+
+/* ===== UPDATED: Graphological Pointers Styles ===== */
+.graphological-pointers {
+    margin-top: 15px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-left: 3px solid #fcc300;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.pointers-label {
+    font-weight: 600;
+    color: #111111;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.pointers-content {
+    color: #555;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
 
 /* Responsive design */
 @media (max-width: 768px) {

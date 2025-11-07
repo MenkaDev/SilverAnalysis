@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="career_tool_new.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Left Panel - Input Forms -->
@@ -33,7 +36,7 @@
                     <input type="text" id="userEducation" placeholder="Enter educational background">
                 </div>
                 <div class="form-group">
-                    <label for="reportDate">Analysis Date</label> 
+                    <label for="reportDate">Analysis Date</label>
                     <input id="reportDate" type="text" readonly />
                 </div>
                 <!-- <div class="form-group">
@@ -77,7 +80,7 @@
             <!-- Handwriting Analysis Quiz -->
             <div class="section">
                 <div class="section-title">Handwriting Analysis Quiz</div>
-                
+
                 <div class="category">
                     <div class="category-header" onclick="toggleCategory(this)">
                         <span>ZONES</span>
@@ -127,7 +130,8 @@
                     </div>
                     <div class="category-content">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="upward-slope" data-domains="technical,finance,marketing,creative">
+                            <input type="checkbox" id="upward-slope"
+                                data-domains="technical,finance,marketing,creative">
                             <label for="upward-slope">Upwards</label>
                         </div>
                         <div class="checkbox-item">
@@ -148,7 +152,8 @@
                     </div>
                     <div class="category-content">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="straight-slant" data-domains="technical,medical,finance,defense,law">
+                            <input type="checkbox" id="straight-slant"
+                                data-domains="technical,medical,finance,defense,law">
                             <label for="straight-slant">Straight</label>
                         </div>
                         <div class="checkbox-item">
@@ -241,7 +246,8 @@
                             <label for="speed_clear">Clear</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="speed_unclear" data-domains="technical,finance,marketing,creative,law">
+                            <input type="checkbox" id="speed_unclear"
+                                data-domains="technical,finance,marketing,creative,law">
                             <label for="speed_unclear">Unclear</label>
                         </div>
                     </div>
@@ -322,16 +328,17 @@
                 </div>
             </div> -->
 
-            <div class="section"> 
-    <div class="section-title">Current Job Analysis</div>
-    <div class="form-group">
-        <label for="currentJobTitle">Current Job Title</label>
-        <input type="text" id="currentJobTitle" placeholder="Enter current job title">
+            <div class="section">
+                <div class="section-title">Current Job Analysis</div>
+                <div class="form-group">
+                    <label for="currentJobTitle">Current Job Title</label>
+                    <input type="text" id="currentJobTitle" placeholder="Enter current job title">
 
-        <label for="currentJob">Current Job Compatibility</label>
-        <textarea id="currentJob" placeholder="Enter job compatibility (comma separated or one per line)"></textarea>
-    </div>
-</div>
+                    <label for="currentJob">Current Job Compatibility</label>
+                    <textarea id="currentJob"
+                        placeholder="Enter job compatibility (comma separated or one per line)"></textarea>
+                </div>
+            </div>
 
 
 
@@ -339,9 +346,11 @@
                 <div class="section-title">Government Job Suitability</div>
                 <div class="form-group">
                     <label for="govJobSuitabilityLevel">Government Suitability Level</label>
-                    <input type="text" id="govJobSuitabilityLevel" placeholder="Enter Government Suitability Level : Low/ Moderate/ High">
+                    <input type="text" id="govJobSuitabilityLevel"
+                        placeholder="Enter Government Suitability Level : Low/ Moderate/ High">
                     <label> Analysis of Government Suitability </label>
-                    <textarea id="govJobSuitability" placeholder="Enter analysis of government job suitability..."></textarea>
+                    <textarea id="govJobSuitability"
+                        placeholder="Enter analysis of government job suitability..."></textarea>
                 </div>
             </div>
 
@@ -349,16 +358,19 @@
                 <div class="section-title">Business Possibility</div>
                 <div class="form-group">
                     <label for="businessSuitabilityLevel">Business Suitability Level</label>
-                    <input type="text" id="businessSuitabilityLevel" placeholder="Enter Business Suitability Level : Low/ Moderate/ High">
+                    <input type="text" id="businessSuitabilityLevel"
+                        placeholder="Enter Business Suitability Level : Low/ Moderate/ High">
                     <label> Analysis of Business Suitability </label>
-                    <textarea id="businessPossibility" placeholder="Enter analysis of business possibilities..."></textarea>
+                    <textarea id="businessPossibility"
+                        placeholder="Enter analysis of business possibilities..."></textarea>
                 </div>
             </div>
 
             <div class="section">
                 <div class="section-title">Overall Recommendation</div>
                 <div class="form-group">
-                    <textarea id="overallRecommendation" placeholder="Enter overall recommendation from Explormee..."></textarea>
+                    <textarea id="overallRecommendation"
+                        placeholder="Enter overall recommendation from Explormee..."></textarea>
                 </div>
             </div>
 
@@ -384,7 +396,7 @@
                 <!-- Section 1: User Information -->
                 <div class="report-section">
                     <h2 class="report-section-title">1. Personal Information</h2>
-                    
+
                     <div class="user-details-grid">
                         <div class="detail-item">
                             <span class="detail-label">Full Name:</span>
@@ -421,8 +433,10 @@
 
                         <h4>Handwriting Analysis</h4>
                         <div id="r_handwriting_box" class="image-box">
-                            <img id="r_handwriting_img" class="report-img" src="" alt="Handwriting Sample" style="display:none;" />
-                            <div id="r_handwriting_placeholder" class="image-placeholder">No handwriting sample uploaded</div>
+                            <img id="r_handwriting_img" class="report-img" src="" alt="Handwriting Sample"
+                                style="display:none;" />
+                            <div id="r_handwriting_placeholder" class="image-placeholder">No handwriting sample uploaded
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -430,10 +444,10 @@
                 <!-- Section 2: Personality Analysis -->
                 <div class="report-section">
                     <h2 class="report-section-title">2. Personality Trait Analysis</h2>
-                    
+
                     <div class="trait-analysis">
                         <div class="trait-title">Professional Strengths & Development Areas</div>
-                        
+
                         <div class="trait-content">
                             <div class="strengths-section">
                                 <h5>Key Strengths</h5>
@@ -441,7 +455,7 @@
                                     <div class="empty-state">No strengths provided</div>
                                 </div>
                             </div>
-                            
+
                             <div class="weaknesses-section">
                                 <h5>Development Areas</h5>
                                 <div class="keyword-tags" id="r_weaknesses_tags">
@@ -455,9 +469,10 @@
                 <!-- Section 3: Career Recommendations -->
                 <div class="report-section">
                     <h2 class="report-section-title">3. Top Career Recommendations</h2>
-                    
+
                     <div class="career-recommendations" id="r_career_recommendations">
-                        <div class="empty-state">Complete the handwriting analysis quiz to see personalized career recommendations</div>
+                        <div class="empty-state">Complete the handwriting analysis quiz to see personalized career
+                            recommendations</div>
                     </div>
                 </div>
 
@@ -497,98 +512,101 @@
                 </div> -->
 
                 <!-- Section 4: Specialized Career Analysis -->
-<div class="report-section">
-    <h2 class="report-section-title">4. Specialized Career Analysis</h2>
+                <div class="report-section">
+                    <h2 class="report-section-title">4. Specialized Career Analysis</h2>
 
-    <!-- Current Job Compatibility -->
-    <div class="analysis-card">
-        <h4>Current Job Compatibility</h4>
-        <div class="detail_label_title">
-            <span>Currently Pursuing:</span>
-            <span id="r_current_job_title">Not provided</span>
-        </div>
-        <p id="r_current_job_compatibility">
-            No analysis provided. Please complete the assessment form for detailed insights.
-        </p>
-    </div>
+                    <!-- Current Job Compatibility -->
+                    <div class="analysis-card">
+                        <h4>Current Job Compatibility</h4>
+                        <div class="detail_label_title">
+                            <span>Currently Pursuing:</span>
+                            <span id="r_current_job_title">Not provided</span>
+                        </div>
+                        <p id="r_current_job_compatibility">
+                            No analysis provided. Please complete the assessment form for detailed insights.
+                        </p>
+                    </div>
 
-    <!-- Government Job Suitability -->
-    <div class="analysis-card">
-        <h4>Government Job Suitability</h4>
-        <div class="detail_label_title">
-            <span>Government Job Suitability Level: </span>
-            <span id="r_gov_job_suitability_level">Not provided</span>
-        </div>
-        <p id="r_gov_job_analysis">
-            No analysis provided. Please complete the assessment form for detailed insights.
-        </p>
-    </div>
+                    <!-- Government Job Suitability -->
+                    <div class="analysis-card">
+                        <h4>Government Job Suitability</h4>
+                        <div class="detail_label_title">
+                            <span>Government Job Suitability Level: </span>
+                            <span id="r_gov_job_suitability_level">Not provided</span>
+                        </div>
+                        <p id="r_gov_job_analysis">
+                            No analysis provided. Please complete the assessment form for detailed insights.
+                        </p>
+                    </div>
 
-    <!-- Business & Entrepreneurship Potential -->
-    <div class="analysis-card">
-        <h4>Business & Entrepreneurship Potential</h4>
-        <div class="detail_label_title">
-            <span>Business Viability Level: </span>
-            <span id="r_business_suitability_level">Not provided</span>
-        </div>
-        <p id="r_business_analysis">
-            No analysis provided. Please complete the assessment form for detailed insights.
-        </p>
-    </div>
+                    <!-- Business & Entrepreneurship Potential -->
+                    <div class="analysis-card">
+                        <h4>Business & Entrepreneurship Potential</h4>
+                        <div class="detail_label_title">
+                            <span>Business Viability Level: </span>
+                            <span id="r_business_suitability_level">Not provided</span>
+                        </div>
+                        <p id="r_business_analysis">
+                            No analysis provided. Please complete the assessment form for detailed insights.
+                        </p>
+                    </div>
 
-</div>
+                </div>
 
 
                 <!-- Section 5: Professional Recommendations -->
                 <div class="report-section">
-                    <h2 class="report-section-title">5. Overall Recommendation for <span name = 'r_client_name'></span> </h2>
-                    
+                    <h2 class="report-section-title">5. Overall Recommendation for <span name='r_client_name'></span>
+                    </h2>
+
                     <div class="analysis-card">
                         <h4>Expert Career Guidance</h4>
-                        <p id="r_overall_recommendation">Complete your assessment to receive personalized career guidance from Explormy's professional analysts.</p>
+                        <p id="r_overall_recommendation">Complete your assessment to receive personalized career
+                            guidance from Explormy's professional analysts.</p>
                     </div>
                 </div>
 
                 <!-- Footer -->
                 <div class="footer">
                     <p>&copy; 2025 Explormee - Professional Career Analysis Services. All rights reserved.</p>
-                    <p>This confidential career analysis report is prepared exclusively for <span name="r_client_name">our client</span></p>
+                    <p>This confidential career analysis report is prepared exclusively for <span
+                            name="r_client_name">our client</span></p>
                 </div>
             </div>
         </div>
     </div>
 
-   <script src="career_tool_new.js"> </script>
-   <script>
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("downloadHtml").addEventListener("click", async () => {
-    const previewArea = document.querySelector("#reportRoot"); // use reportRoot instead of preview-area
+    <script src="career_tool_new.js"> </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("downloadHtml").addEventListener("click", async () => {
+                const previewArea = document.querySelector("#reportRoot"); // use reportRoot instead of preview-area
 
-    // 1️⃣ Grab all CSS from current page
-    const styles = Array.from(document.styleSheets)
-      .map(ss => {
-        try {
-          return Array.from(ss.cssRules).map(rule => rule.cssText).join('');
-        } catch {
-          return '';
-        }
-      })
-      .join('');
+                // 1️⃣ Grab all CSS from current page
+                const styles = Array.from(document.styleSheets)
+                    .map(ss => {
+                        try {
+                            return Array.from(ss.cssRules).map(rule => rule.cssText).join('');
+                        } catch {
+                            return '';
+                        }
+                    })
+                    .join('');
 
-    // 2️⃣ Clone preview and inline images as base64
-    const clone = previewArea.cloneNode(true);
-    const images = clone.querySelectorAll("img");
-    for (const img of images) {
-      try {
-        const dataUrl = await toCompressedDataURL(img.src, 0.7); // 70% quality
-        img.src = dataUrl;
-      } catch (e) {
-        console.warn("Could not inline image", img.src, e);
-      }
-    }
+                // 2️⃣ Clone preview and inline images as base64
+                const clone = previewArea.cloneNode(true);
+                const images = clone.querySelectorAll("img");
+                for (const img of images) {
+                    try {
+                        const dataUrl = await toCompressedDataURL(img.src, 0.7); // 70% quality
+                        img.src = dataUrl;
+                    } catch (e) {
+                        console.warn("Could not inline image", img.src, e);
+                    }
+                }
 
-    // 3️⃣ Build full HTML content
-    const htmlContent = `
+                // 3️⃣ Build full HTML content
+                const htmlContent = `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -617,44 +635,45 @@ document.addEventListener("DOMContentLoaded", () => {
       </html>
     `;
 
-    // 4️⃣ Download the HTML file
-    const blob = new Blob([htmlContent], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+                // 4️⃣ Download the HTML file
+                const blob = new Blob([htmlContent], { type: "text/html" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
 
-    const filename = (document.getElementById("r_user_name")?.textContent.trim().replace(/\s+/g, '_').toLowerCase())
-      || "career_analysis_report";
+                const filename = (document.getElementById("r_user_name")?.textContent.trim().replace(/\s+/g, '_').toLowerCase())
+                    || "career_analysis_report";
 
-    a.href = url;
-    a.download = `${filename}_career_report.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  });
+                a.href = url;
+                a.download = `${filename}_career_report.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
 
-  // Helper: Convert image URL to compressed base64
-  async function toCompressedDataURL(url, quality = 0.7) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = function () {
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-        const dataUrl = canvas.toDataURL("image/jpeg", quality);
-        resolve(dataUrl);
-      };
-      img.onerror = reject;
-      img.src = url;
-    });
-  }
-});
-</script>
+            // Helper: Convert image URL to compressed base64
+            async function toCompressedDataURL(url, quality = 0.7) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+                    img.onload = function () {
+                        const canvas = document.createElement("canvas");
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0);
+                        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+                        resolve(dataUrl);
+                    };
+                    img.onerror = reject;
+                    img.src = url;
+                });
+            }
+        });
+    </script>
 
-        
-    
+
+
 </body>
+
 </html>
