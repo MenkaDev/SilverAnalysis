@@ -79,8 +79,14 @@ function displayCareerDomains() {
     let html = '';
     careerDomains.forEach((career, index) => {
         const isRecommended = recommendedDomain === career.domain;
+        
+        // Ensure comments property exists
+        if (!career.hasOwnProperty('graphologicalPointers')) {
+            career.graphologicalPointers = "";
+        }
+        
         html += `
-            <div class="career-domain ${isRecommended ? 'recommended' : ''}>
+            <div class="career-domain ${isRecommended ? 'recommended' : ''}">
                 <div class="career-domain-header">
                     <span class="career-domain-title">${index + 1}.</span>
                 </div>
@@ -94,13 +100,39 @@ function displayCareerDomains() {
                 </div>
                 <div class="form-group">
                     <label>Niche Domains</label>
-                    <input type="text" id="niche-${career.domain}" placeholder="Enter niche domains (comma separated)" onchange="updatePreview()">
+                    <input type="text" id="niche-${career.domain}" value="${career.nicheDomains || ''}" placeholder="Enter niche domains (comma separated)" onchange="updateNicheDomains(${index}, this.value)">
+                </div>
+
+                <!-- ADDED: Graphological Pointers Section -->
+                <div class="form-group">
+                    <label>Graphological Pointers</label>
+                    <textarea 
+                        id="graphological-${index}" 
+                        placeholder="Add graphological pointers for this career domain..."
+                        onchange="updateGraphologicalPointers(${index}, this.value)"
+                        onblur="updateGraphologicalPointers(${index}, this.value)"
+                    >${career.graphologicalPointers || ''}</textarea>
                 </div>
             </div>
         `;
     });
     
     container.innerHTML = html;
+}
+
+// ADDED: Graphological Pointers functions
+function updateGraphologicalPointers(index, value) {
+    if (careerDomains[index]) {
+        careerDomains[index].graphologicalPointers = value;
+        updatePreview();
+    }
+}
+
+function updateNicheDomains(index, value) {
+    if (careerDomains[index]) {
+        careerDomains[index].nicheDomains = value;
+        updatePreview();
+    }
 }
 
 function updateCareerName(index, newName) {
@@ -198,7 +230,6 @@ function updateAnalysisSection(inputId, previewId) {
 }
 
 
-
 function updateCareerRecommendationsPreview() {
     const preview = document.getElementById('r_career_recommendations');
     
@@ -207,83 +238,58 @@ function updateCareerRecommendationsPreview() {
         return;
     }
 
-    let html = '<ul class="career-list">';
+    let html = '<div class="career-recommendations-container">';
     careerDomains.forEach((career, index) => {
         const nicheInput = document.getElementById(`niche-${career.domain}`);
         let niches = nicheInput ? nicheInput.value.trim() : '';
         const isRecommended = recommendedDomain === career.domain;
-
-        // ✅ Split by comma and make bullet list items
-        let bulletList = "";
-        if (niches) {
-            bulletList = niches
-                .split('\n')
-                .map(item => item.trim())
-                .filter(item => item.length > 0)
-                .map(item => `<li>${item}</li>`)  // 👈 only li, no manual bullet
-                .join('');
-        }
-
-        html += `
-            <li class="career-item ${isRecommended ? 'recommended' : ''}">
-                <strong>${index + 1}. ${career.name}</strong>
-                ${isRecommended ? '<span class="recommended-star">★</span>' : ''}
-                ${bulletList ? `<div class="career-niches"><em>Specializations:</em><ul class="bullet-list">${bulletList}</ul></div>` : ''}
-                <div class="career-score"><b>Match:</b> ${career.score.toFixed(1)}%</div>
-            </li>
-        `;
-    });
-    html += '</ul>';
-
-    preview.innerHTML = html;
-}
-
-
-function updateCareerRecommendationsPreview() {
-    const preview = document.getElementById('r_career_recommendations');
-    
-    if (careerDomains.length === 0) {
-        preview.innerHTML = '<div class="empty-state">Complete the handwriting analysis quiz to see personalized career recommendations</div>';
-        return;
-    }
-
-    let html = '<ul class="career-list">';
-    careerDomains.forEach((career, index) => {
-        const nicheInput = document.getElementById(`niche-${career.domain}`);
-        let niches = nicheInput ? nicheInput.value.trim() : '';
-        const isRecommended = recommendedDomain === career.domain;
-
-        console.log(`Raw input for ${career.domain}:`, niches); // Debug log
 
         // ✅ Split by newline and make bullet list items
         let bulletList = "";
         if (niches) {
-            const nicheArray = niches.split('\n')
+          const nicheArray = niches.split(/\s+/) 
                 .map(item => item.trim())
                 .filter(item => item.length > 0);
-            
-            console.log(`Split result for ${career.domain}:`, nicheArray); // Debug log
             
             if (nicheArray.length > 0) {
                 bulletList = nicheArray.map(item => `<li>${item}</li>`).join('');
             }
         }
 
+        // ADDED: Graphological Pointers display
+        let graphologicalDisplay = "";
+        if (career.graphologicalPointers && career.graphologicalPointers.trim() !== '') {
+            graphologicalDisplay = `
+                <div class="graphological-pointers">
+                    <div class="pointers-label">Graphological Pointers:</div>
+                    <div class="pointers-content">${career.graphologicalPointers}</div>
+                </div>
+            `;
+        }
+
         html += `
-            <li class="career-item ${isRecommended ? 'recommended' : ''}">
-                <strong>${index + 1}. ${career.name}</strong>
-                ${isRecommended ? '<span class="recommended-star">★</span>' : ''}
-                ${bulletList ? `<div class="career-niches"><em>Specializations:</em><ul class="bullet-list">${bulletList}</ul></div>` : ''}
-                <div class="career-score"><b>Match:</b> ${career.score.toFixed(1)}%</div>
-            </li>
+            <div class="career-item ${isRecommended ? 'recommended' : ''}">
+                <div class="career-main-content">
+                    <div class="career-header">
+                        <strong class="career-name">${index + 1}. ${career.name}</strong>
+                        ${isRecommended ? '<span class="recommended-star">★</span>' : ''}
+                        <div class="career-score"><b>Match:</b> ${career.score.toFixed(1)}%</div>
+                    </div>
+                    ${bulletList ? `
+                    <div class="career-niches-section">
+                        <em class="niches-label">Specializations:</em>
+                        <ul class="bullet-list">${bulletList}</ul>
+                    </div>
+                    ` : ''}
+                </div>
+                ${graphologicalDisplay}
+            </div>
         `;
     });
-    html += '</ul>';
+    html += '</div>';
 
     preview.innerHTML = html;
 }
-
-
 
 // Real-time update
 // document.getElementById('specializedCareerInput').addEventListener('input', updateSpecializedCareerPreview);
@@ -338,7 +344,7 @@ function handleImageUpload(inputId, imgId, placeholderId) {
     });
 }
 
-function downloadPDF() {
+ function downloadPDF() {
     const { jsPDF } = window.jspdf;
     
     if (!jsPDF) {
@@ -441,3 +447,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize preview
     updatePreview();
 });
+
+
+
+
+
+
+
