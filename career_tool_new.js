@@ -98,10 +98,18 @@ function displayCareerDomains() {
                     <label>Match Percentage</label>
                     <input type="number" id="career-score-${index}" value="${career.score.toFixed(1)}" min="0" max="100" step="0.1" placeholder="Enter percentage" onchange="updateCareerScore(${index}, this.value)">
                 </div>
-                <div class="form-group">
-                    <label>Niche Domains</label>
-                    <input type="text" id="niche-${career.domain}" value="${career.nicheDomains || ''}" placeholder="Enter niche domains (comma separated)" onchange="updateNicheDomains(${index}, this.value)">
-                </div>
+                
+    <div class="form-group">
+    <label>Niche Domains</label>
+    <textarea 
+        id="niche-${career.domain}" 
+        rows="3"
+        placeholder="Enter niche domains (press Enter for a new line)"
+        onchange="updateNicheDomains(${index}, this.value)"
+        onblur="updateNicheDomains(${index}, this.value)"
+    >${career.nicheDomains || ''}</textarea>
+</div>
+
 
                 <!-- ADDED: Graphological Pointers Section -->
                 <div class="form-group">
@@ -230,66 +238,70 @@ function updateAnalysisSection(inputId, previewId) {
 }
 
 
+
 function updateCareerRecommendationsPreview() {
-    const preview = document.getElementById('r_career_recommendations');
-    
-    if (careerDomains.length === 0) {
-        preview.innerHTML = '<div class="empty-state">Complete the handwriting analysis quiz to see personalized career recommendations</div>';
-        return;
+  const preview = document.getElementById('r_career_recommendations');
+  
+  if (careerDomains.length === 0) {
+    preview.innerHTML = '<div class="empty-state">Complete the handwriting analysis quiz to see personalized career recommendations</div>';
+    return;
+  }
+
+  let html = '<div class="career-recommendations-container">';
+  careerDomains.forEach((career, index) => {
+    const nicheInput = document.getElementById(`niche-${career.domain}`);
+    let niches = nicheInput ? nicheInput.value.trim() : '';
+    const isRecommended = recommendedDomain === career.domain;
+
+    // ✅ Split by Enter only, not by space
+    let bulletList = "";
+    if (niches) {
+      const nicheArray = niches
+        .split(/\n+/)
+        .map(item => item.trim())
+        .filter(item => item.length > 0);
+        
+      if (nicheArray.length > 0) {
+        bulletList = nicheArray.map(item => `<li>${item}</li>`).join('');
+      }
     }
 
-    let html = '<div class="career-recommendations-container">';
-    careerDomains.forEach((career, index) => {
-        const nicheInput = document.getElementById(`niche-${career.domain}`);
-        let niches = nicheInput ? nicheInput.value.trim() : '';
-        const isRecommended = recommendedDomain === career.domain;
+    let graphologicalDisplay = "";
+    if (career.graphologicalPointers && career.graphologicalPointers.trim() !== '') {
+      graphologicalDisplay = `
+        <div class="graphological-pointers">
+          <div class="pointers-label">Graphological Pointers:</div>
+          <div class="pointers-content">${career.graphologicalPointers}</div>
+        </div>
+      `;
+    }
 
-        // ✅ Split by newline and make bullet list items
-        let bulletList = "";
-        if (niches) {
-          const nicheArray = niches.split(/\s+/) 
-                .map(item => item.trim())
-                .filter(item => item.length > 0);
-            
-            if (nicheArray.length > 0) {
-                bulletList = nicheArray.map(item => `<li>${item}</li>`).join('');
-            }
-        }
+    html += `
+      <div class="career-item ${isRecommended ? 'recommended' : ''}">
+        <div class="career-main-content">
+          <div class="career-header">
+            <strong class="career-name">${index + 1}. ${career.name}</strong>
+            ${isRecommended ? '<span class="recommended-star">★</span>' : ''}
+            <div class="career-score"><b>Match:</b> ${career.score.toFixed(1)}%</div>
+          </div>
+          ${bulletList ? `
+          <div class="career-niches-section">
+            <em class="niches-label">Specializations:</em>
+            <ul class="bullet-list">${bulletList}</ul>
+          </div>
+          ` : ''}
+        </div>
+        ${graphologicalDisplay}
+      </div>
+    `;
+  });
+  html += '</div>';
 
-        // ADDED: Graphological Pointers display
-        let graphologicalDisplay = "";
-        if (career.graphologicalPointers && career.graphologicalPointers.trim() !== '') {
-            graphologicalDisplay = `
-                <div class="graphological-pointers">
-                    <div class="pointers-label">Graphological Pointers:</div>
-                    <div class="pointers-content">${career.graphologicalPointers}</div>
-                </div>
-            `;
-        }
-
-        html += `
-            <div class="career-item ${isRecommended ? 'recommended' : ''}">
-                <div class="career-main-content">
-                    <div class="career-header">
-                        <strong class="career-name">${index + 1}. ${career.name}</strong>
-                        ${isRecommended ? '<span class="recommended-star">★</span>' : ''}
-                        <div class="career-score"><b>Match:</b> ${career.score.toFixed(1)}%</div>
-                    </div>
-                    ${bulletList ? `
-                    <div class="career-niches-section">
-                        <em class="niches-label">Specializations:</em>
-                        <ul class="bullet-list">${bulletList}</ul>
-                    </div>
-                    ` : ''}
-                </div>
-                ${graphologicalDisplay}
-            </div>
-        `;
-    });
-    html += '</div>';
-
-    preview.innerHTML = html;
+  preview.innerHTML = html;
 }
+
+
+
 
 // Real-time update
 // document.getElementById('specializedCareerInput').addEventListener('input', updateSpecializedCareerPreview);
