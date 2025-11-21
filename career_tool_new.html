@@ -69,11 +69,21 @@
                 <div class="section-title">Personality Traits</div>
                 <div class="form-group">
                     <label for="strengths">Strengths (comma separated)</label>
-                    <textarea id="strengths" placeholder="e.g., Leadership, Communication, Problem-solving"></textarea>
+                    <div class="tag-input-wrapper">
+                    <div id="strengthsTagContainer" class="tag-container"></div>
+                    <input type="text" id="strengthsInput" placeholder="Type to search...">
+                    <div id="strengthsDropdown" class="dropdown"></div>
+                </div>
+                <textarea id="strengths" style="display:none;"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="weaknesses">Weaknesses (comma separated)</label>
-                    <textarea id="weaknesses" placeholder="e.g., Time management, Public speaking"></textarea>
+                    <div class="tag-input-wrapper">
+                    <div id="weaknessesTagContainer" class="tag-container"></div>
+                    <input type="text" id="weaknessesInput" placeholder="Type to search...">
+                    <div id="weaknessesDropdown" class="dropdown"></div>
+                </div>
+                <textarea id="weaknesses" style="display:none;"></textarea>
                 </div>
             </div>
 
@@ -334,9 +344,16 @@
                     <label for="currentJobTitle">Current Job Title</label>
                     <input type="text" id="currentJobTitle" placeholder="Enter current job title">
 
+                    <label for="currJobSuitabilityPointers">Current Job Compatibility Pointers (Input for the LLM)</label>
+                    <input type="text" id="currJobSuitabilityPointers"
+                        placeholder="Enter Current Job Compatibility Pointers here">
+
                     <label for="currentJob">Current Job Compatibility</label>
                     <textarea id="currentJob"
                         placeholder="Enter job compatibility (comma separated or one per line)"></textarea>
+                        
+                        <button id="currentBtn" class="btn btn-primary llm-btn" onclick="runLLM('CURRENT')">Generate</button>
+                        <span id="currentLoader" class="loader" style="display:none;"></span>
                 </div>
             </div>
 
@@ -348,9 +365,18 @@
                     <label for="govJobSuitabilityLevel">Government Suitability Level</label>
                     <input type="text" id="govJobSuitabilityLevel"
                         placeholder="Enter Government Suitability Level : Low/ Moderate/ High">
+
+                        <label for="govJobSuitabilityPointers">Gov Job Suitability Pointers (Input for the LLM)</label>
+                    <input type="text" id="govJobSuitabilityPointers"
+                        placeholder="Enter Government Job Suitability Pointers here">
+
                     <label> Analysis of Government Suitability </label>
                     <textarea id="govJobSuitability"
                         placeholder="Enter analysis of government job suitability..."></textarea>
+                        
+                        <button id="govBtn" class="btn btn-primary llm-btn" onclick="runLLM('GOV')">Generate</button>
+                        <span id="govLoader" class="loader" style="display:none;"></span>
+
                 </div>
             </div>
 
@@ -360,9 +386,18 @@
                     <label for="businessSuitabilityLevel">Business Suitability Level</label>
                     <input type="text" id="businessSuitabilityLevel"
                         placeholder="Enter Business Suitability Level : Low/ Moderate/ High">
+
+                        <label for="businessSuitabilityPointers">Business Suitability Pointers (Input for the LLM)</label>
+                    <input type="text" id="businessSuitabilityPointers"
+                        placeholder="Enter Business Suitability Pointers here">
+
                     <label> Analysis of Business Suitability </label>
                     <textarea id="businessPossibility"
-                        placeholder="Enter analysis of business possibilities..."></textarea>
+                        placeholder="Analysis of business possibilities..."></textarea>
+                        
+                        <button id="businessBtn" class="btn btn-primary llm-btn" onclick="runLLM('BUSINESS')">Generate</button>
+                        <span id="businessLoader" class="loader" style="display:none;"></span>
+
                 </div>
             </div>
 
