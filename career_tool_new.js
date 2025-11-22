@@ -9,6 +9,78 @@ const domainData = {
     law: { name: "Law & Legal Services", total: 7}
 };
 
+const behaviourList = [
+"Acquisitive","Active","Adjusting to a new city could be challenging","Aloof",
+"Ambitious goal setting","Amiable","Argumentative","Assertive","Attention at immediate task",
+"Attentive","Avoid being in the spotlight","Bossy","Calm problem-solving",
+"Can face cholesterol issues","Can face indigestion","Can face kidney problems",
+"Communicative","Compassionate","Competitive","Confrontational","Confused",
+"Conservative","Consistent efforts","Creative thinking","Critical thinking",
+"Decision making","Dependant","Detail oriented","Determined","Diligent",
+"Direct communication style","Discipline","Disorganised","Distracted","Dominant",
+"Driven mindset","Easily stressed","Emotional suppression","Empathetic",
+"Expressive behaviour","Extrovert","Face irregular sleep patterns","Fast learner",
+"Fear of rejection","Firm mindset","Flexible","Food sensitivity",
+"Friendly with new people","Goal clarity","Goal-driven approach",
+"Hardworking","Health-sensitive","High ambition","High emotional sensitivity",
+"High empathy","High expectations from self","High risk-taking tendency",
+"Honest","Hyperactive thoughts","Imaginative","Impulsive decisions",
+"Inability to focus on one thing","Insecure","Introverted","Irritable",
+"Judgemental","Kind behaviour","Lack of interest","Lazy nature",
+"Leadership qualities","Logical thinking","Low confidence","Low persistence",
+"Low patience","Low self-esteem","Meticulous","Mindful decisions",
+"Motivated","Multi-tasking ability","Negative thought patterns",
+"Neutral","Open communication","Optimistic","Organised","Over-emotional",
+"Overthinking","Overwhelmed easily","Patient","People pleasing",
+"Perfectionism","Persistent","Physical restlessness","Polite",
+"Poor time management","Practical thinking","Quiet nature","Reliability",
+"Reserved","Responsible","Risk-averse","Risk-taker","Rude behaviour",
+"Scattered thoughts","Self-aware","Self-driven","Self-motivated","Sensitive",
+"Short-tempered","Silent treatment tendency","Slow decision making",
+"Social behaviour","Social discomfort","Socially adaptable","Spontaneous",
+"Stable mindset","Stressed","Strong mindset","Talkative",
+"Task avoidance","Teamwork","Thoughtful","Uncertain behaviour",
+"Unexpressive","Very emotional"
+];
+
+const strengthList = [
+"Address issues in healthy way","Admirable","Adaptive","Ambitious",
+"Artistic strengths","Bold personality","Brave","Calm",
+"Clarity of goals","Committed","Compassion","Confidence","Consistent",
+"Courageous","Creative mind","Critical thinking","Dedicated",
+"Discipline","Emotional intelligence","Focused","Goal oriented",
+"Good listener","Hardworking","Healthy decision making",
+"Healthy boundaries","High determination","Honest nature","Innovative",
+"Leadership","Logical approach","Loyal",
+"Mature decision making","Mindful","Motivated","Open-minded",
+"Organised","Positive mindset"," Practical approach",
+"Problem solving","Resilient","Respectful behaviour","Responsible",
+"Self-awareness","Self-control","Self-driven","Self-motivated",
+"Smart work","Stable mindset","Strategic thinking",
+"Strong communication","Strong willpower","Supportive","Thoughtful",
+"Time management","Understanding","Visionary thinking"
+];
+
+const weaknessList = [
+"Aggressive","Anxious","Avoidant behaviour","Clingy nature",
+"Closed minded","Comparing yourself","Compulsive behaviour",
+"Confused decisions","Controlling nature","Daydreaming","Dependency",
+"Difficulty trusting others","Disorganised behaviour","Easily distracted",
+"Ego issues","Emotional suppression","Fearful behaviour","Fear of failure",
+"Feeling lost","Forgetful","Frustrated easily","Hesitant",
+"High sensitivity","Hyperactive thoughts","Impatience","Impulsive",
+"Insecure","Jealousy","Judgemental nature","Lack of discipline",
+"Lack of focus","Lack of patience","Lack of planning","Lazy tendencies",
+"Low confidence","Low self-esteem","Mood swings","Negative thinking",
+"Overthinking","Overwhelmed","People pleasing behaviour",
+"Perfectionist pressure","Poor boundaries","Poor decision making",
+"Poor emotional regulation","Poor time management",
+"Procrastination","Rigid mindset","Risk aversion","Scattered attention",
+"Self-doubt","Self-sabotage","Sensitive to criticism",
+"Stress mismanagement","Uncertain behaviour","Under-confident",
+"Unexpressive","Validation seeking"
+];
+
 let careerDomains = [];
 let recommendedDomain = null;
 
@@ -436,10 +508,166 @@ function resetForm() {
     }
 }
 
+async function runLLM(type) {
+    let inputId = "";
+    let outputId = "";
+    let templateId = "";
+    let loaderId = "";
+    if (type === "CURRENT") {
+        inputId = "currJobSuitabilityPointers";
+        outputId = "currentJob";
+        loaderId = "currentLoader";
+        buttonId = "currentBtn";
+        templateId = "current_job_template"; // your DB key
+    }
+    if (type === "GOV") {
+        inputId = "govJobSuitabilityPointers";
+        outputId = "govJobSuitability";
+        loaderId = "govLoader";
+        buttonId = "govBtn";
+        templateId = "government_job_template"; 
+    }
+    if (type === "BUSINESS") {
+        inputId = "businessSuitabilityPointers";
+        outputId = "businessPossibility";
+        loaderId = "businessLoader";
+        buttonId = "businessBtn";
+        templateId = "business_viability_template"; 
+    }
+    document.getElementById(loaderId).style.display = "inline-block";
+    document.getElementById(buttonId).classList.add("disabled");
+    const text = document.getElementById(inputId).value.trim();
+    if (!text) {
+        alert("Please enter some details before generating.");
+        document.getElementById(loaderId).style.display = "none";
+        document.getElementById(buttonId).classList.remove("disabled");
+        return;
+    }
+
+    // ---- STEP 1: Fetch system template from backend ----
+    let targetURL = "";
+    const currHost = window.location.hostname;
+    console.log(currHost);
+    if (currHost == "menkadev.github.io"){
+        targetURL = "https://exploreemebackend-1056855884926.us-central1.run.app";
+    }
+    else{
+        targetURL = "http://127.0.0.1:8000";
+    }
+    const fetchRes = await fetch(`${targetURL}/ai_automations_handler/fetch-data/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "yhW10OA9omHFZS9nrcKfNJhhXM6umfpCWpScxkWx"},
+        body: JSON.stringify({
+            template_id: templateId,
+            pointers: text
+        }),
+    });
+
+    const fetchData = await fetchRes.json();
+
+    // ---- STEP 2: Call LLM with template + pointers ----
+    const llmRes = await fetch(`${targetURL}/ai_automations_handler/process-llm/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "yhW10OA9omHFZS9nrcKfNJhhXM6umfpCWpScxkWx"},
+        body: JSON.stringify({
+            system_template: fetchData.system_template,
+            pointers: fetchData.pointers
+        }),
+    });
+
+    const llmData = await llmRes.json();
+
+    document.getElementById(loaderId).style.display = "none";
+    document.getElementById(buttonId).classList.remove("disabled");
+    document.getElementById(outputId).innerHTML = llmData.output;
+    updatePreview();
+}
+const traitCategories = {
+    behaviour: behaviourList,
+    strength: strengthList,
+    weakness: weaknessList
+};
+
+function setupTagInput(inputId, dropdownId, tagContainerId, sourceList) {
+    const input = document.getElementById(inputId);
+    const dropdown = document.getElementById(dropdownId);
+    const tagContainer = document.getElementById(tagContainerId);
+
+    let tags = [];
+
+    function renderTags() {
+        tagContainer.innerHTML = "";
+
+        tags.forEach((tag, index) => {
+            const el = document.createElement("div");
+            el.className = "tag";
+            el.innerHTML = `${tag} <span class="tag-remove" data-i="${index}">×</span>`;
+            tagContainer.appendChild(el);
+        });
+
+        const hiddenFieldId = inputId === "strengthsInput" ? "strengths" : "weaknesses";
+        document.getElementById(hiddenFieldId).value = tags.join(", ");
+
+        updatePreview();
+    }
+
+    input.addEventListener("keyup", (e) => {
+        const value = input.value.trim();
+
+        // ENTER should add custom tags too
+        if (e.key === "Enter" && value !== "") {
+            tags.push(value);
+            input.value = "";
+            renderTags();
+            dropdown.style.display = "none";
+            return;
+        }
+
+        if (value.length === 0) {
+            dropdown.style.display = "none";
+            return;
+        }
+
+        const results = sourceList
+            .filter(item => item.toLowerCase().includes(value.toLowerCase()))
+            .slice(0, 5);
+
+        dropdown.innerHTML = results.map(r => `<div class="dropdown-item">${r}</div>`).join("");
+        dropdown.style.display = "block";
+    });
+
+    dropdown.addEventListener("click", (e) => {
+        if (e.target.classList.contains("dropdown-item")) {
+            tags.push(e.target.textContent);
+            input.value = "";
+            dropdown.style.display = "none";
+            renderTags();
+        }
+    });
+
+    tagContainer.addEventListener("click", (e) => {
+        if (e.target.classList.contains("tag-remove")) {
+            const index = parseInt(e.target.dataset.i);
+            tags.splice(index, 1);
+            renderTags();
+        }
+    });
+
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && input.value === "" && tags.length > 0) {
+            tags.pop();
+            renderTags();
+        }
+    });
+}
+
+
+
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize date
     initializeDate();
+    
     
     // Add listeners to all form inputs for real-time preview updates
     const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
@@ -455,6 +683,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup image upload handlers
     handleImageUpload('signatureUpload', 'r_signature_img', 'r_signature_placeholder');
     handleImageUpload('handwritingUpload', 'r_handwriting_img', 'r_handwriting_placeholder');
+    setupTagInput("strengthsInput", "strengthsDropdown", "strengthsTagContainer", strengthList);
+    setupTagInput("weaknessesInput", "weaknessesDropdown", "weaknessesTagContainer", weaknessList);
+
 
     // Initialize preview
     updatePreview();
