@@ -546,17 +546,20 @@ async function runLLM(type) {
 
     // ---- STEP 1: Fetch system template from backend ----
     let targetURL = "";
+    let apiKey = "";
     const currHost = window.location.hostname;
     console.log(currHost);
     if (currHost == "menkadev.github.io"){
         targetURL = "https://exploreemebackend-1056855884926.us-central1.run.app";
+        apiKey = "ek8pfnyVmlvvjyKGf665rhHpioob2hrORjw0BxwH";
     }
     else{
         targetURL = "http://127.0.0.1:8000";
+        apiKey = "yhW10OA9omHFZS9nrcKfNJhhXM6umfpCWpScxkWx";
     }
     const fetchRes = await fetch(`${targetURL}/ai_automations_handler/fetch-data/`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "yhW10OA9omHFZS9nrcKfNJhhXM6umfpCWpScxkWx"},
+        headers: { "Content-Type": "application/json", "Authorization": apiKey},
         body: JSON.stringify({
             template_id: templateId,
             pointers: text
@@ -568,7 +571,7 @@ async function runLLM(type) {
     // ---- STEP 2: Call LLM with template + pointers ----
     const llmRes = await fetch(`${targetURL}/ai_automations_handler/process-llm/`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "yhW10OA9omHFZS9nrcKfNJhhXM6umfpCWpScxkWx"},
+        headers: { "Content-Type": "application/json", "Authorization": apiKey},
         body: JSON.stringify({
             system_template: fetchData.system_template,
             pointers: fetchData.pointers
