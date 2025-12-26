@@ -84,72 +84,6 @@ const weaknessList = [
 let careerDomains = [];
 let recommendedDomain = null;
 
-// Save form data to localStorage
-function saveFormData() {
-    const formData = {
-        careerDomains: careerDomains,
-        recommendedDomain: recommendedDomain,
-        userName: document.getElementById('userName').value,
-        userAge: document.getElementById('userAge').value,
-        userEducation: document.getElementById('userEducation').value,
-        currentJobTitle: document.getElementById('currentJobTitle').value,
-        govJobSuitabilityLevel: document.getElementById('govJobSuitabilityLevel').value,
-        businessSuitabilityLevel: document.getElementById('businessSuitabilityLevel').value,
-        strengths: document.getElementById('strengths').value,
-        weaknesses: document.getElementById('weaknesses').value,
-        currentJob: document.getElementById('currentJob').value,
-        govJobSuitability: document.getElementById('govJobSuitability').value,
-        businessPossibility: document.getElementById('businessPossibility').value,
-        overallRecommendation: document.getElementById('overallRecommendation').value,
-        currJobSuitabilityPointers: document.getElementById('currJobSuitabilityPointers').value,
-        govJobSuitabilityPointers: document.getElementById('govJobSuitabilityPointers').value,
-        businessSuitabilityPointers: document.getElementById('businessSuitabilityPointers').value
-    };
-    
-    localStorage.setItem('careerAnalysisData', JSON.stringify(formData));
-}
-
-// Load form data from localStorage
-function loadFormData() {
-    const savedData = localStorage.getItem('careerAnalysisData');
-    
-    if (savedData) {
-        const formData = JSON.parse(savedData);
-        
-        // Restore career domains
-        if (formData.careerDomains && formData.careerDomains.length > 0) {
-            careerDomains = formData.careerDomains;
-            recommendedDomain = formData.recommendedDomain || null;
-        }
-        
-        // Restore form field values
-        document.getElementById('userName').value = formData.userName || '';
-        document.getElementById('userAge').value = formData.userAge || '';
-        document.getElementById('userEducation').value = formData.userEducation || '';
-        document.getElementById('currentJobTitle').value = formData.currentJobTitle || '';
-        document.getElementById('govJobSuitabilityLevel').value = formData.govJobSuitabilityLevel || '';
-        document.getElementById('businessSuitabilityLevel').value = formData.businessSuitabilityLevel || '';
-        document.getElementById('strengths').value = formData.strengths || '';
-        document.getElementById('weaknesses').value = formData.weaknesses || '';
-        document.getElementById('currentJob').value = formData.currentJob || '';
-        document.getElementById('govJobSuitability').value = formData.govJobSuitability || '';
-        document.getElementById('businessPossibility').value = formData.businessPossibility || '';
-        document.getElementById('overallRecommendation').value = formData.overallRecommendation || '';
-        document.getElementById('currJobSuitabilityPointers').value = formData.currJobSuitabilityPointers || '';
-        document.getElementById('govJobSuitabilityPointers').value = formData.govJobSuitabilityPointers || '';
-        document.getElementById('businessSuitabilityPointers').value = formData.businessSuitabilityPointers || '';
-        
-        // Update display
-        displayCareerDomains();
-        updatePreview();
-    }
-}
-
-// Clear all saved data
-function clearSavedData() {
-    localStorage.removeItem('careerAnalysisData');
-}
-
 // Initialize date
 function initializeDate() {
     const today = new Date();
@@ -200,32 +134,9 @@ function updateCareerRecommendations() {
     handwritingResults.sort((a, b) => b.score - a.score);
     const topHandwriting = handwritingResults.filter(result => result.score > 0).slice(0, 3);
     
-    // Preserve existing data when updating
-    if (careerDomains.length > 0) {
-        const existingDomains = {};
-        careerDomains.forEach(career => {
-            existingDomains[career.domain] = career;
-        });
-        
-        // Merge old data with new
-        careerDomains = topHandwriting.map(newCareer => {
-            if (existingDomains[newCareer.domain]) {
-                return {
-                    ...newCareer,
-                    name: existingDomains[newCareer.domain].name || newCareer.name,
-                    graphologicalPointers: existingDomains[newCareer.domain].graphologicalPointers || '',
-                    nicheDomains: existingDomains[newCareer.domain].nicheDomains || ''
-                };
-            }
-            return newCareer;
-        });
-    } else {
-        careerDomains = topHandwriting;
-    }
-    
+    careerDomains = topHandwriting;
     displayCareerDomains();
     updatePreview();
-    saveFormData();
 }
 
 
@@ -294,7 +205,6 @@ function updateGraphologicalPointers(index, value) {
     if (careerDomains[index]) {
         careerDomains[index].graphologicalPointers = value;
         updatePreview();
-        saveFormData();
     }
 }
 
@@ -302,7 +212,6 @@ function updateNicheDomains(index, value) {
     if (careerDomains[index]) {
         careerDomains[index].nicheDomains = value;
         updatePreview();
-        saveFormData();
     }
 }
 
@@ -310,7 +219,6 @@ function updateCareerName(index, newName) {
     if (careerDomains[index]) {
         careerDomains[index].name = newName;
         updatePreview();
-        saveFormData();
     }
 }
 
@@ -318,7 +226,6 @@ function updateCareerScore(index, newScore) {
     if (careerDomains[index]) {
         careerDomains[index].score = parseFloat(newScore) || 0;
         updatePreview();
-        saveFormData();
     }
 }
 
@@ -326,7 +233,6 @@ function selectRecommended(domain) {
     recommendedDomain = domain;
     displayCareerDomains();
     updatePreview();
-    saveFormData();
 }
 
 function updatePreview() {
@@ -596,12 +502,6 @@ function resetForm() {
         careerDomains = [];
         recommendedDomain = null;
         
-        // Clear saved data
-        clearSavedData();
-        
-        // Reset date to today
-        initializeDate();
-        
         // Update displays
         displayCareerDomains();
         updatePreview();
@@ -684,7 +584,6 @@ async function runLLM(type) {
     document.getElementById(buttonId).classList.remove("disabled");
     document.getElementById(outputId).innerHTML = llmData.output;
     updatePreview();
-    saveFormData();
 }
 const traitCategories = {
     behaviour: behaviourList,
@@ -769,29 +668,19 @@ function setupTagInput(inputId, dropdownId, tagContainerId, sourceList) {
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    // Try to load saved data first
-    loadFormData();
+    // Initialize date
+    initializeDate();
     
-    // If no saved data, initialize date
-    if (!localStorage.getItem('careerAnalysisData')) {
-        initializeDate();
-    }
     
     // Add listeners to all form inputs for real-time preview updates
     const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
     inputs.forEach(input => {
-        input.addEventListener('input', function() {
-            updatePreview();
-            saveFormData();
-        });
+        input.addEventListener('input', updatePreview);
     });
 
     // Add listeners to checkboxes for handwriting analysis
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            updateCareerRecommendations();
-            saveFormData();
-        });
+        checkbox.addEventListener('change', updateCareerRecommendations);
     });
 
     // Setup image upload handlers
@@ -803,9 +692,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize preview
     updatePreview();
-    
-    // Save data when the page is about to unload (as a backup)
-    window.addEventListener('beforeunload', saveFormData);
 });
 
 
