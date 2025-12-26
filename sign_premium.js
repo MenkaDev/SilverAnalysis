@@ -315,8 +315,8 @@ function setClientName(spanId, name, possessive = false) {
     // Additional fields
     document.getElementById('r_overallbenefit').textContent = document.getElementById('overallBenefit').value;
     document.getElementById('r_affirmation').textContent = document.getElementById('phase3').value;
-    document.getElementById('r_handwritingMistakes').textContent = document.getElementById('handwritingMistakes').value;
-    document.getElementById('r_handwritingCorrections').textContent = document.getElementById('handwritingCorrections').value;
+    document.getElementById('r_handwritingMistakes').innerHTML = document.getElementById('handwritingMistakes').value.replace(/\n/g, "<br>");
+    document.getElementById('r_handwritingCorrections').innerHTML = document.getElementById('handwritingCorrections').value.replace(/\n/g, "<br>");
     document.getElementById('r_expert_rec').textContent = document.getElementById('expertRec').value;
 }
 
