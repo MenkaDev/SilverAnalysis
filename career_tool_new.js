@@ -582,7 +582,7 @@ async function runLLM(type) {
 
     document.getElementById(loaderId).style.display = "none";
     document.getElementById(buttonId).classList.remove("disabled");
-    document.getElementById(outputId).innerHTML = llmData.output;
+    document.getElementById(outputId).value = llmData.output;
     updatePreview();
 }
 const traitCategories = {
