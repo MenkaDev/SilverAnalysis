@@ -84,7 +84,141 @@ const weaknessList = [
 let careerDomains = [];
 let recommendedDomain = null;
 
-// Initialize date
+// ==================== LOCALSTORAGE FUNCTIONS ====================
+
+function saveToLocalStorage() {
+    const formData = {
+        // Basic user info
+        userName: document.getElementById('userName')?.value || '',
+        userAge: document.getElementById('userAge')?.value || '',
+        userEducation: document.getElementById('userEducation')?.value || '',
+        reportDate: document.getElementById('reportDate')?.value || '',
+        currentJobTitle: document.getElementById('currentJobTitle')?.value || '',
+        govJobSuitabilityLevel: document.getElementById('govJobSuitabilityLevel')?.value || '',
+        businessSuitabilityLevel: document.getElementById('businessSuitabilityLevel')?.value || '',
+        
+        // Analysis fields
+        strengths: document.getElementById('strengths')?.value || '',
+        weaknesses: document.getElementById('weaknesses')?.value || '',
+        currentJob: document.getElementById('currentJob')?.value || '',
+        govJobSuitability: document.getElementById('govJobSuitability')?.value || '',
+        businessPossibility: document.getElementById('businessPossibility')?.value || '',
+        overallRecommendation: document.getElementById('overallRecommendation')?.value || '',
+        
+        // Pointer fields
+        currJobSuitabilityPointers: document.getElementById('currJobSuitabilityPointers')?.value || '',
+        govJobSuitabilityPointers: document.getElementById('govJobSuitabilityPointers')?.value || '',
+        businessSuitabilityPointers: document.getElementById('businessSuitabilityPointers')?.value || '',
+        
+        // Career domains
+        careerDomains: careerDomains,
+        recommendedDomain: recommendedDomain,
+        
+        // Checkboxes
+        checkboxes: Array.from(document.querySelectorAll('input[type="checkbox"]'))
+            .map(cb => ({ id: cb.id, checked: cb.checked }))
+            .filter(item => item.id),
+        
+        // Images (base64)
+        signatureImage: document.getElementById('r_signature_img')?.src || '',
+        handwritingImage: document.getElementById('r_handwriting_img')?.src || '',
+        
+        // Timestamp
+        savedAt: new Date().toISOString()
+    };
+    
+    try {
+        localStorage.setItem('careerAnalysisData', JSON.stringify(formData));
+        console.log('Data saved successfully');
+        return true;
+    } catch (error) {
+        console.error('Error saving to localStorage:', error);
+        alert('Error saving data. Your browser storage might be full.');
+        return false;
+    }
+}
+
+function loadFromLocalStorage() {
+    try {
+        const savedData = localStorage.getItem('careerAnalysisData');
+        if (!savedData) {
+            console.log('No saved data found');
+            return false;
+        }
+        
+        const formData = JSON.parse(savedData);
+        
+        // Restore basic user info
+        if (formData.userName) document.getElementById('userName').value = formData.userName;
+        if (formData.userAge) document.getElementById('userAge').value = formData.userAge;
+        if (formData.userEducation) document.getElementById('userEducation').value = formData.userEducation;
+        if (formData.reportDate) document.getElementById('reportDate').value = formData.reportDate;
+        if (formData.currentJobTitle) document.getElementById('currentJobTitle').value = formData.currentJobTitle;
+        if (formData.govJobSuitabilityLevel) document.getElementById('govJobSuitabilityLevel').value = formData.govJobSuitabilityLevel;
+        if (formData.businessSuitabilityLevel) document.getElementById('businessSuitabilityLevel').value = formData.businessSuitabilityLevel;
+        
+        // Restore analysis fields
+        if (formData.strengths) document.getElementById('strengths').value = formData.strengths;
+        if (formData.weaknesses) document.getElementById('weaknesses').value = formData.weaknesses;
+        if (formData.currentJob) document.getElementById('currentJob').value = formData.currentJob;
+        if (formData.govJobSuitability) document.getElementById('govJobSuitability').value = formData.govJobSuitability;
+        if (formData.businessPossibility) document.getElementById('businessPossibility').value = formData.businessPossibility;
+        if (formData.overallRecommendation) document.getElementById('overallRecommendation').value = formData.overallRecommendation;
+        
+        // Restore pointer fields
+        if (formData.currJobSuitabilityPointers) document.getElementById('currJobSuitabilityPointers').value = formData.currJobSuitabilityPointers;
+        if (formData.govJobSuitabilityPointers) document.getElementById('govJobSuitabilityPointers').value = formData.govJobSuitabilityPointers;
+        if (formData.businessSuitabilityPointers) document.getElementById('businessSuitabilityPointers').value = formData.businessSuitabilityPointers;
+        
+        // Restore career domains
+        if (formData.careerDomains) {
+            careerDomains = formData.careerDomains;
+            recommendedDomain = formData.recommendedDomain;
+            displayCareerDomains();
+        }
+        
+        // Restore checkboxes
+        if (formData.checkboxes) {
+            formData.checkboxes.forEach(item => {
+                const checkbox = document.getElementById(item.id);
+                if (checkbox) checkbox.checked = item.checked;
+            });
+        }
+        
+        // Restore images
+        if (formData.signatureImage && formData.signatureImage.startsWith('data:')) {
+            document.getElementById('r_signature_img').src = formData.signatureImage;
+            document.getElementById('r_signature_img').style.display = 'block';
+            document.getElementById('r_signature_placeholder').style.display = 'none';
+        }
+        
+        if (formData.handwritingImage && formData.handwritingImage.startsWith('data:')) {
+            document.getElementById('r_handwriting_img').src = formData.handwritingImage;
+            document.getElementById('r_handwriting_img').style.display = 'block';
+            document.getElementById('r_handwriting_placeholder').style.display = 'none';
+        }
+        
+        // Update preview
+        updatePreview();
+        
+        console.log('Data loaded successfully');
+        return true;
+    } catch (error) {
+        console.error('Error loading from localStorage:', error);
+        return false;
+    }
+}
+
+function clearLocalStorage() {
+    if (confirm('Are you sure you want to clear all saved data? This cannot be undone.')) {
+        localStorage.removeItem('careerAnalysisData');
+        console.log('LocalStorage cleared');
+        alert('All saved data has been cleared.');
+    }
+}
+
+// ==================== EXISTING FUNCTIONS (MODIFIED) ====================
+
 function initializeDate() {
     const today = new Date();
     const formattedDate = today.toLocaleDateString('en-US', { 
@@ -137,8 +271,8 @@ function updateCareerRecommendations() {
     careerDomains = topHandwriting;
     displayCareerDomains();
     updatePreview();
+    saveToLocalStorage(); // Auto-save
 }
-
 
 function displayCareerDomains() {
     const container = document.getElementById('career-domains-container');
@@ -152,7 +286,6 @@ function displayCareerDomains() {
     careerDomains.forEach((career, index) => {
         const isRecommended = recommendedDomain === career.domain;
         
-        // Ensure comments property exists
         if (!career.hasOwnProperty('graphologicalPointers')) {
             career.graphologicalPointers = "";
         }
@@ -171,19 +304,17 @@ function displayCareerDomains() {
                     <input type="number" id="career-score-${index}" value="${career.score.toFixed(1)}" min="0" max="100" step="0.1" placeholder="Enter percentage" onchange="updateCareerScore(${index}, this.value)">
                 </div>
                 
-    <div class="form-group">
-    <label>Niche Domains</label>
-    <textarea 
-        id="niche-${career.domain}" 
-        rows="3"
-        placeholder="Enter niche domains (press Enter for a new line)"
-        onchange="updateNicheDomains(${index}, this.value)"
-        onblur="updateNicheDomains(${index}, this.value)"
-    >${career.nicheDomains || ''}</textarea>
-</div>
+                <div class="form-group">
+                    <label>Niche Domains</label>
+                    <textarea 
+                        id="niche-${career.domain}" 
+                        rows="3"
+                        placeholder="Enter niche domains (press Enter for a new line)"
+                        onchange="updateNicheDomains(${index}, this.value)"
+                        onblur="updateNicheDomains(${index}, this.value)"
+                    >${career.nicheDomains || ''}</textarea>
+                </div>
 
-
-                <!-- ADDED: Graphological Pointers Section -->
                 <div class="form-group">
                     <label>Graphological Pointers</label>
                     <textarea 
@@ -200,11 +331,11 @@ function displayCareerDomains() {
     container.innerHTML = html;
 }
 
-// ADDED: Graphological Pointers functions
 function updateGraphologicalPointers(index, value) {
     if (careerDomains[index]) {
         careerDomains[index].graphologicalPointers = value;
         updatePreview();
+        saveToLocalStorage(); // Auto-save
     }
 }
 
@@ -212,6 +343,7 @@ function updateNicheDomains(index, value) {
     if (careerDomains[index]) {
         careerDomains[index].nicheDomains = value;
         updatePreview();
+        saveToLocalStorage(); // Auto-save
     }
 }
 
@@ -219,6 +351,7 @@ function updateCareerName(index, newName) {
     if (careerDomains[index]) {
         careerDomains[index].name = newName;
         updatePreview();
+        saveToLocalStorage(); // Auto-save
     }
 }
 
@@ -226,6 +359,7 @@ function updateCareerScore(index, newScore) {
     if (careerDomains[index]) {
         careerDomains[index].score = parseFloat(newScore) || 0;
         updatePreview();
+        saveToLocalStorage(); // Auto-save
     }
 }
 
@@ -233,43 +367,30 @@ function selectRecommended(domain) {
     recommendedDomain = domain;
     displayCareerDomains();
     updatePreview();
+    saveToLocalStorage(); // Auto-save
 }
 
 function updatePreview() {
-    // Update user details
     document.getElementById('r_user_name').textContent = document.getElementById('userName').value || 'Not provided';
     document.getElementById('r_user_age').textContent = document.getElementById('userAge').value || 'Not provided';
     document.getElementById('r_user_education').textContent = document.getElementById('userEducation').value || 'Not provided';
     document.getElementById('r_report_date').textContent = document.getElementById('reportDate').value || 'Not provided';
-    // document.getElementById('r_report_id').textContent = document.getElementById('reportId').value || 'CAREER-2025-001';
-    document.getElementById('r_current_job_title').textContent=document.getElementById('currentJobTitle').value || 'Not provided'
-    document.getElementById('r_gov_job_suitability_level').textContent=document.getElementById('govJobSuitabilityLevel').value || 'Not Provided'
-    document.getElementById('r_business_suitability_level').textContent=document.getElementById('businessSuitabilityLevel').value || 'Not Provided'
+    document.getElementById('r_current_job_title').textContent = document.getElementById('currentJobTitle').value || 'Not provided';
+    document.getElementById('r_gov_job_suitability_level').textContent = document.getElementById('govJobSuitabilityLevel').value || 'Not Provided';
+    document.getElementById('r_business_suitability_level').textContent = document.getElementById('businessSuitabilityLevel').value || 'Not Provided';
 
-    
-    // document.getElementById('r_current_job').textContent = document.getElementById('currentJob').value || 'Not provided';
-    
-    // Update client name in footer
     const clientName = document.getElementById('userName').value || 'our client';
-    // document.getElementById('r_client_name').textContent = clientName;
     document.getElementsByName('r_client_name').forEach(el => {
         el.textContent = clientName;
-      })
+    });
 
-    // Update personality traits
     updateKeywordTags('strengths', 'r_strengths_tags');
     updateKeywordTags('weaknesses', 'r_weaknesses_tags');
-
-    // Update career recommendations
     updateCareerRecommendationsPreview();
-
-    // Update analysis sections
-    
     updateAnalysisSection('currentJob', 'r_current_job_compatibility');
     updateAnalysisSection('govJobSuitability', 'r_gov_job_analysis');
     updateAnalysisSection('businessPossibility', 'r_business_analysis');
     updateAnalysisSection('overallRecommendation', 'r_overall_recommendation');
-   
 }
 
 function updateKeywordTags(inputId, previewId) {
@@ -282,12 +403,10 @@ function updateKeywordTags(inputId, previewId) {
         return;
     }
 
-    // Support both comma and newline separation
     const keywords = input.split(/[\n,]+/).map(k => k.trim()).filter(k => k);
     const html = keywords.map(keyword => `<span class="keyword-tag">${keyword}</span>`).join('');
     preview.innerHTML = html;
 }
-
 
 function updateAnalysisSection(inputId, previewId) {
     const input = document.getElementById(inputId).value;
@@ -298,113 +417,74 @@ function updateAnalysisSection(inputId, previewId) {
         return;
     }
 
-    // Split by commas or new lines, remove extra spaces
     const lines = input
-        .split(/\r?\n+/) // split by comma OR newline
+        .split(/\r?\n+/)
         .map(line => line.trim())
         .filter(line => line.length > 0);
 
-    // Always show bullet points (even if one line)
     const html = `<ul>${lines.map(line => `<li>${line}</li>`).join('')}</ul>`;
     preview.innerHTML = html;
 }
 
-
-
 function updateCareerRecommendationsPreview() {
-  const preview = document.getElementById('r_career_recommendations');
-  
-  if (careerDomains.length === 0) {
-    preview.innerHTML = '<div class="empty-state">Complete the handwriting analysis quiz to see personalized career recommendations</div>';
-    return;
-  }
-
-  let html = '<div class="career-recommendations-container">';
-  careerDomains.forEach((career, index) => {
-    const nicheInput = document.getElementById(`niche-${career.domain}`);
-    let niches = nicheInput ? nicheInput.value.trim() : '';
-    const isRecommended = recommendedDomain === career.domain;
-
-    // ✅ Split by Enter only, not by space
-    let bulletList = "";
-    if (niches) {
-      const nicheArray = niches
-        .split(/\n+/)
-        .map(item => item.trim())
-        .filter(item => item.length > 0);
-        
-      if (nicheArray.length > 0) {
-        bulletList = nicheArray.map(item => `<li>${item}</li>`).join('');
-      }
+    const preview = document.getElementById('r_career_recommendations');
+    
+    if (careerDomains.length === 0) {
+        preview.innerHTML = '<div class="empty-state">Complete the handwriting analysis quiz to see personalized career recommendations</div>';
+        return;
     }
 
-    let graphologicalDisplay = "";
-    if (career.graphologicalPointers && career.graphologicalPointers.trim() !== '') {
-      graphologicalDisplay = `
-        <div class="graphological-pointers">
-          <div class="pointers-label">Graphological Pointers:</div>
-          <div class="pointers-content">${career.graphologicalPointers}</div>
-        </div>
-      `;
-    }
+    let html = '<div class="career-recommendations-container">';
+    careerDomains.forEach((career, index) => {
+        const nicheInput = document.getElementById(`niche-${career.domain}`);
+        let niches = nicheInput ? nicheInput.value.trim() : '';
+        const isRecommended = recommendedDomain === career.domain;
 
-    html += `
-      <div class="career-item ${isRecommended ? 'recommended' : ''}">
-        <div class="career-main-content">
-          <div class="career-header">
-            <strong class="career-name">${index + 1}. ${career.name}</strong>
-            ${isRecommended ? '<span class="recommended-star">★</span>' : ''}
-            <div class="career-score"><b>Match:</b> ${career.score.toFixed(1)}%</div>
-          </div>
-          ${bulletList ? `
-          <div class="career-niches-section">
-            <em class="niches-label">Specializations:</em>
-            <ul class="bullet-list">${bulletList}</ul>
-          </div>
-          ` : ''}
-        </div>
-        ${graphologicalDisplay}
-      </div>
-    `;
-  });
-  html += '</div>';
+        let bulletList = "";
+        if (niches) {
+            const nicheArray = niches
+                .split(/\n+/)
+                .map(item => item.trim())
+                .filter(item => item.length > 0);
+                
+            if (nicheArray.length > 0) {
+                bulletList = nicheArray.map(item => `<li>${item}</li>`).join('');
+            }
+        }
 
-  preview.innerHTML = html;
+        let graphologicalDisplay = "";
+        if (career.graphologicalPointers && career.graphologicalPointers.trim() !== '') {
+            graphologicalDisplay = `
+                <div class="graphological-pointers">
+                    <div class="pointers-label">Graphological Pointers:</div>
+                    <div class="pointers-content">${career.graphologicalPointers}</div>
+                </div>
+            `;
+        }
+
+        html += `
+            <div class="career-item ${isRecommended ? 'recommended' : ''}">
+                <div class="career-main-content">
+                    <div class="career-header">
+                        <strong class="career-name">${index + 1}. ${career.name}</strong>
+                        ${isRecommended ? '<span class="recommended-star">★</span>' : ''}
+                        <div class="career-score"><b>Match:</b> ${career.score.toFixed(1)}%</div>
+                    </div>
+                    ${bulletList ? `
+                    <div class="career-niches-section">
+                        <em class="niches-label">Specializations:</em>
+                        <ul class="bullet-list">${bulletList}</ul>
+                    </div>
+                    ` : ''}
+                </div>
+                ${graphologicalDisplay}
+            </div>
+        `;
+    });
+    html += '</div>';
+
+    preview.innerHTML = html;
 }
-
-
-
-
-// Real-time update
-// document.getElementById('specializedCareerInput').addEventListener('input', updateSpecializedCareerPreview);
-
-
-
-// function updateSpecializedCareerPreview() {
-//     const input = document.getElementById('specializedCareerInput').value;
-//     const preview = document.getElementById('r_specialized_career');
-
-//     if (!input.trim()) {
-//         preview.innerHTML = '<div class="empty-state">No specialized careers entered</div>';
-//         return;
-//     }
-
-//     // Split by comma OR newline, remove extra spaces, filter empty
-//     const items = input
-//         .split(/\s*,\s*|\n+/)   // split by comma (with optional spaces) or Enter
-//         .map(item => item.trim())
-//         .filter(item => item.length > 0);
-
-//     // Convert to bullet points
-//     const html = `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
-//     preview.innerHTML = html;
-// }
-
-// // Real-time update
-// document.getElementById('specializedCareerInput').addEventListener('input', updateSpecializedCareerPreview);
-
-
-
 
 function handleImageUpload(inputId, imgId, placeholderId) {
     const input = document.getElementById(inputId);
@@ -419,6 +499,7 @@ function handleImageUpload(inputId, imgId, placeholderId) {
                 img.src = e.target.result;
                 img.style.display = 'block';
                 placeholder.style.display = 'none';
+                saveToLocalStorage(); // Auto-save when image uploaded
             };
             reader.readAsDataURL(file);
         } else {
@@ -428,7 +509,10 @@ function handleImageUpload(inputId, imgId, placeholderId) {
     });
 }
 
- function downloadPDF() {
+function downloadPDF() {
+    // Save data before downloading
+    saveToLocalStorage();
+    
     const { jsPDF } = window.jspdf;
     
     if (!jsPDF) {
@@ -475,36 +559,31 @@ function handleImageUpload(inputId, imgId, placeholderId) {
 
 function resetForm() {
     if (confirm('Are you sure you want to reset all fields? This action cannot be undone.')) {
-        // Reset all input fields
         document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(input => {
             if (input.id !== 'reportDate' && input.id !== 'reportId') {
                 input.value = '';
             }
         });
         
-        // Reset all checkboxes
         document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
             checkbox.checked = false;
         });
         
-        // Reset file inputs
         document.querySelectorAll('input[type="file"]').forEach(fileInput => {
             fileInput.value = '';
         });
         
-        // Reset images
         document.getElementById('r_signature_img').style.display = 'none';
         document.getElementById('r_signature_placeholder').style.display = 'block';
         document.getElementById('r_handwriting_img').style.display = 'none';
         document.getElementById('r_handwriting_placeholder').style.display = 'block';
         
-        // Reset career domains
         careerDomains = [];
         recommendedDomain = null;
         
-        // Update displays
         displayCareerDomains();
         updatePreview();
+        saveToLocalStorage(); // Save cleared state
     }
 }
 
@@ -513,12 +592,13 @@ async function runLLM(type) {
     let outputId = "";
     let templateId = "";
     let loaderId = "";
+    
     if (type === "CURRENT") {
         inputId = "currJobSuitabilityPointers";
         outputId = "currentJob";
         loaderId = "currentLoader";
         buttonId = "currentBtn";
-        templateId = "current_job_template"; // your DB key
+        templateId = "current_job_template";
     }
     if (type === "GOV") {
         inputId = "govJobSuitabilityPointers";
@@ -534,8 +614,10 @@ async function runLLM(type) {
         buttonId = "businessBtn";
         templateId = "business_viability_template"; 
     }
+    
     document.getElementById(loaderId).style.display = "inline-block";
     document.getElementById(buttonId).classList.add("disabled");
+    
     const text = document.getElementById(inputId).value.trim();
     if (!text) {
         alert("Please enter some details before generating.");
@@ -544,22 +626,21 @@ async function runLLM(type) {
         return;
     }
 
-    // ---- STEP 1: Fetch system template from backend ----
     let targetURL = "";
     let apiKey = "";
     const currHost = window.location.hostname;
-    console.log(currHost);
-    if (currHost == "menkadev.github.io"){
+    
+    if (currHost == "menkadev.github.io") {
         targetURL = "https://exploreemebackend-1056855884926.us-central1.run.app";
         apiKey = "ek8pfnyVmlvvjyKGf665rhHpioob2hrORjw0BxwH";
-    }
-    else{
+    } else {
         targetURL = "http://127.0.0.1:8000";
         apiKey = "yhW10OA9omHFZS9nrcKfNJhhXM6umfpCWpScxkWx";
     }
+    
     const fetchRes = await fetch(`${targetURL}/ai_automations_handler/fetch-data/`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": apiKey},
+        headers: { "Content-Type": "application/json", "Authorization": apiKey },
         body: JSON.stringify({
             template_id: templateId,
             pointers: text
@@ -568,10 +649,9 @@ async function runLLM(type) {
 
     const fetchData = await fetchRes.json();
 
-    // ---- STEP 2: Call LLM with template + pointers ----
     const llmRes = await fetch(`${targetURL}/ai_automations_handler/process-llm/`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": apiKey},
+        headers: { "Content-Type": "application/json", "Authorization": apiKey },
         body: JSON.stringify({
             system_template: fetchData.system_template,
             pointers: fetchData.pointers
@@ -584,7 +664,9 @@ async function runLLM(type) {
     document.getElementById(buttonId).classList.remove("disabled");
     document.getElementById(outputId).value = llmData.output;
     updatePreview();
+    saveToLocalStorage(); // Auto-save after LLM response
 }
+
 const traitCategories = {
     behaviour: behaviourList,
     strength: strengthList,
@@ -612,12 +694,12 @@ function setupTagInput(inputId, dropdownId, tagContainerId, sourceList) {
         document.getElementById(hiddenFieldId).value = tags.join(", ");
 
         updatePreview();
+        saveToLocalStorage(); // Auto-save
     }
 
     input.addEventListener("keyup", (e) => {
         const value = input.value.trim();
 
-        // ENTER should add custom tags too
         if (e.key === "Enter" && value !== "") {
             tags.push(value);
             input.value = "";
@@ -664,23 +746,31 @@ function setupTagInput(inputId, dropdownId, tagContainerId, sourceList) {
     });
 }
 
-
-
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize date
-    initializeDate();
+    // Load saved data first
+    loadFromLocalStorage();
     
+    // Initialize date if not loaded
+    if (!document.getElementById('reportDate').value) {
+        initializeDate();
+    }
     
-    // Add listeners to all form inputs for real-time preview updates
+    // Add listeners to all form inputs for real-time preview updates AND auto-save
     const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
     inputs.forEach(input => {
-        input.addEventListener('input', updatePreview);
+        input.addEventListener('input', function() {
+            updatePreview();
+            saveToLocalStorage(); // Auto-save on input
+        });
     });
 
     // Add listeners to checkboxes for handwriting analysis
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-        checkbox.addEventListener('change', updateCareerRecommendations);
+        checkbox.addEventListener('change', function() {
+            updateCareerRecommendations();
+            saveToLocalStorage(); // Auto-save on checkbox change
+        });
     });
 
     // Setup image upload handlers
@@ -689,14 +779,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupTagInput("strengthsInput", "strengthsDropdown", "strengthsTagContainer", strengthList);
     setupTagInput("weaknessesInput", "weaknessesDropdown", "weaknessesTagContainer", weaknessList);
 
-
     // Initialize preview
     updatePreview();
+    
+    console.log('Form initialized with localStorage support');
 });
-
-
-
-
-
-
-

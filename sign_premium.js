@@ -1628,8 +1628,12 @@ function setClientName(spanId, name, possessive = false) {
 list.innerHTML = "";
 
 document.querySelectorAll(".mistake-desc-block").forEach(block => {
-  const title = block.querySelector("strong").textContent;
-  const desc = block.querySelector("textarea").value.trim();
+  // const title = block.querySelector("strong").textContent;
+  const title = block.getElementsByClassName("sign_mistake_head")[0].value;
+
+  
+  // const desc = block.querySelector("textarea").value.trim();
+  const desc = block.getElementsByClassName("sign_mistake_desc")[0].value;
 
   const li = document.createElement("li");
   li.className = "mistake-item";
@@ -1890,8 +1894,9 @@ function renderMistakeDescriptions(selectedTitles) {
     const block = document.createElement("div");
     block.className = "mistake-desc-block";
 
-    const heading = document.createElement("strong");
-    heading.textContent = title;
+    const heading = document.createElement("textarea");
+    heading.className = "sign_mistake_head";
+    heading.value = title;
 
     const textarea = document.createElement("textarea");
     textarea.className = "sign_mistake_desc";
@@ -2289,7 +2294,7 @@ async function domToPdfBlob() {
   document
   .querySelectorAll("#mistakeDescriptions .mistake-desc-block")
   .forEach((block, i) => {
-    const title = block.querySelector("strong")?.textContent || "";
+    const title = block.querySelector("strong")?.value || "";
     const desc = block.querySelector("textarea")?.value || "";
 
     if (title || desc) {
