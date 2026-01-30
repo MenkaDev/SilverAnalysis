@@ -401,13 +401,31 @@
                 </div>
             </div>
 
-            <div class="section">
-                <div class="section-title">Overall Recommendation</div>
-                <div class="form-group">
-                    <textarea id="overallRecommendation"
-                        placeholder="Enter overall recommendation from Explormee..."></textarea>
-                </div>
-            </div>
+           <div class="section">
+    <div class="section-title">Overall Recommendation</div>
+    <div class="form-group">
+
+        <label for="overallRecommendationPointers">
+            Overall Recommendation Pointers (Input for the LLM)
+        </label>
+        <input type="text"
+               id="overallRecommendationPointers"
+               placeholder="Enter overall recommendation pointers here">
+
+        <label>Overall Recommendation (LLM Output)</label>
+        <textarea id="overallRecommendation"
+                  placeholder="Overall recommendation from Explormee..."></textarea>
+
+        <button id="overallBtn"
+                class="btn btn-primary llm-btn"
+                onclick="runLLM('OVERALL')">
+            Generate
+        </button>
+
+        <span id="overallLoader" class="loader" style="display:none;"></span>
+
+    </div>
+</div>
 
             <!-- Controls -->
             <div class="controls-row">

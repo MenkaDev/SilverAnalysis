@@ -59,6 +59,22 @@
               <label for="p1-emotional-3">Small dots over "i" or "j" - Practical, handles emotions well</label>
             </div>
           </div>
+          <div class="llm-generate-row">
+  <input
+    id="p1_emotional_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p1_emotional_btn"
+    onclick="generateP1Emotional()"
+  >
+    Generate
+  </button>
+
+  <span id="p1_emotional_loader" class="loader" style="display:none;"></span>
+</div>
           <textarea id="person1EmotionalNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
         </div>
 
@@ -86,6 +102,22 @@
               <label for="p1-comm-5">Small handwriting - Shares less, introvert</label>
             </div>
           </div>
+          <div class="llm-generate-row">
+  <input
+    id="p1_communication_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p1_communication_btn"
+    onclick="generateP1Communication()"
+  >
+    Generate
+  </button>
+
+  <span id="p1_communication_loader" class="loader" style="display:none;"></span>
+</div>
           <textarea id="person1CommunicationNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
         </div>
 
@@ -117,6 +149,22 @@
                 <label for="p1-conflict-6">Pointed handwriting - Aggressive tendencies</label>
               </div>
           </div>
+          <div class="llm-generate-row">
+  <input
+    id="p1_conflict_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p1_conflict_btn"
+    onclick="generateP1Conflict()"
+  >
+    Generate
+  </button>
+
+  <span id="p1_conflict_loader" class="loader" style="display:none;"></span>
+</div>
           <textarea id="person1ConflictNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
         </div>
 
@@ -136,6 +184,22 @@
               <label for="p1-intimacy-3">Small/open "g" or "y" - Lower intimacy needs</label>
             </div>
           </div>
+          <div class="llm-generate-row">
+  <input
+    id="p1_intimacy_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p1_intimacy_btn"
+    onclick="generateP1Intimacy()"
+  >
+    Generate
+  </button>
+
+  <span id="p1_intimacy_loader" class="loader" style="display:none;"></span>
+</div>
           <textarea id="person1IntimacyNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
         </div>
         <div class="form-section">
@@ -166,6 +230,22 @@
                 <label for="p1-family-6">Name clashing surname - Family-personal conflict</label>
               </div>
             </div>
+            <div class="llm-generate-row">
+  <input
+    id="p1_family_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p1_family_btn"
+    onclick="generateP1Family()"
+  >
+    Generate
+  </button>
+
+  <span id="p1_family_loader" class="loader" style="display:none;"></span>
+</div>
             <textarea id="person1FamilyNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
           </div>
 
@@ -185,6 +265,22 @@
                 <label for="p1-financial-3">Closed "j" - Good at saving</label>
               </div>
             </div>
+            <div class="llm-generate-row">
+  <input
+    id="p1_financial_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p1_financial_btn"
+    onclick="generateP1Financial()"
+  >
+    Generate
+  </button>
+
+  <span id="p1_financial_loader" class="loader" style="display:none;"></span>
+</div>
             <textarea id="person1FinancialNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
           </div>
        
@@ -234,6 +330,22 @@
               <label for="p2-emotional-3">Small dots over "i" or "j" - Practical, handles emotions well</label>
             </div>
           </div>
+          <div class="llm-generate-row">
+  <input
+    id="p2_emotional_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p2_emotional_btn"
+    onclick="generateP2Emotional()"
+  >
+    Generate
+  </button>
+
+  <span id="p2_emotional_loader" class="loader" style="display:none;"></span>
+</div>
           <textarea id="person2EmotionalNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
         </div>
 
@@ -261,6 +373,22 @@
               <label for="p2-comm-5">Small handwriting - Shares less, introvert</label>
             </div>
           </div>
+          <div class="llm-generate-row">
+  <input
+    id="p2_communication_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p2_communication_btn"
+    onclick="generateP2Communication()"
+  >
+    Generate
+  </button>
+
+  <span id="p2_communication_loader" class="loader" style="display:none;"></span>
+</div>
           <textarea id="person2CommunicationNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
         </div>
 
@@ -292,6 +420,22 @@
                 <label for="p2-conflict-6">Pointed handwriting - Aggressive tendencies</label>
               </div>
           </div>
+          <div class="llm-generate-row">
+  <input
+    id="p2_conflict_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p2_conflict_btn"
+    onclick="generateP2Conflict()"
+  >
+    Generate
+  </button>
+
+  <span id="p2_conflict_loader" class="loader" style="display:none;"></span>
+</div>
           <textarea id="person2ConflictNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
         </div>
 
@@ -311,6 +455,22 @@
               <label for="p2-intimacy-3">Small/open "g" or "y" - Lower intimacy needs</label>
             </div>
           </div>
+          <div class="llm-generate-row">
+  <input
+    id="p2_intimacy_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p2_intimacy_btn"
+    onclick="generateP2Intimacy()"
+  >
+    Generate
+  </button>
+
+  <span id="p2_intimacy_loader" class="loader" style="display:none;"></span>
+</div>
           <textarea id="person2IntimacyNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
         </div>
 
@@ -342,6 +502,22 @@
                 <label for="p2-family-6">Name clashing surname - Family-personal conflict</label>
               </div>
             </div>
+            <div class="llm-generate-row">
+  <input
+    id="p2_family_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p2_family_btn"
+    onclick="generateP2Family()"
+  >
+    Generate
+  </button>
+
+  <span id="p2_family_loader" class="loader" style="display:none;"></span>
+</div>
             <textarea id="person2FamilyNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
           </div>
 
@@ -361,6 +537,22 @@
                 <label for="p2-financial-3">Closed "j" - Good at saving</label>
               </div>
             </div>
+            <div class="llm-generate-row">
+  <input
+    id="p2_financial_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="p2_financial_btn"
+    onclick="generateP2Financial()"
+  >
+    Generate
+  </button>
+
+  <span id="p2_financial_loader" class="loader" style="display:none;"></span>
+</div>
             <textarea id="person2FinancialNotes" placeholder="Analysis notes..." style="height: 60px;"></textarea>
           </div>
 
@@ -380,14 +572,57 @@
       <!-- Assessment Fields -->
       <div class="form-section">
         <h4>Overall Assessment</h4>
-        <label>Relationship Strengths</label>
-        <textarea id="relationshipStrengths" style="height: 80px;">Both partners show strong emotional intelligence and complementary communication styles, creating a solid foundation for understanding and growth.</textarea>
+        abel>Relationship Strengths</label>
+
+<div class="llm-generate-row">
+  <input
+    id="strengths_input"
+    type="text"
+    placeholder="Optional context (overall observations, strengths)"
+  />
+  <button id="strengths_btn" onclick="generateStrengths()">Generate</button>
+  <span id="strengths_loader" class="loader" style="display:none;"></span>
+</div>
+
+<textarea
+  id="relationshipStrengths"
+  style="height: 80px;"
+></textarea>
         
         <label style="margin-top:10px">Potential Challenges</label>
-        <textarea id="relationshipChallenges" style="height: 80px;">Different conflict resolution approaches may require patience and compromise to find common ground during disagreements.</textarea>
+
+<div class="llm-generate-row">
+  <input
+    id="challenges_input"
+    type="text"
+    placeholder="Optional context (conflict areas, differences)"
+  />
+  <button id="challenges_btn" onclick="generateChallenges()">Generate</button>
+  <span id="challenges_loader" class="loader" style="display:none;"></span>
+</div>
+
+<textarea
+  id="relationshipChallenges"
+  style="height: 80px;"
+></textarea>
+
         
         <label style="margin-top:10px">Recommendations</label>
-        <textarea id="relationshipRecommendations" style="height: 100px;">Focus on leveraging your complementary strengths while working on understanding and respecting each other's different approaches to conflict resolution. Regular check-ins about emotional needs will strengthen your bond.</textarea>
+
+<div class="llm-generate-row">
+  <input
+    id="recommendations_input"
+    type="text"
+    placeholder="Optional context (goals, focus areas)"
+  />
+  <button id="recommendations_btn" onclick="generateRecommendations()">Generate</button>
+  <span id="recommendations_loader" class="loader" style="display:none;"></span>
+</div>
+
+<textarea
+  id="relationshipRecommendations"
+  style="height: 100px;"
+></textarea>
       </div>
 
       <!-- Controls -->

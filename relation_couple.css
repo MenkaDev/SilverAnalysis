@@ -83,6 +83,34 @@
     color: #374151;
     font-size: 0.9em;
   }
+  .llm-generate-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.llm-generate-row input {
+  flex: 1;
+  padding: 6px;
+}
+
+.llm-generate-row button {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.llm-generate-row .loader {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #ccc;
+  border-top: 2px solid #333;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
   input[type="text"], input[type="number"], textarea {
     width: 100%;

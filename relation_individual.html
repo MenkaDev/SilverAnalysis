@@ -75,6 +75,22 @@
         </label>
       </div>
     </div>
+    <div class="llm-generate-row">
+  <input
+    id="emotional_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="emotional_btn"
+    onclick="generateEmotional()"
+  >
+    Generate
+  </button>
+    
+  <span id="emotional_loader" class="loader" style="display:none;"></span>
+  </div>
     <textarea id="emotional_text" placeholder="Enter your analysis or observations here..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; resize: vertical; font-family: inherit; font-size: 13px; background: #fafafa;"></textarea>
 
 
@@ -121,6 +137,22 @@
         </label>
       </div>
     </div>
+    <div class="llm-generate-row">
+  <input
+    id="communication_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="communication_btn"
+    onclick="generateCommunication()"
+  >
+    Generate
+  </button>
+ 
+  <span id="communication_loader" class="loader" style="display:none;"></span>
+   </div>
     <textarea id="communication_text" placeholder="Enter your analysis or observations here..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; resize: vertical; font-family: inherit; font-size: 13px; background: #fafafa;"></textarea>
 
   </div>
@@ -173,6 +205,22 @@
         </label>
       </div>
     </div>
+    <div class="llm-generate-row">
+  <input
+    id="conflict_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="conflict_btn"
+    onclick="generateConflict()"
+  >
+    Generate
+  </button>
+
+  <span id="conflict_loader" class="loader" style="display:none;"></span>
+  </div>
     <textarea id="conflict_text" placeholder="Enter your analysis or observations here..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; resize: vertical; font-family: inherit; font-size: 13px; background: #fafafa;"></textarea>
 
   </div>
@@ -204,6 +252,22 @@
         </label>
       </div>
     </div>
+    <div class="llm-generate-row">
+  <input
+    id="intimacy_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="intimacy_btn"
+    onclick="generateIntimacy()"
+  >
+    Generate
+  </button>
+
+  <span id="intimacy_loader" class="loader" style="display:none;"></span>
+  </div>
     <textarea id="intimacy_text" placeholder="Enter your analysis or observations here..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; resize: vertical; font-family: inherit; font-size: 13px; background: #fafafa;"></textarea>
 
   </div>
@@ -256,6 +320,22 @@
         </label>
       </div>
     </div>
+    <div class="llm-generate-row">
+  <input
+    id="family_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="family_btn"
+    onclick="generateFamily()"
+  >
+    Generate
+  </button>
+
+  <span id="family_loader" class="loader" style="display:none;"></span>
+  </div>
     <textarea id="family_text" placeholder="Enter your analysis or observations here..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; resize: vertical; font-family: inherit; font-size: 13px; background: #fafafa;"></textarea>
 
   </div>
@@ -287,6 +367,22 @@
         </label>
       </div>
     </div>
+    <div class="llm-generate-row">
+  <input
+    id="financial_input"
+    type="text"
+    placeholder="Optional hints (e.g. traits selected, observations)"
+  />
+
+  <button
+    id="financial_btn"
+    onclick="generateFinancial()"
+  >
+    Generate
+  </button>
+
+  <span id="financial_loader" class="loader" style="display:none;"></span>
+  </div>
     <textarea id="financial_text" placeholder="Enter your analysis or observations here..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; resize: vertical; font-family: inherit; font-size: 13px; background: #fafafa;"></textarea>
 
   </div>
@@ -295,16 +391,77 @@
 
       <!-- Overall Assessment -->
       <div class="form-section">
-        <h3 class="small">Overall Relationship Assessment</h3>
-        <label>Relationship Strengths</label>
-        <textarea id="relationshipStrengths">Strong communication skills and emotional balance make this person a reliable and understanding partner.</textarea>
-        
-        <label style="margin-top:10px">Areas for Growth</label>
-        <textarea id="areasForGrowth">Working on conflict resolution strategies could enhance relationship harmony.</textarea>
-        
-        <label style="margin-top:10px">Compatibility Summary</label>
-        <textarea id="compatibilitySummary">Best suited for partners who appreciate open communication and emotional stability.</textarea>
-      </div>
+  <h3 class="small">Overall Relationship Assessment</h3>
+
+  <!-- Relationship Strengths -->
+  <label>Relationship Strengths</label>
+  <div class="llm-block">
+    <div class="llm-generate-row">
+      <input
+        id="strengths_input"
+        type="text"
+        placeholder="Optional context (key strengths, observations)"
+      />
+      <button
+        id="strengths_btn"
+        onclick="generateStrengths()"
+      >
+        Generate
+      </button>
+      <span id="strengths_loader" class="loader" style="display:none;"></span>
+    </div>
+
+    <textarea id="relationshipStrengths">
+Strong communication skills and emotional balance make this person a reliable and understanding partner.
+    </textarea>
+  </div>
+
+  <!-- Areas for Growth -->
+  <label style="margin-top:10px">Areas for Growth</label>
+  <div class="llm-block">
+    <div class="llm-generate-row">
+      <input
+        id="growth_input"
+        type="text"
+        placeholder="Optional context (conflict areas, challenges)"
+      />
+      <button
+        id="growth_btn"
+        onclick="generateGrowth()"
+      >
+        Generate
+      </button>
+      <span id="growth_loader" class="loader" style="display:none;"></span>
+    </div>
+
+    <textarea id="areasForGrowth">
+Working on conflict resolution strategies could enhance relationship harmony.
+    </textarea>
+  </div>
+
+  <!-- Compatibility Summary -->
+  <label style="margin-top:10px">Compatibility Summary</label>
+  <div class="llm-block">
+    <div class="llm-generate-row">
+      <input
+        id="compat_input"
+        type="text"
+        placeholder="Optional context (ideal partner traits, match type)"
+      />
+      <button
+        id="compat_btn"
+        onclick="generateCompatibility()"
+      >
+        Generate
+      </button>
+      <span id="compat_loader" class="loader" style="display:none;"></span>
+    </div>
+
+    <textarea id="compatibilitySummary">
+Best suited for partners who appreciate open communication and emotional stability.
+    </textarea>
+  </div>
+</div>
 
       <!-- Controls -->
       <div class="controls-row">

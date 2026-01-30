@@ -70,7 +70,185 @@ const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
 return Array.from(checkboxes).map(cb => ({ value: cb.value, textContent: cb.nextElementSibling.textContent }));
 }
 
+async function runLLMForSection({
+  inputId,
+  outputId,
+  loaderId,
+  buttonId,
+  templateId,
+  afterRun
+}) {
+  const inputEl = document.getElementById(inputId);
+  const loader = document.getElementById(loaderId);
+  const button = document.getElementById(buttonId);
+  const outputEl = document.getElementById(outputId);
+  if (!inputEl) {
+    console.error("Input not found:", inputId);
+    return;
+  }
 
+  const text = inputEl.value.trim();
+  if (!text) {
+    alert("Please enter some input first.");
+    return;
+  }
+
+  loader.style.display = "inline-block";
+  button.classList.add("disabled");
+
+  // === backend selection (same as your other tools) ===
+  let targetURL = "";
+  let apiKey = "";
+  const host = window.location.hostname;
+
+  if (host === "menkadev.github.io") {
+    targetURL = "https://exploreemebackend-1056855884926.us-central1.run.app";
+    apiKey = "ek8pfnyVmlvvjyKGf665rhHpioob2hrORjw0BxwH";
+  } else {
+    targetURL = "http://127.0.0.1:8000";
+    apiKey = "yhW10OA9omHFZS9nrcKfNJhhXM6umfpCWpScxkWx";
+  }
+
+  try {
+    // STEP 1: fetch template
+    const tRes = await fetch(`${targetURL}/ai_automations_handler/fetch-data/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": apiKey
+      },
+      body: JSON.stringify({
+        template_id: templateId,
+        pointers: text
+      })
+    });
+
+    const tData = await tRes.json();
+
+    // STEP 2: run LLM
+    const llmRes = await fetch(`${targetURL}/ai_automations_handler/process-llm/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": apiKey
+      },
+      body: JSON.stringify({
+        system_template: tData.system_template,
+        pointers: tData.pointers
+      })
+    });
+
+    const llmData = await llmRes.json();
+
+    if (outputEl) {
+  outputEl.value = llmData.output;
+}
+
+    // 🔥 FORCE PREVIEW UPDATE
+    if (typeof afterRun === "function") {
+      afterRun();
+    }
+
+  } catch (err) {
+    console.error("LLM error:", err);
+    alert("Something went wrong while generating text.");
+  } finally {
+    loader.style.display = "none";
+    button.classList.remove("disabled");
+  }
+}
+function generateEmotional() {
+  runLLMForSection({
+    inputId: "emotional_input",
+    outputId: "emotional_text", // not strictly needed, but fine
+    loaderId: "emotional_loader",
+    buttonId: "emotional_btn",
+    templateId: "EMOTIONAL_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateCommunication() {
+  runLLMForSection({
+    inputId: "communication_input",
+    outputId: "communication_text", // not strictly needed, but fine
+    loaderId: "communication_loader",
+    buttonId: "communication_btn",
+    templateId: "COMMUNICATION_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateConflict() {
+  runLLMForSection({
+    inputId: "conflict_input",
+    outputId: "conflict_text", // not strictly needed, but fine
+    loaderId: "conflict_loader",
+    buttonId: "conflict_btn",
+    templateId: "CONFLICT_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateIntimacy() {
+  runLLMForSection({
+    inputId: "intimacy_input",
+    outputId: "intimacy_text", // not strictly needed, but fine
+    loaderId: "intimacy_loader",
+    buttonId: "intimacy_btn",
+    templateId: "INTIMACY_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateFamily() {
+  runLLMForSection({
+    inputId: "family_input",
+    outputId: "family_text", // not strictly needed, but fine
+    loaderId: "family_loader",
+    buttonId: "family_btn",
+    templateId: "FAMILY_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateFinancial() {
+  runLLMForSection({
+    inputId: "financial_input",
+    outputId: "financial_text", // not strictly needed, but fine
+    loaderId: "financial_loader",
+    buttonId: "financial_btn",
+    templateId: "FINANCIAL_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateStrengths() {
+  runLLMForSection({
+    inputId: "strengths_input",
+    outputId: "relationshipStrengths",
+    loaderId: "strengths_loader",
+    buttonId: "strengths_btn",
+    templateId: "STRENGTHS_TEMPLATE2",
+    afterRun: applyToPreview
+  });
+}
+
+function generateGrowth() {
+  runLLMForSection({
+    inputId: "growth_input",
+    outputId: "areasForGrowth",
+    loaderId: "growth_loader",
+    buttonId: "growth_btn",
+    templateId: "CHALLENGES_TEMPLATE2",
+    afterRun: applyToPreview
+  });
+}
+
+function generateCompatibility() {
+  runLLMForSection({
+    inputId: "compat_input",
+    outputId: "compatibilitySummary",
+    loaderId: "compat_loader",
+    buttonId: "compat_btn",
+    templateId: "SUMMARY_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
 // updateCompatibility function 
 function updateCompatibility() {
 const compatibleList = document.getElementById('r_compatible_list');
