@@ -98,6 +98,247 @@ const weights = {
   family: 0.1,
   financial: 0.15
 };
+async function runLLMForSection({
+  inputId,
+  outputId,
+  loaderId,
+  buttonId,
+  templateId,
+  afterRun
+}) {
+  const inputEl = document.getElementById(inputId);
+  const loader = document.getElementById(loaderId);
+  const button = document.getElementById(buttonId);
+  const outputEl = document.getElementById(outputId);
+  if (!inputEl) {
+    console.error("Input not found:", inputId);
+    return;
+  }
+
+  const text = inputEl.value.trim();
+  if (!text) {
+    alert("Please enter some input first.");
+    return;
+  }
+
+  loader.style.display = "inline-block";
+  button.classList.add("disabled");
+
+  // === backend selection (same as your other tools) ===
+  let targetURL = "";
+  let apiKey = "";
+  const host = window.location.hostname;
+
+  if (host === "menkadev.github.io") {
+    targetURL = "https://exploreemebackend-1056855884926.us-central1.run.app";
+    apiKey = "ek8pfnyVmlvvjyKGf665rhHpioob2hrORjw0BxwH";
+  } else {
+    targetURL = "http://127.0.0.1:8000";
+    apiKey = "yhW10OA9omHFZS9nrcKfNJhhXM6umfpCWpScxkWx";
+  }
+
+  try {
+    // STEP 1: fetch template
+    const tRes = await fetch(`${targetURL}/ai_automations_handler/fetch-data/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": apiKey
+      },
+      body: JSON.stringify({
+        template_id: templateId,
+        pointers: text
+      })
+    });
+
+    const tData = await tRes.json();
+
+    // STEP 2: run LLM
+    const llmRes = await fetch(`${targetURL}/ai_automations_handler/process-llm/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": apiKey
+      },
+      body: JSON.stringify({
+        system_template: tData.system_template,
+        pointers: tData.pointers
+      })
+    });
+
+    const llmData = await llmRes.json();
+
+    if (outputEl) {
+  outputEl.value = llmData.output;
+}
+
+    // 🔥 FORCE PREVIEW UPDATE
+    if (typeof afterRun === "function") {
+      afterRun();
+    }
+
+  } catch (err) {
+    console.error("LLM error:", err);
+    alert("Something went wrong while generating text.");
+  } finally {
+    loader.style.display = "none";
+    button.classList.remove("disabled");
+  }
+}
+function generateP1Emotional() {
+  runLLMForSection({
+    inputId: "p1_emotional_input",
+    outputId: "person1EmotionalNotes", // not strictly needed, but fine
+    loaderId: "p1_emotional_loader",
+    buttonId: "p1_emotional_btn",
+    templateId: "EMOTIONAL_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP1Communication() {
+  runLLMForSection({
+    inputId: "p1_communication_input",
+    outputId: "person1CommunicationNotes", // not strictly needed, but fine
+    loaderId: "p1_communication_loader",
+    buttonId: "p1_communication_btn",
+    templateId: "COMMUNICATION_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP1Conflict() {
+  runLLMForSection({
+    inputId: "p1_conflict_input",
+    outputId: "person1ConflictNotes", // not strictly needed, but fine
+    loaderId: "p1_conflict_loader",
+    buttonId: "p1_conflict_btn",
+    templateId: "CONFLICT_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP1Intimacy() {
+  runLLMForSection({
+    inputId: "p1_intimacy_input",
+    outputId: "person1IntimacyNotes", // not strictly needed, but fine
+    loaderId: "p1_intimacy_loader",
+    buttonId: "p1_intimacy_btn",
+    templateId: "INTIMACY_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP1Family() {
+  runLLMForSection({
+    inputId: "p1_family_input",
+    outputId: "person1FamilyNotes", // not strictly needed, but fine
+    loaderId: "p1_family_loader",
+    buttonId: "p1_family_btn",
+    templateId: "FAMILY_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP1Financial() {
+  runLLMForSection({
+    inputId: "p1_financial_input",
+    outputId: "person1FinancialNotes", // not strictly needed, but fine
+    loaderId: "p1_financial_loader",
+    buttonId: "p1_financial_btn",
+    templateId: "FINANCIAL_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+// PERSON 2
+function generateP2Emotional() {
+  runLLMForSection({
+    inputId: "p2_emotional_input",
+    outputId: "person2EmotionalNotes", // not strictly needed, but fine
+    loaderId: "p2_emotional_loader",
+    buttonId: "p2_emotional_btn",
+    templateId: "EMOTIONAL_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP2Communication() {
+  runLLMForSection({
+    inputId: "p2_communication_input",
+    outputId: "person2CommunicationNotes", // not strictly needed, but fine
+    loaderId: "p2_communication_loader",
+    buttonId: "p2_communication_btn",
+    templateId: "COMMUNICATION_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP2Conflict() {
+  runLLMForSection({
+    inputId: "p2_conflict_input",
+    outputId: "person2ConflictNotes", // not strictly needed, but fine
+    loaderId: "p2_conflict_loader",
+    buttonId: "p2_conflict_btn",
+    templateId: "CONFLICT_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP2Intimacy() {
+  runLLMForSection({
+    inputId: "p2_intimacy_input",
+    outputId: "person2IntimacyNotes", // not strictly needed, but fine
+    loaderId: "p2_intimacy_loader",
+    buttonId: "p2_intimacy_btn",
+    templateId: "INTIMACY_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP2Family() {
+  runLLMForSection({
+    inputId: "p2_family_input",
+    outputId: "person2FamilyNotes", // not strictly needed, but fine
+    loaderId: "p2_family_loader",
+    buttonId: "p2_family_btn",
+    templateId: "FAMILY_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+function generateP2Financial() {
+  runLLMForSection({
+    inputId: "p2_financial_input",
+    outputId: "person2FinancialNotes", // not strictly needed, but fine
+    loaderId: "p2_financial_loader",
+    buttonId: "p2_financial_btn",
+    templateId: "FINANCIAL_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+
+function generateStrengths() {
+  runLLMForSection({
+    inputId: "strengths_input",
+    outputId: "relationshipStrengths",
+    loaderId: "strengths_loader",
+    buttonId: "strengths_btn",
+    templateId: "STRENGTHS_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+
+function generateChallenges() {
+  runLLMForSection({
+    inputId: "challenges_input",
+    outputId: "relationshipChallenges",
+    loaderId: "challenges_loader",
+    buttonId: "challenges_btn",
+    templateId: "CHALLENGES_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
+
+function generateRecommendations() {
+  runLLMForSection({
+    inputId: "recommendations_input",
+    outputId: "relationshipRecommendations",
+    loaderId: "recommendations_loader",
+    buttonId: "recommendations_btn",
+    templateId: "RECOMMENDATIONS_TEMPLATE",
+    afterRun: applyToPreview
+  });
+}
 
 // Helper function to handle image uploads
 function handleImageUpload(input, person, type) {

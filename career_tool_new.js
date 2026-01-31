@@ -513,6 +513,7 @@ async function runLLM(type) {
     let outputId = "";
     let templateId = "";
     let loaderId = "";
+    let buttonId = ""; 
     if (type === "CURRENT") {
         inputId = "currJobSuitabilityPointers";
         outputId = "currentJob";
@@ -534,6 +535,13 @@ async function runLLM(type) {
         buttonId = "businessBtn";
         templateId = "business_viability_template"; 
     }
+    if (type === "OVERALL") {
+    inputId = "overallRecommendationPointers";
+    outputId = "overallRecommendation";
+    loaderId = "overallLoader";
+    buttonId = "overallBtn";
+    templateId = "overall_rec_template"; // DB key
+}
     document.getElementById(loaderId).style.display = "inline-block";
     document.getElementById(buttonId).classList.add("disabled");
     const text = document.getElementById(inputId).value.trim();
